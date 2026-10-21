@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아르키메데스의 원주율(π) 기하학 계산기</title>
+    <style>
+        :root {
+            --inner-color: #1971c2;
+            --outer-color: #e03131;
+            --pi-color: #2b8a3e;
+            --bg-color: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #212529;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 25px 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            max-width: 1500px;
+            width: 100%;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-section h1 {
+            margin: 0 0 10px 0;
+            color: #111;
+            font-size: 2.1rem;
+            font-weight: 800;
+        }
+
+        .header-section p {
+            color: #495057;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* 아르키메데스 선택 체크박스 바 */
+        .arch-checkbox-group {
+            background: #e7f5ff;
+            border: 2px solid #74c0fc;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .arch-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1864ab;
+            margin-right: 10px;
+        }
+
+        .arch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 2px solid #adb5bd;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #343a40;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .arch-btn:hover {
+            border-color: #1971c2;
+            background: #f1f3f5;
+        }
+
+        .arch-btn input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #1971c2;
+        }
+
+        /* 컨트롤 및 슬라이더 */
+        .controls {
+            background: #f1f3f5;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-size: 1.35rem;
+            font-weight: bold;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 45%;
+            max-width: 400px;
+        }
+
+        .adjust-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            border: 2px solid #ced4da;
+            background-color: #ffffff;
+            color: #212529;
+            font-size: 1.6rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .adjust-btn:hover {
+            background-color: #e9ecef;
+            border-color: #495057;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .left-section {
+            flex: 1.3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fafafa;
+            border: 2px solid #e9ecef;
+            border-radius: 14px;
+            padding: 15px;
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            display: block;
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* 세로 간격 20px -> 12px 축소 */
+        }
+
+        /* 핵심 비교 카드 (원 안 < 추정치 < 원 밖) */
+        .inequality-card {
+            background: #ffffff;
+            border: 3px solid #228be6;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 6px 16px rgba(34, 139, 230, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-align: center;
+            color: #1971c2;
+        }
+
+        .inequality-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 14px 8px;
+            text-align: center;
+        }
+
+        .ineq-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .ineq-label {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .ineq-val {
+            font-size: 1.4rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+            gap: 4px;
+        }
+
+        .decimal-converted {
+            font-size: 1.15rem !important;
+            font-weight: 800 !important;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 6px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            margin-top: 2px;
+            display: inline-block;
+        }
+
+        .ineq-sign {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #868e96;
+            margin: 0 4px;
+        }
+
+        .frac {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 1.35rem;
+            line-height: 1.1;
+            margin: 0 2px;
+        }
+
+        .frac .top {
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 2px;
+        }
+
+        .frac .bottom {
+            padding-top: 2px;
+        }
+
+        .mixed-frac {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 1.45rem;
+            font-weight: bold;
+        }
+
+        .inner-color { color: var(--inner-color); }
+        .outer-color { color: var(--outer-color); }
+        .pi-color { color: var(--pi-color); }
+
+        /* 내접/외접 수치 패널 (글씨크기 축소 및 패딩/줄간격 최소화로 세로길이 축소) */
+        .calc-panel {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .inner-panel { background: #e7f5ff; border-left: 5px solid var(--inner-color); }
+        .outer-panel { background: #fff5f5; border-left: 5px solid var(--outer-color); }
+
+        .panel-header {
+            font-weight: 800;
+            font-size: 0.98rem;
+            margin-bottom: 4px;
+            border-bottom: 1px dashed rgba(0,0,0,0.12);
+            padding-bottom: 3px;
+        }
+
+        .formula-box {
+            background: #ffffff;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-top: 4px;
+            border: 1px solid rgba(0,0,0,0.08);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .math-num {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 0.88rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1100px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            .slider-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h1>아르키메데스의 원주율(π) 기하학 계산기</h1>
+        <p>지름 <span class="math-num" style="font-size:0.95rem; color:#111;">d = 1.0</span> (반지름 <span class="math-num" style="font-size:0.95rem; color:#111;">r = 0.5</span>) 기준 다각형 둘레 및 작도 보조선</p>
+    </div>
+
+    <!-- 아르키메데스 실제 계산 다각형 전용 체크박스 영역 -->
+    <div class="arch-checkbox-group">
+        <span class="arch-title">🏛️ 아르키메데스 계산 다각형:</span>
+        <label class="arch-btn"><input type="radio" name="archPolygon" value="6" onchange="selectArch(6)"> 정6각형</label>
+        <label class="arch-btn"><input type="radio" name="archPolygon" value="12" onchange="selectArch(12)"> 정12각형</label>
+        <label class="arch-btn"><input type="radio" name="archPolygon" value="24" onchange="selectArch(24)"> 정24각형</label>
+        <label class="arch-btn"><input type="radio" name="archPolygon" value="48" onchange="selectArch(48)"> 정48각형</label>
+        <label class="arch-btn"><input type="radio" name="archPolygon" value="96" onchange="selectArch(96)"> 정96각형</label>
+    </div>
+
+    <!-- 일반 슬라이더 컨트롤러 -->
+    <div class="controls">
+        <label for="sides">다각형 변의 개수 (n): <span id="sidesValue" class="math-num" style="color:#1971c2; font-size:1.3rem;">3</span>각형</label>
+        <div class="slider-container">
+            <button class="adjust-btn" id="btnMinus">-</button>
+            <input type="range" id="sides" min="3" max="96" value="3">
+            <button class="adjust-btn" id="btnPlus">+</button>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <!-- 왼쪽: 원 크기를 동적으로 맞춘 캔버스 -->
+        <div class="left-section">
+            <canvas id="piCanvas" width="850" height="850"></canvas>
+        </div>
+
+        <!-- 오른쪽: 수치 및 직관적 비교 정보 -->
+        <div class="right-section">
+
+            <!-- 원 안 < 추정치 < 원 밖 아르키메데스 분수 직관 카드 -->
+            <div class="inequality-card">
+                <div class="card-title">기하학적 크기 직관 비교 (둘레 분수 및 소수 표현)</div>
+                <div class="inequality-box">
+                    <div class="ineq-item inner-color">
+                        <span class="ineq-label">원 안 (내접 둘레)</span>
+                        <span class="ineq-val" id="cardInner"></span>
+                    </div>
+                    <span class="ineq-sign">&lt;</span>
+                    <div class="ineq-item pi-color">
+                        <span class="ineq-label">추정치 (π)</span>
+                        <span class="ineq-val" id="cardPi" style="font-size:2rem;">π</span>
+                    </div>
+                    <span class="ineq-sign">&lt;</span>
+                    <div class="ineq-item outer-color">
+                        <span class="ineq-label">원 밖 (외접 둘레)</span>
+                        <span class="ineq-val" id="cardOuter"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 내접 다각형 패널 (세로 높이 및 폰트 축소) -->
+            <div class="calc-panel inner-panel">
+                <div class="panel-header inner-color">내접 다각형 (원 안)</div>
+                <div>기하학 공식: <span class="math-num inner-color">Side = sin(180°/n)</span></div>
+                <div class="formula-box inner-color">
+                    <span id="innerSideCalc">0.000000</span>
+                    <span>× <span class="sideCount">3</span> =</span>
+                    <span id="innerPerimeterCalc" style="font-size:1.02rem; text-decoration:underline;">0.000000</span>
+                </div>
+            </div>
+
+            <!-- 외접 다각형 패널 (세로 높이 및 폰트 축소) -->
+            <div class="calc-panel outer-panel">
+                <div class="panel-header outer-color">외접 다각형 (원 밖)</div>
+                <div>기하학 공식: <span class="math-num outer-color">Side = tan(180°/n)</span></div>
+                <div class="formula-box outer-color">
+                    <span id="outerSideCalc">0.000000</span>
+                    <span>× <span class="sideCount">3</span> =</span>
+                    <span id="outerPerimeterCalc" style="font-size:1.02rem; text-decoration:underline;">0.000000</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('piCanvas');
+    const ctx = canvas.getContext('2d');
+    const sidesSlider = document.getElementById('sides');
+    const btnMinus = document.getElementById('btnMinus');
+    const btnPlus = document.getElementById('btnPlus');
+
+    const centerX = canvas.width / 2;
+    const centerY = (canvas.height / 2) - 30;
+
+    // 아르키메데스의 주요 단계별 분수 및 소수 환산 데이터 (6, 12, 24, 48, 96각형)
+    const archimedesFractions = {
+        3: {
+            inner: `<div class="frac"><span class="top">3√3</span><span class="bottom">2</span></div><div class="decimal-converted">(≈ 2.5981)</div>`,
+            outer: `3√3 <div class="decimal-converted">(≈ 5.1962)</div>`
+        },
+        6: {
+            inner: `3 <div class="decimal-converted">(≈ 3.0000)</div>`,
+            outer: `2√3 <div class="decimal-converted">(≈ 3.4641)</div>`
+        },
+        12: {
+            inner: `<div class="frac"><span class="top">6336</span><span class="bottom">2039</span></div><div class="decimal-converted">(≈ 3.1054)</div>`,
+            outer: `<div class="frac"><span class="top">14688</span><span class="bottom">4673</span></div><div class="decimal-converted">(≈ 3.1433)</div>`
+        },
+        24: {
+            inner: `<div class="frac"><span class="top">4800</span><span class="bottom">1532</span></div><div class="decimal-converted">(≈ 3.1325)</div>`,
+            outer: `<div class="frac"><span class="top">4673</span><span class="bottom">1482</span></div><div class="decimal-converted">(≈ 3.1532)</div>`
+        },
+        48: {
+            inner: `<div class="frac"><span class="top">9600</span><span class="bottom">3058</span></div><div class="decimal-converted">(≈ 3.1393)</div>`,
+            outer: `<div class="frac"><span class="top">4673</span><span class="bottom">1475.5</span></div><div class="decimal-converted">(≈ 3.1461)</div>`
+        },
+        96: {
+            inner: `<div class="mixed-frac"><span>3</span><div class="frac"><span class="top">10</span><span class="bottom">71</span></div></div><div class="decimal-converted">(≈ 3.1408)</div>`,
+            outer: `<div class="mixed-frac"><span>3</span><div class="frac"><span class="top">1</span><span class="bottom">7</span></div></div><div class="decimal-converted">(≈ 3.1429)</div>`
+        }
+    };
+
+    function selectArch(n) {
+        sidesSlider.value = n;
+        draw();
+    }
+
+    function syncRadio(n) {
+        const radios = document.getElementsByName('archPolygon');
+        radios.forEach(radio => {
+            radio.checked = (parseInt(radio.value) === n);
+        });
+    }
+
+    btnMinus.addEventListener('click', () => {
+        sidesSlider.value = Math.max(parseInt(sidesSlider.min), parseInt(sidesSlider.value) - 1);
+        draw();
+    });
+
+    btnPlus.addEventListener('click', () => {
+        sidesSlider.value = Math.min(parseInt(sidesSlider.max), parseInt(sidesSlider.value) + 1);
+        draw();
+    });
+
+    function toFraction(val) {
+        let bestNum = 1, bestDen = 1, minDiff = 1;
+        for (let den = 1; den <= 200; den++) {
+            let num = Math.round(val * den);
+            let diff = Math.abs(val - num / den);
+            if (diff < minDiff) {
+                minDiff = diff;
+                bestNum = num;
+                bestDen = den;
+            }
+        }
+        if (bestDen === 1) return `<span>${bestNum}</span><div class="decimal-converted">(≈ ${val.toFixed(4)})</div>`;
+        return `<div class="frac"><span class="top">${bestNum}</span><span class="bottom">${bestDen}</span></div><div class="decimal-converted">(≈ ${val.toFixed(4)})</div>`;
+    }
+
+    function draw() {
+        const n = parseInt(sidesSlider.value);
+        document.getElementById('sidesValue').textContent = n;
+        const sideElements = document.querySelectorAll('.sideCount');
+        sideElements.forEach(el => el.textContent = n);
+        syncRadio(n);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 1. 외접 반지름 및 기준 반지름 설정
+        const maxCanvasRadius = ((canvas.width / 2) - 90) * Math.cos(Math.PI / n);
+        const drawRadius = maxCanvasRadius; 
+        const outerRadius = drawRadius / Math.cos(Math.PI / n);
+
+        // 2. 외접 다각형 (원 밖)
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+            const angle = (i * 2 * Math.PI) / n - Math.PI / 2;
+            const x = centerX + outerRadius * Math.cos(angle);
+            const y = centerY + outerRadius * Math.sin(angle);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = '#e03131';
+        ctx.lineWidth = 3.5;
+        ctx.stroke();
+
+        // 3. 기준 원
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, drawRadius, 0, 2 * Math.PI);
+        ctx.strokeStyle = '#212529';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // 4. 내접 다각형 (원 안)
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+            const angle = (i * 2 * Math.PI) / n - Math.PI / 2;
+            const x = centerX + drawRadius * Math.cos(angle);
+            const y = centerY + drawRadius * Math.sin(angle);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = '#1971c2';
+        ctx.lineWidth = 3.5;
+        ctx.stroke();
+
+        // 5. 아르키메데스 작도 시각화
+        const angle1 = -Math.PI / 2;
+        const angle2 = (2 * Math.PI) / n - Math.PI / 2;
+        const midAngle = (Math.PI / n) - Math.PI / 2;
+
+        ctx.beginPath();
+        ctx.setLineDash([6, 6]);
+        ctx.strokeStyle = '#7950f2';
+        ctx.lineWidth = 2;
+
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + outerRadius * Math.cos(angle1), centerY + outerRadius * Math.sin(angle1));
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + outerRadius * Math.cos(angle2), centerY + outerRadius * Math.sin(angle2));
+        
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + drawRadius * Math.cos(midAngle), centerY + drawRadius * Math.sin(midAngle));
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, drawRadius, angle1, angle2);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(121, 80, 242, 0.08)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 7, 0, 2 * Math.PI);
+        ctx.fillStyle = '#212529';
+        ctx.fill();
+
+        // 치수선 (하단 - 지름 표기)
+        const dimY = canvas.height - 35;
+        ctx.beginPath();
+        ctx.setLineDash([5, 5]);
+        ctx.moveTo(centerX - drawRadius, centerY + drawRadius + 15); ctx.lineTo(centerX - drawRadius, dimY);
+        ctx.moveTo(centerX + drawRadius, centerY + drawRadius + 15); ctx.lineTo(centerX + drawRadius, dimY);
+        ctx.strokeStyle = '#adb5bd';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.moveTo(centerX - drawRadius, dimY); ctx.lineTo(centerX + drawRadius, dimY);
+        ctx.strokeStyle = '#343a40';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.font = 'bold 22px Pretendard, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#111111';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('지름 (d) = 1.0  /  반지름 (r) = 0.5', centerX, dimY - 8);
+
+        // 수학적 실시간 계산 (r = 0.5)
+        const r = 0.5;
+        const innerSide = 2 * r * Math.sin(Math.PI / n);
+        const innerPerimeter = innerSide * n;
+
+        const outerSide = 2 * r * Math.tan(Math.PI / n);
+        const outerPerimeter = outerSide * n;
+
+        // 한 변 길이 텍스트 표기
+        const innerOffset = n === 3 ? 70 : (n === 4 ? 50 : 35);
+        const outerOffset = n === 3 ? 75 : (n === 4 ? 55 : 40);
+
+        const innerMidRadius = drawRadius * Math.cos(Math.PI / n);
+        const innerTextX = centerX + (innerMidRadius - innerOffset) * Math.cos(midAngle);
+        const innerTextY = centerY + (innerMidRadius - innerOffset) * Math.sin(midAngle);
+
+        const outerTextX = centerX + (outerRadius + outerOffset) * Math.cos(midAngle);
+        const outerTextY = centerY + (outerRadius + outerOffset) * Math.sin(midAngle);
+
+        ctx.font = 'bold 22px Courier New, monospace';
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#ffffff';
+
+        // 내접 한 변 길이
+        ctx.strokeText(innerSide.toFixed(4), innerTextX, innerTextY);
+        ctx.fillStyle = '#1971c2';
+        ctx.fillText(innerSide.toFixed(4), innerTextX, innerTextY);
+
+        // 외접 한 변 길이
+        ctx.strokeText(outerSide.toFixed(4), outerTextX, outerTextY);
+        ctx.fillStyle = '#e03131';
+        ctx.fillText(outerSide.toFixed(4), outerTextX, outerTextY);
+
+        // 카드 상단 분수 표기 업데이트
+        const cardInner = document.getElementById('cardInner');
+        const cardOuter = document.getElementById('cardOuter');
+
+        if (archimedesFractions[n]) {
+            cardInner.innerHTML = archimedesFractions[n].inner;
+            cardOuter.innerHTML = archimedesFractions[n].outer;
+        } else {
+            cardInner.innerHTML = toFraction(innerPerimeter);
+            cardOuter.innerHTML = toFraction(outerPerimeter);
+        }
+
+        // 수치 업데이트 (한 변의 길이 * 변의 수 = 전체 둘레)
+        document.getElementById('innerSideCalc').textContent = innerSide.toFixed(6);
+        document.getElementById('innerPerimeterCalc').textContent = innerPerimeter.toFixed(6);
+
+        document.getElementById('outerSideCalc').textContent = outerSide.toFixed(6);
+        document.getElementById('outerPerimeterCalc').textContent = outerPerimeter.toFixed(6);
+    }
+
+    sidesSlider.addEventListener('input', draw);
+    draw();
+</script>
+
+</body>
+</html>

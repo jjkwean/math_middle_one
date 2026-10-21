@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다각형 외각 복사 및 모으기 시각화 (360°)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f1f3f5;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      text-align: center;
+      color: #2b8a3e;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #6c757d;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+      background: #e9ecef;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .btn {
+      padding: 9px 18px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-finish { background: #228be6; }
+    .btn-finish:hover { background: #1c7ed6; }
+    .btn-gather { background: #e03131; }
+    .btn-gather:hover { background: #c92a2a; }
+    .btn-reset { background: #868e96; }
+    .btn-reset:hover { background: #495057; }
+    .btn:disabled { background: #adb5bd; cursor: not-allowed; }
+
+    .status-text {
+      font-weight: bold;
+      color: #343a40;
+      margin-left: 10px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 20px;
+    }
+    @media (max-width: 850px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    canvas {
+      background: #ffffff;
+      border: 2px solid #dee2e6;
+      border-radius: 10px;
+      cursor: crosshair;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .sidebar {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-card {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .info-card h3 {
+      font-size: 0.85rem;
+      color: #868e96;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .info-card .value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #2b8a3e;
+    }
+
+    .angle-list-title {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #495057;
+      margin-bottom: 8px;
+    }
+    .angle-list {
+      list-style: none;
+      max-height: 250px;
+      overflow-y: auto;
+      border-top: 1px solid #dee2e6;
+    }
+    .angle-list li {
+      padding: 6px 0;
+      border-bottom: 1px dashed #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+    .color-badge {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .type-badge {
+      font-size: 0.75rem;
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 4px;
+      font-weight: bold;
+    }
+    .type-convex { background: #e6fcf5; color: #0ca678; }
+    .type-concave { background: #ffe3e3; color: #e03131; }
+
+    .tip-box {
+      font-size: 0.8rem;
+      color: #495057;
+      background: #e7f5ff;
+      border-left: 4px solid #339af0;
+      padding: 8px 10px;
+      border-radius: 4px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>다각형 외각 모으기 시각화</h1>
+  <p class="subtitle">마우스로 화면을 클릭하여 볼록다각형이나 오목다각형을 그려보세요!</p>
+
+  <div class="controls">
+    <button class="btn btn-finish" id="finishBtn">다각형 완성하기</button>
+    <button class="btn btn-gather" id="gatherBtn" disabled>외각 모아서 원 만들기</button>
+    <button class="btn btn-reset" id="resetBtn">다시 그리기</button>
+    <span class="status-text" id="statusText">캔버스에 점을 찍어주세요 (최소 3개)</span>
+  </div>
+
+  <div class="main-grid">
+    <canvas id="canvas" width="680" height="480"></canvas>
+
+    <div class="sidebar">
+      <div class="info-card">
+        <h3>외각의 총합 (Sum)</h3>
+        <div class="value" id="totalAngleVal">0.0°</div>
+      </div>
+
+      <div>
+        <div class="angle-list-title">꼭짓점별 외각 크기</div>
+        <ul class="angle-list" id="angleList"></ul>
+      </div>
+
+      <div class="tip-box">
+        💡 <strong>오목다각형의 외각 원리:</strong><br>
+        • <strong>볼록 꼭짓점(내각 &lt; 180°):</strong> 양수(+) 외각<br>
+        • <strong>오목 꼭짓점(내각 &gt; 180°):</strong> 음수(-) 외각<br>
+        양수 회전과 음수 회전을 모두 합산하면 항상 빈틈없는 <strong>360° 원</strong>이 됩니다.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  const finishBtn = document.getElementById('finishBtn');
+  const gatherBtn = document.getElementById('gatherBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const statusText = document.getElementById('statusText');
+  const totalAngleVal = document.getElementById('totalAngleVal');
+  const angleList = document.getElementById('angleList');
+
+  const dividerX = 420; 
+  const targetCenter = { x: 550, y: 240 };
+
+  let points = [];
+  let mousePos = null;
+  let state = 'DRAWING';
+  let anglesData = [];
+  let animProgress = 0;
+  let animId = null;
+
+  function getAngleColor(index, total) {
+    const hue = (index * 360 / total) % 360;
+    return `hsl(${hue}, 80%, 50%)`;
+  }
+
+  function ensureCCW(pts) {
+    let area = 0;
+    for (let i = 0; i < pts.length; i++) {
+      let j = (i + 1) % pts.length;
+      area += (pts[i].x * pts[j].y) - (pts[j].x * pts[i].y);
+    }
+    if (area < 0) {
+      pts.reverse();
+    }
+  }
+
+  function calculateExteriorAngles() {
+    ensureCCW(points);
+    const n = points.length;
+    anglesData = [];
+    let cumulativeStart = 0;
+
+    for (let i = 0; i < n; i++) {
+      const pPrev = points[(i - 1 + n) % n];
+      const pCurr = points[i];
+      const pNext = points[(i + 1) % n];
+
+      const inAngle = Math.atan2(pCurr.y - pPrev.y, pCurr.x - pPrev.x);
+      const outAngle = Math.atan2(pNext.y - pCurr.y, pNext.x - pCurr.x);
+
+      // 외각(회전각): (-PI, PI] 범위로 정규화
+      let turn = outAngle - inAngle;
+      while (turn <= -Math.PI) turn += Math.PI * 2;
+      while (turn > Math.PI) turn -= Math.PI * 2;
+
+      anglesData.push({
+        index: i,
+        vertex: pCurr,
+        inAngle: inAngle,
+        outAngle: outAngle,
+        turnAngle: turn,
+        deg: turn * (180 / Math.PI),
+        targetStartAngle: cumulativeStart,
+        color: getAngleColor(i, n)
+      });
+
+      cumulativeStart += turn;
+    }
+
+    updateUI();
+  }
+
+  function updateUI() {
+    angleList.innerHTML = '';
+    let sum = 0;
+
+    anglesData.forEach((item, idx) => {
+      sum += item.deg;
+      const isNegative = item.deg < 0;
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div>
+          <span class="color-badge" style="background:${item.color}"></span>
+          <span>P${idx + 1}</span>
+          <span class="type-badge ${isNegative ? 'type-concave' : 'type-convex'}">
+            ${isNegative ? '오목' : '볼록'}
+          </span>
+        </div>
+        <strong style="color:${isNegative ? '#e03131' : '#212529'}">
+          ${item.deg >= 0 ? '+' : ''}${item.deg.toFixed(1)}°
+        </strong>
+      `;
+      angleList.appendChild(li);
+    });
+
+    totalAngleVal.textContent = `${sum.toFixed(1)}°`;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 영역 구분선
+    ctx.beginPath();
+    ctx.setLineDash([6, 6]);
+    ctx.moveTo(dividerX, 0);
+    ctx.lineTo(dividerX, canvas.height);
+    ctx.strokeStyle = '#ced4da';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 우측 타겟 원 가이드라인
+    ctx.beginPath();
+    ctx.arc(targetCenter.x, targetCenter.y, 90, 0, Math.PI * 2);
+    ctx.strokeStyle = '#e9ecef';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = '#adb5bd';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('복사된 외각 모으기 지점 (360° 원)', targetCenter.x, targetCenter.y + 115);
+
+    // 1. 다각형 및 정점 그리기
+    if (points.length > 0) {
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+
+      if (state === 'DRAWING' && mousePos) {
+        ctx.lineTo(mousePos.x, mousePos.y);
+      } else if (state !== 'DRAWING') {
+        ctx.closePath();
+      }
+
+      ctx.strokeStyle = '#2b8a3e';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      if (state !== 'DRAWING') {
+        ctx.fillStyle = 'rgba(43, 138, 62, 0.08)';
+        ctx.fill();
+      }
+
+      points.forEach((p, idx) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#1b4332';
+        ctx.fill();
+
+        ctx.fillStyle = '#212529';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(`P${idx + 1}`, p.x - 8, p.y - 8);
+      });
+    }
+
+    // 2. 외각 시각화
+    if (state === 'COMPLETED') {
+      anglesData.forEach(item => {
+        drawExteriorWedge(
+          item.vertex.x, item.vertex.y,
+          item.inAngle, item.turnAngle,
+          35, item.color, true, item.deg
+        );
+      });
+    } else if (state === 'ANIMATING' || state === 'GATHERED') {
+      anglesData.forEach(item => {
+        drawExteriorWedge(
+          item.vertex.x, item.vertex.y,
+          item.inAngle, item.turnAngle,
+          35, item.color, true, item.deg
+        );
+      });
+
+      const t = easeInOutCubic(animProgress);
+
+      anglesData.forEach(item => {
+        const curX = item.vertex.x + (targetCenter.x - item.vertex.x) * t;
+        const curY = item.vertex.y + (targetCenter.y - item.vertex.y) * t;
+        const curStartAngle = item.inAngle + (item.targetStartAngle - item.inAngle) * t;
+        const curRadius = 35 + (90 - 35) * t;
+
+        drawExteriorWedge(
+          curX, curY,
+          curStartAngle, item.turnAngle,
+          curRadius, item.color, false, item.deg
+        );
+      });
+    }
+  }
+
+  function drawExteriorWedge(x, y, startAngle, turnAngle, radius, color, showExtension = true, degValue = null) {
+    const isNegative = turnAngle < 0;
+
+    if (showExtension) {
+      const extLen = radius + 15;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(startAngle) * extLen, y + Math.sin(startAngle) * extLen);
+      ctx.strokeStyle = '#868e96';
+      ctx.setLineDash([3, 3]);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Canvas arc: 음수 각도(반시계) 대응을 위한 counterclockwise 파라미터(isNegative) 설정
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.arc(x, y, radius, startAngle, startAngle + turnAngle, isNegative);
+    ctx.closePath();
+    ctx.fillStyle = color.replace('hsl', 'hsla').replace(')', ', 0.5)');
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, startAngle, startAngle + turnAngle, isNegative);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    if (degValue !== null) {
+      const midAngle = startAngle + turnAngle / 2;
+      const labelRadius = radius > 50 ? radius * 0.62 : radius + 16;
+      const tx = x + Math.cos(midAngle) * labelRadius;
+      const ty = y + Math.sin(midAngle) * labelRadius;
+
+      ctx.save();
+      ctx.font = 'bold 11px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const degText = `${degValue >= 0 ? '+' : ''}${degValue.toFixed(1)}°`;
+
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.strokeText(degText, tx, ty);
+
+      ctx.fillStyle = isNegative ? '#e03131' : '#212529';
+      ctx.fillText(degText, tx, ty);
+      ctx.restore();
+    }
+  }
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  canvas.addEventListener('click', (e) => {
+    if (state !== 'DRAWING') return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    if (x > dividerX - 20) return;
+
+    if (points.length >= 3) {
+      const first = points[0];
+      const dist = Math.hypot(first.x - x, first.y - y);
+      if (dist < 15) {
+        completePolygon();
+        return;
+      }
+    }
+
+    points.push({ x, y });
+    statusText.textContent = `점 ${points.length}개 입력됨 (더 클릭하거나 '완성하기' 누르기)`;
+    draw();
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (state !== 'DRAWING') return;
+    const rect = canvas.getBoundingClientRect();
+    mousePos = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
+    draw();
+  });
+
+  function completePolygon() {
+    if (points.length < 3) {
+      alert('다각형을 만들려면 최소 3개의 점이 필요합니다!');
+      return;
+    }
+    state = 'COMPLETED';
+    calculateExteriorAngles();
+    finishBtn.disabled = true;
+    gatherBtn.disabled = false;
+    statusText.textContent = '각 꼭짓점에 외각과 각도가 표시되었습니다!';
+    draw();
+  }
+
+  function startGatherAnimation() {
+    if (state !== 'COMPLETED') return;
+    state = 'ANIMATING';
+    gatherBtn.disabled = true;
+    statusText.textContent = '원본 외각을 복사하여 오른쪽에서 원을 만듭니다!';
+    animProgress = 0;
+
+    const startTime = performance.now();
+    const duration = 2500;
+
+    function animateStep(timestamp) {
+      const elapsed = timestamp - startTime;
+      animProgress = Math.min(elapsed / duration, 1);
+
+      draw();
+
+      if (animProgress < 1) {
+        animId = requestAnimationFrame(animateStep);
+      } else {
+        state = 'GATHERED';
+        statusText.textContent = '완성! 다각형 외각과 복사된 외각의 합 = 360° (원)';
+      }
+    }
+
+    animId = requestAnimationFrame(animateStep);
+  }
+
+  function reset() {
+    if (animId) cancelAnimationFrame(animId);
+    points = [];
+    anglesData = [];
+    mousePos = null;
+    state = 'DRAWING';
+    animProgress = 0;
+
+    finishBtn.disabled = false;
+    gatherBtn.disabled = true;
+    statusText.textContent = '캔버스에 점을 찍어주세요 (최소 3개)';
+    totalAngleVal.textContent = '0.0°';
+    angleList.innerHTML = '';
+
+    draw();
+  }
+
+  finishBtn.addEventListener('click', completePolygon);
+  gatherBtn.addEventListener('click', startGatherAnimation);
+  resetBtn.addEventListener('click', reset);
+
+  draw();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6점 삼각형 게임 (Sim Game & Maker)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+        }
+        canvas {
+            touch-action: none;
+            user-select: none;
+        }
+        /* Pulse & Glow animations */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.9; filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
+            50% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.3)); }
+        }
+        .glow-active {
+            animation: pulse-glow 1.5s infinite ease-in-out;
+        }
+        /* Custom scrollbar for game log */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f3f4f6;
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center p-3 md:p-6 text-gray-800">
+
+    <!-- MAIN CONTAINER -->
+    <div class="w-full max-w-4xl mx-auto flex flex-col gap-5">
+
+        <!-- HEADER -->
+        <header class="text-center py-2 border-b border-gray-100">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center justify-center gap-2">
+                <span>📐</span> 6점 삼각형 전략 게임
+            </h1>
+            <p class="text-xs md:text-sm text-gray-500 mt-1">
+                람지 정리(Ramsey Theory) $R(3,3)=6$ 기반 수학 논리 게임
+            </p>
+        </header>
+
+        <!-- TOP CONFIGURATION & SETTINGS PANEL (최상단 게임 모드 및 상세 설정) -->
+        <section class="bg-gray-50 rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm transition-all hover:shadow-md">
+            <div class="flex items-center justify-between mb-4 border-b border-gray-200 pb-3">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <span>⚙️</span> 게임 모드 및 상세 설정
+                </h2>
+                <span class="text-xs bg-indigo-100 text-indigo-700 font-medium px-2.5 py-1 rounded-full">
+                    게임 시작 전 설정
+                </span>
+            </div>
+
+            <!-- SETTINGS GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- 1. GAME MODE -->
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider">🎯 게임 규칙 모드</label>
+                    <div class="grid grid-cols-2 gap-1.5 bg-gray-200/70 p-1 rounded-xl text-xs font-semibold">
+                        <button id="mode-avoid" onclick="selectGameMode('avoid')" 
+                            class="py-2 px-2 rounded-lg transition-all text-center flex flex-col items-center gap-0.5 bg-white text-indigo-600 shadow-sm font-bold">
+                            <span>🚫 피하기</span>
+                            <span class="text-[10px] font-normal text-gray-500">(Sim Game)</span>
+                        </button>
+                        <button id="mode-make" onclick="selectGameMode('make')" 
+                            class="py-2 px-2 rounded-lg transition-all text-center flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900">
+                            <span>📐 만들기</span>
+                            <span class="text-[10px] font-normal text-gray-500">(Triangle Maker)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. OPPONENT TYPE -->
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider">👥 대전 상대</label>
+                    <div class="grid grid-cols-2 gap-1.5 bg-gray-200/70 p-1 rounded-xl text-xs font-semibold">
+                        <button id="opp-ai" onclick="selectOpponent('ai')" 
+                            class="py-2 px-2 rounded-lg transition-all text-center bg-white text-indigo-600 shadow-sm font-bold">
+                            🤖 컴퓨터 대전
+                        </button>
+                        <button id="opp-human" onclick="selectOpponent('human')" 
+                            class="py-2 px-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900">
+                            👥 2인 대전
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. TURN SELECTION -->
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider">🔴🔵 순서 지정</label>
+                    <div class="grid grid-cols-2 gap-1.5 bg-gray-200/70 p-1 rounded-xl text-xs font-semibold">
+                        <button id="turn-first" onclick="selectTurn('first')" 
+                            class="py-2 px-2 rounded-lg transition-all text-center bg-white text-red-600 shadow-sm font-bold">
+                            🔴 선공 (빨강)
+                        </button>
+                        <button id="turn-second" onclick="selectTurn('second')" 
+                            class="py-2 px-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900">
+                            🔵 후공 (파랑)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4. AI DIFFICULTY -->
+                <div id="ai-difficulty-container" class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-600 uppercase tracking-wider">🧠 AI 난이도</label>
+                    <div class="grid grid-cols-3 gap-1 bg-gray-200/70 p-1 rounded-xl text-xs font-semibold">
+                        <button id="diff-easy" onclick="selectDifficulty('easy')" 
+                            class="py-2 rounded-lg transition-all text-center text-gray-600">
+                            쉬움
+                        </button>
+                        <button id="diff-medium" onclick="selectDifficulty('medium')" 
+                            class="py-2 rounded-lg transition-all text-center bg-white text-indigo-600 shadow-sm font-bold">
+                            보통
+                        </button>
+                        <button id="diff-hard" onclick="selectDifficulty('hard')" 
+                            class="py-2 rounded-lg transition-all text-center text-gray-600">
+                            어려움
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MODE EXPLANATION BANNER & RESET BUTTON -->
+            <div class="mt-4 pt-3 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="text-xs text-gray-600 flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 w-full sm:w-auto">
+                    <span id="mode-desc-icon" class="text-base">🚫</span>
+                    <span id="mode-desc-text" class="font-medium">
+                        <strong>삼각형 피하기 Rules:</strong> 세 변이 같은 색인 삼각형을 <u>먼저 만드는 사람이 패배</u>합니다.
+                    </span>
+                </div>
+                
+                <button onclick="startNewGame()" 
+                    class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap">
+                    <span>🔄</span> 설정 적용 및 새 게임 시작
+                </button>
+            </div>
+        </section>
+
+        <!-- REALTIME STATUS BAR & SCOREBOARD -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+            
+            <!-- CURRENT TURN DISPLAY -->
+            <div id="turn-banner" class="md:col-span-2 bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-sm transition-all">
+                <div class="flex items-center gap-3">
+                    <span id="turn-indicator-dot" class="w-4 h-4 rounded-full bg-red-500 animate-pulse"></span>
+                    <div>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">현재 차례</div>
+                        <div id="turn-text" class="text-base font-extrabold text-red-600">
+                            🔴 빨간색 턴 (플레이어 1)
+                        </div>
+                    </div>
+                </div>
+                <div id="game-state-badge" class="text-xs font-bold px-3 py-1 bg-white rounded-full border border-red-200 text-red-600 shadow-2xs">
+                    진행 중
+                </div>
+            </div>
+
+            <!-- SCOREBOARD -->
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-3 flex justify-around text-center shadow-sm">
+                <div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase">승리 (Win)</div>
+                    <div id="score-win" class="text-lg font-black text-emerald-600">0</div>
+                </div>
+                <div class="border-r border-gray-200"></div>
+                <div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase">패배 (Loss)</div>
+                    <div id="score-loss" class="text-lg font-black text-rose-600">0</div>
+                </div>
+                <div class="border-r border-gray-200"></div>
+                <div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase">연승</div>
+                    <div id="score-streak" class="text-lg font-black text-indigo-600">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CANVAS GAME BOARD & CONTROLS SECTION -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+            
+            <!-- CANVAS CONTAINER (2 COLUMNS) -->
+            <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-md p-3 md:p-5 flex flex-col items-center justify-center relative min-h-[380px]">
+                
+                <canvas id="gameCanvas" class="w-full max-w-[450px] aspect-square cursor-pointer rounded-xl"></canvas>
+                
+                <!-- CANVAS INSTRUCTION OVERLAY -->
+                <div class="mt-2 text-center text-xs text-gray-400">
+                    💡 두 점을 연속으로 클릭하거나 드래그하여 선분을 연결하세요.
+                </div>
+            </div>
+
+            <!-- SIDE LOG & ACTION BUTTONS (1 COLUMN) -->
+            <div class="flex flex-col gap-3">
+                
+                <!-- GAME ACTION BUTTONS -->
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="undoMove()" 
+                        class="bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-semibold py-2.5 px-2 rounded-xl text-xs transition-all flex flex-col items-center gap-1 border border-gray-200 shadow-2xs">
+                        <span class="text-base">↩️</span>
+                        <span>되돌리기</span>
+                    </button>
+                    <button onclick="showHint()" 
+                        class="bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-amber-800 font-semibold py-2.5 px-2 rounded-xl text-xs transition-all flex flex-col items-center gap-1 border border-amber-200 shadow-2xs">
+                        <span class="text-base">💡</span>
+                        <span>힌트 보기</span>
+                    </button>
+                    <button onclick="toggleRulesModal(true)" 
+                        class="bg-blue-50 hover:bg-blue-100 active:bg-blue-200 text-blue-800 font-semibold py-2.5 px-2 rounded-xl text-xs transition-all flex flex-col items-center gap-1 border border-blue-200 shadow-2xs">
+                        <span class="text-base">📜</span>
+                        <span>규칙 설명</span>
+                    </button>
+                </div>
+
+                <!-- MOVE LOG BOX -->
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-3 flex flex-col h-[280px]">
+                    <div class="flex items-center justify-between pb-2 border-b border-gray-200 mb-2">
+                        <span class="text-xs font-bold text-gray-700 flex items-center gap-1">
+                            <span>📝</span> 착수 히스토리
+                        </span>
+                        <span id="move-count" class="text-[10px] bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full font-bold">
+                            총 0수
+                        </span>
+                    </div>
+                    <div id="move-log" class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-1.5 text-xs text-gray-600">
+                        <div class="text-center text-gray-400 my-auto text-xs py-4">
+                            게임이 시작되면 연결한 선분 목록이 여기에 기록됩니다.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RULES & RAMSEY THEORY MODAL -->
+    <div id="rules-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden transition-opacity">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 flex flex-col gap-4 transform transition-all scale-100 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <span>📜</span> 게임 규칙 및 람지 정리
+                </h3>
+                <button onclick="toggleRulesModal(false)" class="text-gray-400 hover:text-gray-600 font-bold text-xl leading-none">
+                    &times;
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs md:text-sm text-gray-600 leading-relaxed">
+                <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl">
+                    <h4 class="font-bold text-indigo-900 mb-1">🎮 두 가지 게임 모드</h4>
+                    <ul class="list-disc list-inside space-y-1 text-xs">
+                        <li><strong>삼각형 피하기 (Sim Game)</strong>: 6개의 점 중 3개의 점으로 구성된 <u>단색 삼각형을 먼저 그리는 사람이 패배</u>합니다.</li>
+                        <li><strong>삼각형 만들기 (Triangle Maker)</strong>: 자신의 색상으로 <u>단색 삼각형을 먼저 완성하는 사람이 승리</u>합니다.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-100 p-3 rounded-xl">
+                    <h4 class="font-bold text-amber-900 mb-1">📐 수학적 원리 (람지 정리 R(3,3)=6)</h4>
+                    <p class="text-xs text-amber-900/80">
+                        완전그래프 $K_6$의 15개 변을 두 가지 색(빨강/파랑)으로 칠할 때, <strong>반드시 동일한 색의 삼각형이 최소 1개 이상 존재</strong>하게 됩니다. 따라서 <u>무승부가 절대 불가능한 게임</u>입니다!
+                    </p>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 p-3 rounded-xl">
+                    <h4 class="font-bold text-gray-800 mb-1">🕹️ 조작 방법</h4>
+                    <p class="text-xs">
+                        원하는 첫 번째 점을 클릭(또는 드래그 시작)한 후, 연결할 두 번째 점을 클릭하여 선분을 그으세요.
+                    </p>
+                </div>
+            </div>
+
+            <button onclick="toggleRulesModal(false)" 
+                class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition-all mt-2">
+                확인 및 게임 계속하기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* WEB AUDIO SYNTHESIZER FOR SOUND EFFECTS */
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+            }
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
+                if (!this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e) {}
+            }
+            playDrawSound(player) {
+                this.init();
+                const freq = player === 1 ? 523.25 : 659.25; // C5 or E5
+                this.playTone(freq, 'sine', 0.12, 0.15);
+            }
+            playWinSound() {
+                this.init();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C, E, G, C
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'triangle', 0.2, 0.2), idx * 100);
+                });
+            }
+            playLossSound() {
+                this.init();
+                const notes = [400, 350, 300, 250];
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'sawtooth', 0.2, 0.15), idx * 120);
+                });
+            }
+            playHintSound() {
+                this.init();
+                this.playTone(880, 'sine', 0.08, 0.1);
+            }
+        }
+        const sounds = new SoundEngine();
+
+        /* GAME STATE VARIABLES */
+        let gameConfig = {
+            mode: 'avoid', // 'avoid' | 'make'
+            opponent: 'ai', // 'ai' | 'human'
+            turn: 'first',  // 'first' (player 1 red) | 'second' (player 2 blue)
+            difficulty: 'medium' // 'easy' | 'medium' | 'hard'
+        };
+
+        // Complete Graph K6 Nodes & Edges setup
+        const TOTAL_NODES = 6;
+        let edges = []; // 15 possible edges. Structure: { u, v, drawnBy: 0 (none), 1 (red), 2 (blue) }
+        let triangles = []; // All 20 combinations of 3 nodes
+        
+        let currentPlayer = 1; // 1: Red, 2: Blue
+        let gameActive = true;
+        let winningTriangle = null; // Stores node indices [u, v, w] if found
+        let selectedNode = null;
+        let hoverNode = null;
+        let dragStartNode = null;
+        let hintEdgeIndex = null;
+        let moveHistory = []; // Tracks move history: { edgeIndex, player }
+
+        let score = { win: 0, loss: 0, streak: 0 };
+
+        // DOM Elements
+        let canvas, ctx;
+
+        /* INITIALIZATION ON WINDOW LOAD */
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+
+            setupCanvasResolution();
+            window.addEventListener('resize', setupCanvasResolution);
+
+            initTriangles();
+            initEdges();
+            setupCanvasEvents();
+
+            startNewGame();
+        };
+
+        function setupCanvasResolution() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            renderCanvas();
+        }
+
+        function initTriangles() {
+            triangles = [];
+            for (let i = 0; i < TOTAL_NODES; i++) {
+                for (let j = i + 1; j < TOTAL_NODES; j++) {
+                    for (let k = j + 1; k < TOTAL_NODES; k++) {
+                        triangles.push([i, j, k]);
+                    }
+                }
+            }
+        }
+
+        function initEdges() {
+            edges = [];
+            for (let i = 0; i < TOTAL_NODES; i++) {
+                for (let j = i + 1; j < TOTAL_NODES; j++) {
+                    edges.push({ u: i, v: j, drawnBy: 0 });
+                }
+            }
+        }
+
+        function getEdgeIndex(u, v) {
+            const min = Math.min(u, v);
+            const max = Math.max(u, v);
+            return edges.findIndex(e => e.u === min && e.v === max);
+        }
+
+        /* CONFIG UI SELECTION HANDLERS */
+        function selectGameMode(mode) {
+            gameConfig.mode = mode;
+            document.getElementById('mode-avoid').className = mode === 'avoid' ? 
+                'py-2 px-2 rounded-lg transition-all text-center flex flex-col items-center gap-0.5 bg-white text-indigo-600 shadow-sm font-bold' : 
+                'py-2 px-2 rounded-lg transition-all text-center flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900';
+            
+            document.getElementById('mode-make').className = mode === 'make' ? 
+                'py-2 px-2 rounded-lg transition-all text-center flex flex-col items-center gap-0.5 bg-white text-indigo-600 shadow-sm font-bold' : 
+                'py-2 px-2 rounded-lg transition-all text-center flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900';
+
+            const descIcon = document.getElementById('mode-desc-icon');
+            const descText = document.getElementById('mode-desc-text');
+            if (mode === 'avoid') {
+                descIcon.textContent = '🚫';
+                descText.innerHTML = '<strong>삼각형 피하기 Rules:</strong> 세 변이 같은 색인 삼각형을 <u>먼저 만드는 사람이 패배</u>합니다.';
+            } else {
+                descIcon.textContent = '📐';
+                descText.innerHTML = '<strong>삼각형 만들기 Rules:</strong> 세 변이 같은 색인 삼각형을 <u>먼저 만드는 사람이 승리</u>합니다.';
+            }
+        }
+
+        function selectOpponent(opp) {
+            gameConfig.opponent = opp;
+            document.getElementById('opp-ai').className = opp === 'ai' ? 
+                'py-2 px-2 rounded-lg transition-all text-center bg-white text-indigo-600 shadow-sm font-bold' : 
+                'py-2 px-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900';
+            document.getElementById('opp-human').className = opp === 'human' ? 
+                'py-2 px-2 rounded-lg transition-all text-center bg-white text-indigo-600 shadow-sm font-bold' : 
+                'py-2 px-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900';
+
+            const diffContainer = document.getElementById('ai-difficulty-container');
+            if (opp === 'human') {
+                diffContainer.classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                diffContainer.classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
+
+        function selectTurn(turn) {
+            gameConfig.turn = turn;
+            document.getElementById('turn-first').className = turn === 'first' ? 
+                'py-2 px-2 rounded-lg transition-all text-center bg-white text-red-600 shadow-sm font-bold' : 
+                'py-2 px-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900';
+            document.getElementById('turn-second').className = turn === 'second' ? 
+                'py-2 px-2 rounded-lg transition-all text-center bg-white text-blue-600 shadow-sm font-bold' : 
+                'py-2 px-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900';
+        }
+
+        function selectDifficulty(diff) {
+            gameConfig.difficulty = diff;
+            ['easy', 'medium', 'hard'].forEach(d => {
+                const btn = document.getElementById(`diff-${d}`);
+                if (d === diff) {
+                    btn.className = 'py-2 rounded-lg transition-all text-center bg-white text-indigo-600 shadow-sm font-bold';
+                } else {
+                    btn.className = 'py-2 rounded-lg transition-all text-center text-gray-600 hover:text-gray-900';
+                }
+            });
+        }
+
+        /* START / RESET GAME */
+        function startNewGame() {
+            initEdges();
+            moveHistory = [];
+            winningTriangle = null;
+            selectedNode = null;
+            hoverNode = null;
+            hintEdgeIndex = null;
+            gameActive = true;
+
+            // Player 1 is always Red (1), Player 2 is always Blue (2)
+            currentPlayer = 1;
+
+            updateStatusUI();
+            updateLogUI();
+            renderCanvas();
+
+            // If opponent is AI and player selected Second turn (Blue), AI takes first move as Red
+            if (gameConfig.opponent === 'ai' && gameConfig.turn === 'second') {
+                setTimeout(makeAIMove, 400);
+            }
+        }
+
+        function getNodeCoordinates() {
+            const rect = canvas.getBoundingClientRect();
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const radius = Math.min(cx, cy) - 40;
+            
+            const nodes = [];
+            for (let i = 0; i < TOTAL_NODES; i++) {
+                // Angle starting from top (-pi/2)
+                const angle = -Math.PI / 2 + (i * 2 * Math.PI / TOTAL_NODES);
+                nodes.push({
+                    x: cx + radius * Math.cos(angle),
+                    y: cy + radius * Math.sin(angle),
+                    id: i
+                });
+            }
+            return nodes;
+        }
+
+        function renderCanvas() {
+            if (!ctx) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.clearRect(0, 0, rect.width, rect.height);
+
+            const nodes = getNodeCoordinates();
+
+            // 1. Draw dashed light-gray background guidelines for undrawn edges
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = '#e5e7eb';
+            edges.forEach(edge => {
+                if (edge.drawnBy === 0) {
+                    const uNode = nodes[edge.u];
+                    const vNode = nodes[edge.v];
+                    ctx.beginPath();
+                    ctx.moveTo(uNode.x, uNode.y);
+                    ctx.lineTo(vNode.x, vNode.y);
+                    ctx.stroke();
+                }
+            });
+            ctx.setLineDash([]); // Reset line dash
+
+            // 2. Draw Hint line if active
+            if (hintEdgeIndex !== null && gameActive) {
+                const hEdge = edges[hintEdgeIndex];
+                const uNode = nodes[hEdge.u];
+                const vNode = nodes[hEdge.v];
+                ctx.lineWidth = 6;
+                ctx.strokeStyle = '#f59e0b'; // Amber glow hint
+                ctx.beginPath();
+                ctx.moveTo(uNode.x, uNode.y);
+                ctx.lineTo(vNode.x, vNode.y);
+                ctx.stroke();
+            }
+
+            // 3. Draw Drawn Edges (Red / Blue)
+            edges.forEach(edge => {
+                if (edge.drawnBy !== 0) {
+                    const uNode = nodes[edge.u];
+                    const vNode = nodes[edge.v];
+                    ctx.lineWidth = 4;
+                    ctx.strokeStyle = edge.drawnBy === 1 ? '#ef4444' : '#3b82f6';
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(uNode.x, uNode.y);
+                    ctx.lineTo(vNode.x, vNode.y);
+                    ctx.stroke();
+                }
+            });
+
+            // 4. Highlight Winning / Losing Monochromatic Triangle
+            if (winningTriangle) {
+                const [u, v, w] = winningTriangle;
+                const triNodes = [nodes[u], nodes[v], nodes[w]];
+                
+                // Draw filled semi-transparent triangle
+                ctx.fillStyle = currentPlayer === 1 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.15)';
+                ctx.beginPath();
+                ctx.moveTo(triNodes[0].x, triNodes[0].y);
+                ctx.lineTo(triNodes[1].x, triNodes[1].y);
+                ctx.lineTo(triNodes[2].x, triNodes[2].y);
+                ctx.closePath();
+                ctx.fill();
+
+                // Draw bold pulsing border
+                ctx.lineWidth = 6;
+                ctx.strokeStyle = '#f59e0b'; // Gold highlight
+                ctx.stroke();
+            }
+
+            // 5. Draw Hover/Selection preview line
+            if (selectedNode !== null && hoverNode !== null && selectedNode !== hoverNode) {
+                const edgeIdx = getEdgeIndex(selectedNode, hoverNode);
+                if (edgeIdx !== -1 && edges[edgeIdx].drawnBy === 0) {
+                    const uNode = nodes[selectedNode];
+                    const vNode = nodes[hoverNode];
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = currentPlayer === 1 ? 'rgba(239, 68, 68, 0.5)' : 'rgba(59, 130, 246, 0.5)';
+                    ctx.setLineDash([6, 6]);
+                    ctx.beginPath();
+                    ctx.moveTo(uNode.x, uNode.y);
+                    ctx.lineTo(vNode.x, vNode.y);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            }
+
+            // 6. Draw Nodes
+            nodes.forEach(node => {
+                const isSelected = selectedNode === node.id;
+                const isHovered = hoverNode === node.id;
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, isSelected || isHovered ? 20 : 16, 0, 2 * Math.PI);
+                
+                if (isSelected) {
+                    ctx.fillStyle = currentPlayer === 1 ? '#ef4444' : '#3b82f6';
+                } else if (isHovered) {
+                    ctx.fillStyle = '#6b7280';
+                } else {
+                    ctx.fillStyle = '#1f2937';
+                }
+                ctx.fill();
+
+                // Node border shadow
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+
+                // Node Text Number (1..6)
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 13px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText((node.id + 1).toString(), node.x, node.y);
+            });
+        }
+
+        function setupCanvasEvents() {
+            function getClosestNode(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+                
+                const nodes = getNodeCoordinates();
+                for (let node of nodes) {
+                    const dist = Math.hypot(node.x - x, node.y - y);
+                    if (dist < 28) return node.id;
+                }
+                return null;
+            }
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!gameActive) return;
+                const hovered = getClosestNode(e);
+                if (hovered !== hoverNode) {
+                    hoverNode = hovered;
+                    renderCanvas();
+                }
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                hoverNode = null;
+                renderCanvas();
+            });
+
+            canvas.addEventListener('mousedown', (e) => {
+                if (!gameActive || isAITurn()) return;
+                const clicked = getClosestNode(e);
+                if (clicked !== null) {
+                    dragStartNode = clicked;
+                    if (selectedNode === null) {
+                        selectedNode = clicked;
+                    } else if (selectedNode !== clicked) {
+                        attemptMove(selectedNode, clicked);
+                        selectedNode = null;
+                    } else {
+                        selectedNode = null; // Toggle off if clicked same
+                    }
+                    renderCanvas();
+                }
+            });
+
+            canvas.addEventListener('mouseup', (e) => {
+                if (!gameActive || isAITurn()) return;
+                const released = getClosestNode(e);
+                if (dragStartNode !== null && released !== null && dragStartNode !== released) {
+                    attemptMove(dragStartNode, released);
+                    selectedNode = null;
+                }
+                dragStartNode = null;
+                renderCanvas();
+            });
+
+            // Touch support for mobile
+            canvas.addEventListener('touchstart', (e) => {
+                if (!gameActive || isAITurn()) return;
+                const touched = getClosestNode(e);
+                if (touched !== null) {
+                    dragStartNode = touched;
+                    selectedNode = touched;
+                    renderCanvas();
+                }
+            });
+
+            canvas.addEventListener('touchend', (e) => {
+                if (!gameActive || isAITurn()) return;
+                if (selectedNode !== null && hoverNode !== null && selectedNode !== hoverNode) {
+                    attemptMove(selectedNode, hoverNode);
+                }
+                selectedNode = null;
+                dragStartNode = null;
+                renderCanvas();
+            });
+        }
+
+        function isAITurn() {
+            if (gameConfig.opponent !== 'ai') return false;
+            const isHumanRed = gameConfig.turn === 'first';
+            return (isHumanRed && currentPlayer === 2) || (!isHumanRed && currentPlayer === 1);
+        }
+
+        /* GAME ACTION PROCEDURES */
+        function attemptMove(u, v) {
+            const edgeIdx = getEdgeIndex(u, v);
+            if (edgeIdx === -1 || edges[edgeIdx].drawnBy !== 0) return false;
+
+            // Clear hints
+            hintEdgeIndex = null;
+
+            // Execute move
+            edges[edgeIdx].drawnBy = currentPlayer;
+            moveHistory.push({ edgeIndex: edgeIdx, player: currentPlayer });
+
+            sounds.playDrawSound(currentPlayer);
+
+            // Check Win / Loss condition
+            const formedTri = findMonochromaticTriangle(currentPlayer);
+
+            if (formedTri) {
+                gameActive = false;
+                winningTriangle = formedTri;
+                handleGameOver(currentPlayer, formedTri);
+            } else if (edges.every(e => e.drawnBy !== 0)) {
+                // All edges filled (Safety check)
+                gameActive = false;
+                handleGameOver(0, null);
+            } else {
+                // Switch Turn
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                updateStatusUI();
+                updateLogUI();
+                renderCanvas();
+
+                // Trigger AI if next turn belongs to AI
+                if (gameActive && isAITurn()) {
+                    setTimeout(makeAIMove, 500);
+                }
+            }
+            return true;
+        }
+
+        function findMonochromaticTriangle(player) {
+            for (let tri of triangles) {
+                const [u, v, w] = tri;
+                const e1 = edges[getEdgeIndex(u, v)].drawnBy;
+                const e2 = edges[getEdgeIndex(v, w)].drawnBy;
+                const e3 = edges[getEdgeIndex(u, w)].drawnBy;
+
+                if (e1 === player && e2 === player && e3 === player) {
+                    return tri;
+                }
+            }
+            return null;
+        }
+
+        function makeAIMove() {
+            if (!gameActive) return;
+
+            const availableIndices = edges.map((e, idx) => e.drawnBy === 0 ? idx : -1).filter(idx => idx !== -1);
+            if (availableIndices.length === 0) return;
+
+            let chosenIndex = null;
+
+            if (gameConfig.difficulty === 'easy') {
+                // Random move
+                chosenIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            } else if (gameConfig.difficulty === 'medium') {
+                chosenIndex = getMediumAIMove(availableIndices);
+            } else {
+                // Hard Mode - Minimax evaluation
+                chosenIndex = getHardAIMove(availableIndices);
+            }
+
+            if (chosenIndex !== null) {
+                const edge = edges[chosenIndex];
+                attemptMove(edge.u, edge.v);
+            }
+        }
+
+        function getMediumAIMove(availableIndices) {
+            // 1. Check if AI can win immediately (Make Mode) or must avoid triangle (Avoid Mode)
+            if (gameConfig.mode === 'make') {
+                // Check win move
+                for (let idx of availableIndices) {
+                    if (formsTriangleIfDrawn(idx, currentPlayer)) return idx;
+                }
+                // Check block move (opponent about to win)
+                const opponent = currentPlayer === 1 ? 2 : 1;
+                for (let idx of availableIndices) {
+                    if (formsTriangleIfDrawn(idx, opponent)) return idx;
+                }
+            } else {
+                // Avoid Mode: Filter out moves that create a triangle for AI
+                const safeIndices = availableIndices.filter(idx => !formsTriangleIfDrawn(idx, currentPlayer));
+                if (safeIndices.length > 0) {
+                    return safeIndices[Math.floor(Math.random() * safeIndices.length)];
+                }
+            }
+            return availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        }
+
+        function getHardAIMove(availableIndices) {
+            let bestScore = -Infinity;
+            let bestIndex = availableIndices[0];
+
+            for (let idx of availableIndices) {
+                edges[idx].drawnBy = currentPlayer;
+                const score = minimax(3, false, -Infinity, Infinity, currentPlayer);
+                edges[idx].drawnBy = 0;
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestIndex = idx;
+                }
+            }
+            return bestIndex;
+        }
+
+        function minimax(depth, isMaximizing, alpha, beta, aiPlayer) {
+            const opponent = aiPlayer === 1 ? 2 : 1;
+            const aiTri = findMonochromaticTriangle(aiPlayer);
+            const oppTri = findMonochromaticTriangle(opponent);
+
+            if (gameConfig.mode === 'avoid') {
+                if (aiTri) return -100 + (3 - depth); // AI formed triangle (Lost)
+                if (oppTri) return 100 - (3 - depth);  // Opponent formed triangle (Won)
+            } else {
+                if (aiTri) return 100 - (3 - depth);  // AI formed triangle (Won)
+                if (oppTri) return -100 + (3 - depth); // Opponent formed triangle (Lost)
+            }
+
+            if (depth === 0) return 0;
+
+            const avail = edges.map((e, idx) => e.drawnBy === 0 ? idx : -1).filter(idx => idx !== -1);
+            if (avail.length === 0) return 0;
+
+            if (isMaximizing) {
+                let maxEval = -Infinity;
+                for (let idx of avail) {
+                    edges[idx].drawnBy = aiPlayer;
+                    const evalVal = minimax(depth - 1, false, alpha, beta, aiPlayer);
+                    edges[idx].drawnBy = 0;
+                    maxEval = Math.max(maxEval, evalVal);
+                    alpha = Math.max(alpha, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                for (let idx of avail) {
+                    edges[idx].drawnBy = opponent;
+                    const evalVal = minimax(depth - 1, true, alpha, beta, aiPlayer);
+                    edges[idx].drawnBy = 0;
+                    minEval = Math.min(minEval, evalVal);
+                    beta = Math.min(beta, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
+        }
+
+        function formsTriangleIfDrawn(edgeIndex, player) {
+            edges[edgeIndex].drawnBy = player;
+            const tri = findMonochromaticTriangle(player);
+            edges[edgeIndex].drawnBy = 0;
+            return tri !== null;
+        }
+
+        function handleGameOver(lastPlayer, tri) {
+            let humanWon = false;
+
+            const isHumanRed = gameConfig.turn === 'first';
+            const humanPlayerNum = isHumanRed ? 1 : 2;
+
+            if (gameConfig.mode === 'avoid') {
+                // In Avoid Mode, person who created triangle LOSES
+                humanWon = (gameConfig.opponent === 'human') ? true : (lastPlayer !== humanPlayerNum);
+            } else {
+                // In Make Mode, person who created triangle WINS
+                humanWon = (gameConfig.opponent === 'human') ? true : (lastPlayer === humanPlayerNum);
+            }
+
+            if (humanWon) {
+                sounds.playWinSound();
+                score.win++;
+                score.streak++;
+            } else {
+                sounds.playLossSound();
+                score.loss++;
+                score.streak = 0;
+            }
+
+            updateScoreboardUI();
+            updateStatusUI(humanWon, lastPlayer);
+            renderCanvas();
+        }
+
+        function updateScoreboardUI() {
+            document.getElementById('score-win').textContent = score.win;
+            document.getElementById('score-loss').textContent = score.loss;
+            document.getElementById('score-streak').textContent = score.streak;
+        }
+
+        function updateStatusUI(humanWon = null, lastPlayer = null) {
+            const banner = document.getElementById('turn-banner');
+            const dot = document.getElementById('turn-indicator-dot');
+            const turnText = document.getElementById('turn-text');
+            const badge = document.getElementById('game-state-badge');
+
+            if (!gameActive && humanWon !== null) {
+                // Game Over state
+                if (humanWon) {
+                    banner.className = 'md:col-span-2 bg-emerald-50 border border-emerald-300 rounded-2xl p-3 flex items-center justify-between shadow-sm';
+                    dot.className = 'w-4 h-4 rounded-full bg-emerald-500';
+                    turnText.className = 'text-base font-extrabold text-emerald-700';
+                    turnText.textContent = gameConfig.opponent === 'human' ? 
+                        `🎉 플레이어 ${lastPlayer} 승리!` : '🎉 축하합니다! 당신이 승리했습니다!';
+                    badge.className = 'text-xs font-bold px-3 py-1 bg-emerald-600 text-white rounded-full shadow-2xs';
+                    badge.textContent = '승리 완료';
+                } else {
+                    banner.className = 'md:col-span-2 bg-rose-50 border border-rose-300 rounded-2xl p-3 flex items-center justify-between shadow-sm';
+                    dot.className = 'w-4 h-4 rounded-full bg-rose-500';
+                    turnText.className = 'text-base font-extrabold text-rose-700';
+                    turnText.textContent = '🤖 컴퓨터 승리! (패배)';
+                    badge.className = 'text-xs font-bold px-3 py-1 bg-rose-600 text-white rounded-full shadow-2xs';
+                    badge.textContent = '게임 종료';
+                }
+                return;
+            }
+
+            // Ongoing Game State
+            if (currentPlayer === 1) {
+                banner.className = 'md:col-span-2 bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-sm';
+                dot.className = 'w-4 h-4 rounded-full bg-red-500 animate-pulse';
+                turnText.className = 'text-base font-extrabold text-red-600';
+                turnText.textContent = '🔴 빨간색 턴 (플레이어 1)';
+            } else {
+                banner.className = 'md:col-span-2 bg-blue-50 border border-blue-200 rounded-2xl p-3 flex items-center justify-between shadow-sm';
+                dot.className = 'w-4 h-4 rounded-full bg-blue-500 animate-pulse';
+                turnText.className = 'text-base font-extrabold text-blue-600';
+                turnText.textContent = gameConfig.opponent === 'ai' ? '🔵 파란색 턴 (컴퓨터)' : '🔵 파란색 턴 (플레이어 2)';
+            }
+
+            badge.className = 'text-xs font-bold px-3 py-1 bg-white rounded-full border border-gray-300 text-gray-700 shadow-2xs';
+            badge.textContent = '진행 중';
+        }
+
+        function updateLogUI() {
+            const logContainer = document.getElementById('move-log');
+            const moveCount = document.getElementById('move-count');
+            moveCount.textContent = `총 ${moveHistory.length}수`;
+
+            if (moveHistory.length === 0) {
+                logContainer.innerHTML = `
+                    <div class="text-center text-gray-400 my-auto text-xs py-4">
+                        게임이 시작되면 연결한 선분 목록이 여기에 기록됩니다.
+                    </div>`;
+                return;
+            }
+
+            logContainer.innerHTML = moveHistory.map((item, index) => {
+                const edge = edges[item.edgeIndex];
+                const colorTag = item.player === 1 ? '🔴 빨강' : '🔵 파랑';
+                return `
+                    <div class="flex items-center justify-between bg-white px-2.5 py-1.5 rounded-lg border border-gray-100 shadow-2xs">
+                        <span class="font-semibold text-gray-500">#${index + 1}</span>
+                        <span class="font-bold">${colorTag}</span>
+                        <span class="font-mono text-gray-700">점 [ ${edge.u + 1} - ${edge.v + 1} ]</span>
+                    </div>`;
+            }).reverse().join('');
+        }
+
+        /* UTILITIES: UNDO, HINT, MODAL */
+        function undoMove() {
+            if (moveHistory.length === 0) return;
+
+            // In AI mode, undo 2 steps (Player + AI). In 2P mode, undo 1 step.
+            const undoSteps = (gameConfig.opponent === 'ai' && moveHistory.length >= 2) ? 2 : 1;
+
+            for (let i = 0; i < undoSteps; i++) {
+                if (moveHistory.length > 0) {
+                    const lastMove = moveHistory.pop();
+                    edges[lastMove.edgeIndex].drawnBy = 0;
+                }
+            }
+
+            gameActive = true;
+            winningTriangle = null;
+            hintEdgeIndex = null;
+            currentPlayer = moveHistory.length % 2 === 0 ? 1 : 2;
+
+            updateStatusUI();
+            updateLogUI();
+            renderCanvas();
+        }
+
+        function showHint() {
+            if (!gameActive || isAITurn()) return;
+
+            const avail = edges.map((e, idx) => e.drawnBy === 0 ? idx : -1).filter(idx => idx !== -1);
+            if (avail.length === 0) return;
+
+            hintEdgeIndex = getMediumAIMove(avail);
+            sounds.playHintSound();
+            renderCanvas();
+        }
+
+        function toggleRulesModal(show) {
+            const modal = document.getElementById('rules-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

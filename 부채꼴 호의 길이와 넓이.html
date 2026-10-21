@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>원의 넓이 및 부채꼴 시각화 (Area & Sector Proof)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        html { font-size: 14px; }
+        body {
+            font-size: 13px;
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #111827;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography settings */
+        body, body * { font-weight: 700 !important; }
+        p, span, label, button, input, h1, h2, div { text-shadow: 0 0 0.15px currentColor; }
+        
+        @media (min-width: 1024px) {
+            header .max-w-none { padding-top: 5px; padding-bottom: 5px; }
+            header h1 { font-size: 1.3rem; }
+            header p { white-space: nowrap; }
+        }
+
+        /* Math formula font styling */
+        .math-text {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+        }
+
+        /* Custom slider styles */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 22px;
+            width: 22px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #1d4ed8;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+
+        /* Slider color themes */
+        input[type=range].slider-orange::-webkit-slider-thumb {
+            background: #ea580c;
+            box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
+        }
+        input[type=range].slider-orange::-webkit-slider-thumb:hover {
+            background: #c2410c;
+        }
+
+        input[type=range].slider-green::-webkit-slider-thumb {
+            background: #16a34a;
+            box-shadow: 0 2px 6px rgba(22, 163, 74, 0.4);
+        }
+        input[type=range].slider-green::-webkit-slider-thumb:hover {
+            background: #15803d;
+        }
+
+        /* Custom canvas styling */
+        canvas {
+            display: block;
+            width: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white flex flex-col items-center">
+
+    <!-- TOP CONTROL PANEL (설정 영역) -->
+    <header class="w-full bg-white border-b border-gray-300 sticky top-0 z-30 shadow-sm">
+        <div class="w-full max-w-none mx-auto px-2 py-2 md:px-3">
+            
+            <!-- App Header Title -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2 pb-2 border-b border-gray-200 gap-1">
+                <div class="flex items-center gap-4 min-w-0 flex-nowrap">
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2 whitespace-nowrap">
+                        <span id="app-title-text">원의 넓이 및 부채꼴 시각화</span>
+                        <span class="text-xs bg-blue-100 text-blue-900 font-extrabold px-2.5 py-1 rounded-full border border-blue-300">
+                            <span id="app-formula-badge" class="math-text">S = πr²</span>
+                        </span>
+                    </h1>
+                    <p class="text-sm text-gray-900 whitespace-nowrap font-extrabold">
+                        원 및 부채꼴을 <span class="math-text font-extrabold text-gray-900">n</span>개의 조각으로 나누어 재배치하는 원리를 탐구하세요.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Main Input Controls -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 bg-gray-50 p-2 rounded-xl border border-gray-300">
+                
+                <!-- 1. RADIUS CONTROL (반지름 r - 초기값 5) -->
+                <div class="flex flex-col space-y-1 bg-white p-2 rounded-lg border border-gray-300 shadow-xs">
+                    <div class="flex justify-between items-center">
+                        <label for="radius-input" class="font-extrabold text-gray-900 flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-orange-600 inline-block"></span>
+                            <span>반지름 (<span class="math-text">r</span>)</span>
+                        </label>
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" id="radius-input" min="0.5" max="20" step="0.5" value="5" 
+                                class="w-16 px-2 py-1 text-right font-black text-orange-700 bg-orange-50 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-base">
+                            <span class="text-sm font-extrabold text-gray-800">cm</span>
+                        </div>
+                    </div>
+                    <input type="range" id="radius-slider" min="0.5" max="20" step="0.5" value="5" class="slider-orange mt-1">
+                    <div class="flex justify-between text-xs text-gray-600 pt-1 font-bold">
+                        <span>0.5 cm</span>
+                        <span>크기 조절</span>
+                        <span>20 cm</span>
+                    </div>
+                </div>
+
+                <!-- 2. ANGLE CONTROL (각도 θ) -->
+                <div class="flex flex-col space-y-1 bg-white p-2 rounded-lg border border-gray-300 shadow-xs">
+                    <div class="flex justify-between items-center">
+                        <label for="angle-input" class="font-extrabold text-gray-900 flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-green-600 inline-block"></span>
+                            <span>중심각 (<span class="math-text">θ</span>)</span>
+                        </label>
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" id="angle-input" min="1" max="360" step="1" value="360" 
+                                class="w-20 px-2 py-1 text-right font-black text-green-700 bg-green-50 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-base">
+                            <span class="text-sm font-extrabold text-gray-800">°</span>
+                        </div>
+                    </div>
+                    <input type="range" id="angle-slider" min="1" max="360" step="1" value="360" class="slider-green mt-1">
+                    <div class="flex justify-between text-xs text-gray-600 pt-1 font-bold">
+                        <span>1° (부채꼴)</span>
+                        <span>각도 조절</span>
+                        <span>360° (원 전체)</span>
+                    </div>
+                </div>
+
+                <!-- 3. SLICES CONTROL (조각 개수 n - 초기값 8) -->
+                <div class="flex flex-col space-y-1 bg-white p-2 rounded-lg border border-gray-300 shadow-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-1">
+                        <label for="slices-input" class="font-extrabold text-gray-900 flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-blue-600 inline-block"></span>
+                            <span>조각 개수 (<span class="math-text">n</span>)</span>
+                        </label>
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" id="slices-input" min="4" max="100" step="2" value="8" 
+                                class="w-16 px-2 py-1 text-right font-black text-blue-700 bg-blue-50 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base">
+                            <span class="text-sm font-extrabold text-gray-800">조각</span>
+                        </div>
+                    </div>
+                    <input type="range" id="slices-slider" min="4" max="100" step="2" value="8" class="mt-1">
+                    <div class="flex items-center gap-1 mt-1 justify-between">
+                        <span class="text-[11px] font-black text-gray-800">추천:</span>
+                        <div class="flex items-center gap-1">
+                            <button onclick="setSlices(4)" class="preset-btn text-[11px] font-black px-1.5 py-0.5 rounded border border-gray-300 bg-gray-100 hover:bg-blue-100 hover:text-blue-800 transition">4</button>
+                            <button onclick="setSlices(8)" class="preset-btn text-[11px] font-black px-1.5 py-0.5 rounded border border-gray-300 bg-gray-100 hover:bg-blue-100 hover:text-blue-800 transition">8</button>
+                            <button onclick="setSlices(16)" class="preset-btn text-[11px] font-black px-1.5 py-0.5 rounded border border-gray-300 bg-gray-100 hover:bg-blue-100 hover:text-blue-800 transition">16</button>
+                            <button onclick="setSlices(32)" class="preset-btn text-[11px] font-black px-1.5 py-0.5 rounded border border-gray-300 bg-gray-100 hover:bg-blue-100 hover:text-blue-800 transition">32</button>
+                            <button onclick="setSlices(64)" class="preset-btn text-[11px] font-black px-1.5 py-0.5 rounded border border-gray-300 bg-gray-100 hover:bg-blue-100 hover:text-blue-800 transition">64</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="w-full max-w-none mx-auto px-2 py-2 md:px-3 flex flex-col gap-2">
+
+        <!-- REAL-TIME MATHEMATICAL CALCULATIONS & CANVAS SIDE-BY-SIDE -->
+        <div class="grid grid-cols-1 xl:grid-cols-5 gap-2">
+            
+            <!-- Visual Canvas Card (Left Side) -->
+            <div class="xl:col-span-4 w-full bg-white rounded-2xl border border-gray-300 shadow-sm overflow-hidden flex flex-col items-center relative h-full">
+                <div class="w-full px-3 py-1.5 bg-gray-100 border-b border-gray-300 flex justify-between items-center text-xs font-black text-gray-800">
+                    <div class="flex items-center gap-4">
+                        <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-sky-200 border border-sky-600 inline-block"></span> 위쪽 조각 (짝수)</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-amber-200 border border-amber-600 inline-block"></span> 아래쪽 조각 (홀수)</span>
+                    </div>
+                    <div id="canvas-subtitle-mode" class="text-gray-700 font-extrabold hidden sm:block">360° 원 모드: 원주의 둘레 및 면적 탐구</div>
+                </div>
+
+                <!-- HTML5 Canvas Element -->
+                <div class="w-full relative flex-1 min-h-[420px] flex items-center justify-center bg-slate-50/50">
+                    <canvas id="geometry-canvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Live Calculation Metrics (Right Side) -->
+            <div class="xl:col-span-1 bg-white p-3 rounded-xl border border-gray-300 shadow-sm flex flex-col justify-start h-full">
+                <div>
+                    <h2 class="text-base font-black text-gray-900 border-b border-gray-200 pb-1 mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        실시간 수치 계산
+                    </h2>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center p-2 rounded-lg bg-gray-100 border border-gray-200">
+                            <span class="text-sm font-extrabold text-gray-800">반지름 (<span class="math-text">r</span>)</span>
+                            <span id="calc-r" class="font-black text-orange-700 text-base">5.0 cm</span>
+                        </div>
+
+                        <div class="flex justify-between items-center p-2 rounded-lg bg-green-50 border border-green-200">
+                            <span class="text-sm font-extrabold text-green-900">중심각 (<span class="math-text">θ</span>)</span>
+                            <span id="calc-angle" class="font-black text-green-800 text-base">360°</span>
+                        </div>
+
+                        <!-- 360도: 원주 / 360도 미만: 호의 길이 -->
+                        <div class="flex justify-between items-center p-2 rounded-lg bg-gray-100 border border-gray-200">
+                            <span id="label-arc-or-circum" class="text-sm font-extrabold text-gray-900">원주 (<span class="math-text">2πr</span>)</span>
+                            <span id="calc-arc-or-circum" class="font-black text-gray-900 text-base">10π cm</span>
+                        </div>
+
+                        <div class="flex justify-between items-center p-2 rounded-lg bg-blue-50 border border-blue-200">
+                            <span id="label-base" class="text-sm font-extrabold text-blue-900">직사각형 밑변 (<span class="math-text">πr</span>)</span>
+                            <span id="calc-base" class="font-black text-blue-800 text-base">5π cm</span>
+                        </div>
+
+                        <div class="flex justify-between items-center p-2 rounded-lg bg-orange-50 border border-orange-200">
+                            <span class="text-sm font-extrabold text-orange-950">높이 (<span class="math-text">r</span>)</span>
+                            <span id="calc-height" class="font-black text-orange-800 text-base">5.00 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 360도: 원의 면적 / 360도 미만: 부채꼴의 면적 -->
+                <div class="mt-2.5 pt-2 border-t border-gray-200 bg-gradient-to-br from-blue-50 to-indigo-100 p-2.5 rounded-lg border border-blue-200 text-center">
+                    <span id="label-area-type" class="text-xs font-black text-blue-800 uppercase tracking-wider block mb-1">원의 넓이 계산 결과</span>
+                    <div id="calc-area" class="text-2xl font-black text-blue-950">25π cm²</div>
+                    <span id="calc-formula-eval" class="text-xs font-bold text-gray-700 mt-1 block">(5 × π × 5)</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Global Application State
+        const state = {
+            r: 5,             // Radius in cm
+            angle: 360,       // Angle in degrees (1 to 360)
+            n: 8,             // Number of slices (must be even integer >= 4)
+        };
+
+        function formatNum(val) {
+            return Number(val.toFixed(2));
+        }
+
+        // DOM Elements
+        const canvas = document.getElementById('geometry-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const radiusInput = document.getElementById('radius-input');
+        const radiusSlider = document.getElementById('radius-slider');
+        const angleInput = document.getElementById('angle-input');
+        const angleSlider = document.getElementById('angle-slider');
+        const slicesInput = document.getElementById('slices-input');
+        const slicesSlider = document.getElementById('slices-slider');
+
+        // Text & Badge Elements
+        const appTitleText = document.getElementById('app-title-text');
+        const appFormulaBadge = document.getElementById('app-formula-badge');
+        const canvasSubtitleMode = document.getElementById('canvas-subtitle-mode');
+
+        // Math calculation elements
+        const calcR = document.getElementById('calc-r');
+        const calcAngle = document.getElementById('calc-angle');
+        const labelArcOrCircum = document.getElementById('label-arc-or-circum');
+        const calcArcOrCircum = document.getElementById('calc-arc-or-circum');
+        const labelBase = document.getElementById('label-base');
+        const calcBase = document.getElementById('calc-base');
+        const calcHeight = document.getElementById('calc-height');
+        const labelAreaType = document.getElementById('label-area-type');
+        const calcArea = document.getElementById('calc-area');
+        const calcFormulaEval = document.getElementById('calc-formula-eval');
+
+        function setRadius(val) {
+            let r = parseFloat(val);
+            if (isNaN(r)) r = 5;
+            r = Math.min(Math.max(r, 0.5), 20);
+            
+            state.r = r;
+            radiusInput.value = r;
+            radiusSlider.value = r;
+            
+            updateCalculations();
+            render();
+        }
+
+        function setAngle(val) {
+            let deg = parseFloat(val);
+            if (isNaN(deg)) deg = 360;
+            deg = Math.min(Math.max(deg, 1), 360);
+
+            state.angle = deg;
+            angleInput.value = deg;
+            angleSlider.value = deg;
+
+            updateCalculations();
+            render();
+        }
+
+        function setSlices(val) {
+            let n = parseInt(val);
+            if (isNaN(n)) n = 8;
+            n = Math.min(Math.max(n, 4), 100);
+            if (n % 2 !== 0) n += 1;
+            
+            state.n = n;
+            slicesInput.value = n;
+            slicesSlider.value = n;
+
+            updateCalculations();
+            render();
+        }
+
+        radiusSlider.addEventListener('input', (e) => setRadius(e.target.value));
+        radiusInput.addEventListener('change', (e) => setRadius(e.target.value));
+
+        angleSlider.addEventListener('input', (e) => setAngle(e.target.value));
+        angleInput.addEventListener('change', (e) => setAngle(e.target.value));
+
+        slicesSlider.addEventListener('input', (e) => setSlices(e.target.value));
+        slicesInput.addEventListener('change', (e) => setSlices(e.target.value));
+
+        function updateCalculations() {
+            const r = state.r;
+            const deg = state.angle;
+            const isFullCircle = (deg === 360);
+
+            const arcFactor = 2 * r * (deg / 360);
+            const baseFactor = r * (deg / 360);
+            const areaFactor = r * r * (deg / 360);
+
+            calcR.textContent = `${r.toFixed(1)} cm`;
+            calcAngle.textContent = `${deg}°`;
+
+            if (isFullCircle) {
+                appTitleText.textContent = "원의 넓이 공식 증명 시각화";
+                appFormulaBadge.textContent = "S = πr²";
+                canvasSubtitleMode.textContent = "360° 원 모드: 원의 둘레 및 넓이 탐구";
+
+                labelArcOrCircum.innerHTML = `원주 (<span class="math-text">2πr</span>)`;
+                calcArcOrCircum.textContent = `${formatNum(arcFactor)}π cm`;
+
+                labelBase.innerHTML = `직사각형 밑변 (<span class="math-text">πr</span>)`;
+                calcBase.textContent = `${formatNum(baseFactor)}π cm`;
+
+                labelAreaType.textContent = "원의 넓이 계산 결과";
+                calcArea.textContent = `${formatNum(areaFactor)}π cm²`;
+                calcFormulaEval.textContent = `(${r} × π × ${r})`;
+            } else {
+                appTitleText.textContent = "부채꼴의 호의 길이 및 넓이 시각화";
+                appFormulaBadge.textContent = "S = ½rℓ = πr²(θ/360)";
+                canvasSubtitleMode.textContent = `${deg}° 부채꼴 모드: 호의 길이 및 부채꼴 넓이 탐구`;
+
+                labelArcOrCircum.innerHTML = `호의 길이 (<span class="math-text">ℓ</span>)`;
+                calcArcOrCircum.textContent = `${formatNum(arcFactor)}π cm`;
+
+                labelBase.innerHTML = `재배치 밑변 (<span class="math-text">½ℓ</span>)`;
+                calcBase.textContent = `${formatNum(baseFactor)}π cm`;
+
+                labelAreaType.textContent = "부채꼴 넓이 계산 결과";
+                calcArea.textContent = `${formatNum(areaFactor)}π cm²`;
+                calcFormulaEval.textContent = `(${r} × π × ${r} × ${deg}/360)`;
+            }
+
+            calcHeight.textContent = `${r.toFixed(2)} cm`;
+        }
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = rect.width * dpr;
+            canvas.height = Math.max(rect.height, 420) * dpr;
+
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${Math.max(rect.height, 420)}px`;
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            render();
+        });
+
+        function render() {
+            const width = canvas.width / (window.devicePixelRatio || 1);
+            const height = canvas.height / (window.devicePixelRatio || 1);
+
+            ctx.clearRect(0, 0, width, height);
+
+            const n = state.n;
+            const r = state.r;
+            const deg = state.angle;
+            const totalRad = (deg * Math.PI) / 180;
+            const deltaTheta = totalRad / n;
+
+            // --- 💡 [핵심 개선] 화면 너비/높이에 맞추어 R(시각적 반지름) 자동 스케일링 ---
+            const isMobile = width < 768;
+            
+            // 기준 너비/높이 계산
+            let leftWidth = isMobile ? width : width * 0.42;
+            let rightWidth = isMobile ? width : width * 0.58;
+            let availHeight = isMobile ? height * 0.45 : height;
+
+            // 좌측 원 영역의 최대 허용 R
+            let R_left = Math.min(leftWidth * 0.38, availHeight * 0.32);
+
+            // 우측 직사각형 영역의 최대 허용 R (밑변 너비 = (n/2) * pitch = n * R * sin(deltaTheta/2))
+            const widthRatio = (n / 2) * 2 * Math.sin(deltaTheta / 2); // 우측 도형 밑변 / R
+            let R_right = Math.min((rightWidth - 120) / widthRatio, availHeight * 0.32);
+
+            // 전체 화면에 항상 꽉 차도록 R 확정
+            let R = Math.max(Math.min(R_left, R_right), 45);
+
+            const pitch = 2 * R * Math.sin(deltaTheta / 2);
+            const apothem = R * Math.cos(deltaTheta / 2);
+
+            // Center coordinates
+            let circleCenter, rectCenter;
+            if (isMobile) {
+                circleCenter = { x: width * 0.5, y: height * 0.23 };
+                rectCenter   = { x: width * 0.5, y: height * 0.68 };
+            } else {
+                circleCenter = { x: width * 0.22, y: height * 0.42 };
+                rectCenter   = { x: width * 0.68, y: height * 0.42 };
+            }
+
+            const totalRectWidth = (n / 2) * pitch;
+            const rectStartX = rectCenter.x - totalRectWidth / 2;
+
+            // 1. Draw Sector or Circle wedges (Left)
+            const startAngleOffset = -Math.PI / 2;
+            for (let i = 0; i < n; i++) {
+                const isEven = (i % 2 === 0);
+                const wedgeAngle = startAngleOffset + i * deltaTheta + deltaTheta / 2;
+                drawWedge(circleCenter.x, circleCenter.y, R, deltaTheta, wedgeAngle, isEven);
+            }
+
+            // 2. Draw Rearranged Interlocked Wedges (Right)
+            for (let i = 0; i < n; i++) {
+                const isEven = (i % 2 === 0);
+                const pairIndex = Math.floor(i / 2);
+
+                let rectVx, rectVy, rectAngle;
+                if (isEven) {
+                    rectVx = rectStartX + (pairIndex + 0.5) * pitch;
+                    rectVy = rectCenter.y - apothem / 2;
+                    rectAngle = Math.PI / 2;
+                } else {
+                    rectVx = rectStartX + (pairIndex + 1.0) * pitch;
+                    rectVy = rectCenter.y + apothem / 2;
+                    rectAngle = -Math.PI / 2;
+                }
+                drawWedge(rectVx, rectVy, R, deltaTheta, rectAngle, isEven);
+            }
+
+            // Draw Dynamic Dimension Labels & Annotations
+            drawDimensionLabels(ctx, circleCenter, rectCenter, R, totalRectWidth, apothem, rectStartX, totalRad, isMobile);
+        }
+
+        /* Helper: 밝고 명확한 색상으로 조각 그리기 (글자 시인성 강화) */
+        function drawWedge(vx, vy, radius, angleSpan, rotation, isEven) {
+            ctx.save();
+            ctx.translate(vx, vy);
+            ctx.rotate(rotation);
+
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, radius, -angleSpan / 2, angleSpan / 2);
+            ctx.closePath();
+
+            // 배경색을 한층 더 밝고 투명도 높게 설정하여 글자가 잘 보이도록 변경
+            if (isEven) {
+                ctx.fillStyle = '#e0f2fe';   // Very Bright Sky Blue
+                ctx.strokeStyle = '#0284c7'; // Clear Blue border
+            } else {
+                ctx.fillStyle = '#ffedd5';   // Very Bright Amber/Orange
+                ctx.strokeStyle = '#ea580c'; // Clear Orange border
+            }
+
+            ctx.lineWidth = 2.0;
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawDimensionLabels(ctx, circleCenter, rectCenter, R, rectWidth, apothem, rectStartX, totalRad, isMobile) {
+            ctx.save();
+
+            const isFullCircle = (state.angle === 360);
+            const rVal = state.r;
+            const degVal = state.angle;
+
+            // 반지름 점선 표시
+            const radiusLineAngle = -Math.PI / 2 + Math.min(totalRad, Math.PI / 3);
+            ctx.beginPath();
+            ctx.setLineDash([5, 4]);
+            ctx.strokeStyle = '#c2410c';
+            ctx.lineWidth = 2.5;
+            ctx.moveTo(circleCenter.x, circleCenter.y);
+            ctx.lineTo(circleCenter.x + R * Math.cos(radiusLineAngle), circleCenter.y + R * Math.sin(radiusLineAngle));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 반지름 텍스트
+            ctx.font = '900 15px "Times New Roman", Times, serif';
+            ctx.fillStyle = '#9a3412';
+            ctx.textAlign = 'center';
+            const labelX = circleCenter.x + (R * 0.5) * Math.cos(radiusLineAngle) - 18;
+            const labelY = circleCenter.y + (R * 0.5) * Math.sin(radiusLineAngle) - 8;
+            ctx.fillText(`r = ${rVal}cm`, labelX, labelY);
+
+            // 좌측 도형 이름
+            ctx.font = '900 15px "Noto Sans KR"';
+            ctx.fillStyle = '#111827';
+            const shapeTitle = isFullCircle ? '원 (θ = 360°)' : `부채꼴 (θ = ${degVal}°)`;
+            ctx.fillText(shapeTitle, circleCenter.x, circleCenter.y + R + 26);
+
+            // 계산 수치 텍스트
+            const arcFactor = formatNum(2 * rVal * (degVal / 360));
+            const baseFactor = formatNum(rVal * (degVal / 360));
+            const areaFactor = formatNum(rVal * rVal * (degVal / 360));
+
+            ctx.font = '900 13px "Noto Sans KR"';
+            ctx.fillStyle = '#1e293b';
+            if (isFullCircle) {
+                ctx.fillText(`원의 둘레(원주): ${arcFactor}π cm`, circleCenter.x, circleCenter.y + R + 46);
+                ctx.fillText(`원의 넓이: ${areaFactor}π cm²`, circleCenter.x, circleCenter.y + R + 66);
+            } else {
+                ctx.fillText(`호의 길이 (ℓ): ${arcFactor}π cm`, circleCenter.x, circleCenter.y + R + 46);
+                ctx.fillText(`부채꼴 넓이 (S): ${areaFactor}π cm²`, circleCenter.x, circleCenter.y + R + 66);
+            }
+
+            // 우측 재배치된 도형 치수선 및 텍스트
+            const bottomY = rectCenter.y + apothem / 2 + 16;
+
+            // 밑변 치수선
+            ctx.beginPath();
+            ctx.strokeStyle = '#1d4ed8';
+            ctx.lineWidth = 2.2;
+            ctx.moveTo(rectStartX, bottomY - 5);
+            ctx.lineTo(rectStartX, bottomY + 5);
+            ctx.moveTo(rectStartX + rectWidth, bottomY - 5);
+            ctx.lineTo(rectStartX + rectWidth, bottomY + 5);
+            ctx.moveTo(rectStartX, bottomY);
+            ctx.lineTo(rectStartX + rectWidth, bottomY);
+            ctx.stroke();
+
+            // 밑변 텍스트 (πr 또는 ½ℓ)
+            ctx.font = '900 13px "Noto Sans KR"';
+            ctx.fillStyle = '#1e3a8a';
+            ctx.textAlign = 'center';
+            const baseTitle = isFullCircle ? '밑변 = 원주의 반 (πr)' : '밑변 = 호의 길의 반 (½ℓ)';
+            ctx.fillText(baseTitle, rectCenter.x, bottomY + 22);
+
+            ctx.font = '900 15px "Times New Roman", Times, serif';
+            ctx.fillText(`= ${baseFactor}π cm`, rectCenter.x, bottomY + 42);
+
+            // 높이 치수선
+            const rightX = rectStartX + rectWidth + 18;
+            const topY = rectCenter.y - apothem / 2;
+            const botY = rectCenter.y + apothem / 2;
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#c2410c';
+            ctx.lineWidth = 2.2;
+            ctx.moveTo(rightX - 5, topY);
+            ctx.lineTo(rightX + 5, topY);
+            ctx.moveTo(rightX - 5, botY);
+            ctx.lineTo(rightX + 5, botY);
+            ctx.moveTo(rightX, topY);
+            ctx.lineTo(rightX, botY);
+            ctx.stroke();
+
+            // 높이 텍스트
+            ctx.font = '900 13px "Noto Sans KR"';
+            ctx.fillStyle = '#7c2d12';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`높이 (r)`, rightX + 8, rectCenter.y - 10);
+
+            ctx.font = '900 15px "Times New Roman", Times, serif';
+            ctx.fillText(`= ${rVal} cm`, rightX + 8, rectCenter.y + 10);
+            ctx.textBaseline = 'alphabetic';
+
+            // 우측 도형 이름
+            ctx.font = '900 15px "Noto Sans KR"';
+            ctx.fillStyle = '#111827';
+            ctx.textAlign = 'center';
+            const shapeName = state.n >= 32 ? '직사각형에 수렴' : '평행사변형 모양';
+            ctx.fillText(`재배치된 도형 (${shapeName})`, rectCenter.x, bottomY + 68);
+
+            ctx.restore();
+        }
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            updateCalculations();
+            render();
+        });
+
+        // Fonts load event handler
+        document.fonts.ready.then(() => {
+            render();
+        });
+    </script>
+</body>
+</html>

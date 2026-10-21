@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n각형 대각선 시각화 도구</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f6ff',
+                            100: '#e0edff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            user-select: none;
+        }
+        /* Glassmorphism styling for light background */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+        }
+        .dark .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.8);
+        }
+        .custom-range {
+            accent-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-xl text-white shadow-md shadow-blue-500/20">
+                    <i class="fa-solid fa-shapes text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                        n각형 대각선 시각화 도구
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Polygon Diagonals Interactive Math Lab</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <!-- Theme Toggle Button -->
+                <button id="themeToggleBtn" title="다크/라이트 모드 전환" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-lg text-amber-400"></i>
+                </button>
+                <!-- Export Image Button -->
+                <button id="exportImageBtn" class="flex items-center space-x-1.5 px-3.5 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition active:scale-95">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="hidden sm:inline">이미지 저장</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT COLUMN: Canvas & Visual Controls (7 Cols on desktop) -->
+        <section class="lg:col-span-7 flex flex-col space-y-4">
+
+            <!-- Mode Selector Bar -->
+            <div class="glass-panel rounded-2xl p-2 flex items-center justify-between overflow-x-auto gap-1">
+                <button id="modeAllBtn" class="mode-btn active flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-blue-600 text-white shadow-sm">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>전체 대각선</span>
+                </button>
+                <button id="modeSelectBtn" class="mode-btn flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50">
+                    <i class="fa-solid fa-hand-pointer"></i>
+                    <span>꼭짓점 선택</span>
+                </button>
+                <button id="modeAnimBtn" class="mode-btn flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50">
+                    <i class="fa-solid fa-play"></i>
+                    <span>단계별 그리기</span>
+                </button>
+            </div>
+
+            <!-- Canvas Display Card -->
+            <div class="glass-panel bg-white dark:bg-slate-900 rounded-2xl p-4 flex-1 flex flex-col items-center justify-center relative min-h-[380px] sm:min-h-[480px] overflow-hidden group shadow-sm border border-slate-200 dark:border-slate-800">
+                
+                <!-- Canvas Element -->
+                <canvas id="polygonCanvas" class="w-full h-full cursor-crosshair touch-none bg-white dark:bg-slate-950 rounded-xl"></canvas>
+                <!-- Floating Canvas Overlay Info / Toast -->
+                <div id="canvasInstruction" class="absolute top-4 left-4 right-4 sm:right-auto bg-slate-900/80 text-white text-xs px-3.5 py-2 rounded-xl backdrop-blur-md shadow-lg pointer-events-none transition-opacity duration-300 flex items-center space-x-2">
+                    <i class="fa-solid fa-circle-info text-blue-400"></i>
+                    <span id="instructionText">꼭짓점을 드래그하여 다각형 형태를 변경할 수 있습니다.</span>
+                </div>
+
+                <!-- Reset Dragged Vertices Button -->
+                <button id="resetVerticesBtn" title="정다각형 형태로 복원" class="absolute bottom-4 left-4 p-2.5 bg-slate-800/80 text-slate-200 hover:text-white hover:bg-slate-800 rounded-xl backdrop-blur-md transition shadow-md border border-slate-700/50 flex items-center space-x-1.5 text-xs">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>정다각형 복원</span>
+                </button>
+
+                <!-- Zoom / Fit Indicator / Hover Info -->
+                <div id="hoverInfoBadge" class="absolute bottom-4 right-4 bg-slate-900/80 text-slate-200 text-xs px-3 py-1.5 rounded-xl backdrop-blur-md border border-slate-700/50 hidden">
+                    <span id="hoverInfoText">꼭짓점 0</span>
+                </div>
+            </div>
+
+            <!-- Step Animation Control Bar (Visible when in Animation Mode) -->
+            <div id="animControlBar" class="glass-panel rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 hidden">
+                <div class="flex items-center space-x-2">
+                    <button id="animPrevBtn" class="p-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition text-slate-700 dark:text-slate-200">
+                        <i class="fa-solid fa-backward-step"></i>
+                    </button>
+                    <button id="animPlayBtn" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium transition flex items-center space-x-2">
+                        <i id="animPlayIcon" class="fa-solid fa-play"></i>
+                        <span id="animPlayText">재생</span>
+                    </button>
+                    <button id="animNextBtn" class="p-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition text-slate-700 dark:text-slate-200">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </button>
+                    <button id="animResetBtn" class="p-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition text-slate-700 dark:text-slate-200" title="초기화">
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-3 flex-1 max-w-xs min-w-[200px]">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">속도</span>
+                    <input type="range" id="animSpeedRange" min="20" max="800" value="300" dir="rtl" class="w-full custom-range">
+                </div>
+
+                <div class="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                    진행: <span id="animProgressText">0 / 0</span>
+                </div>
+            </div>
+
+            <!-- Display Visibility Toggles -->
+            <div class="glass-panel rounded-2xl p-3.5 flex flex-wrap items-center justify-around gap-2 text-xs font-medium">
+                <label class="flex items-center space-x-2 cursor-pointer select-none">
+                    <input type="checkbox" id="toggleEdges" checked class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
+                    <span>테두리 변</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer select-none">
+                    <input type="checkbox" id="toggleDiagonals" checked class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
+                    <span>대각선 전체</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer select-none">
+                    <input type="checkbox" id="toggleVertices" checked class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
+                    <span>꼭짓점 점</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer select-none">
+                    <input type="checkbox" id="toggleLabels" checked class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
+                    <span>꼭짓점 번호</span>
+                </label>
+            </div>
+
+            <!-- Dynamic Distance Legend Bar -->
+            <div class="glass-panel rounded-2xl p-3.5">
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 flex items-center justify-between">
+                    <span><i class="fa-solid fa-palette mr-1.5"></i>대각선 거리(Hop Distance) 범례</span>
+                    <span class="text-[11px] text-slate-400">클릭하여 필터링 가능</span>
+                </div>
+                <div id="legendContainer" class="flex flex-wrap gap-1.5">
+                    <!-- Dynamic legend pills inserted via JS -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT COLUMN: Polygon Controls & Math Insights (5 Cols on desktop) -->
+        <section class="lg:col-span-5 flex flex-col space-y-5">
+
+            <!-- Polygon Selection & Presets Card -->
+            <div class="glass-panel rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-base font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-blue-500"></i>
+                        <span>다각형 설정</span>
+                    </h2>
+                    <span class="text-xs px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 font-bold">
+                        n = <span id="nValueDisplay">6</span>
+                    </span>
+                </div>
+
+                <!-- Slider & Direct Input -->
+                <div class="space-y-2">
+                    <div class="flex items-center space-x-4">
+                        <input type="range" id="nSlider" min="3" max="60" value="6" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer custom-range">
+                        <input type="number" id="nInput" min="3" max="60" value="6" class="w-20 px-2.5 py-1.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-xl text-center text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex justify-between text-[11px] text-slate-400 font-semibold px-1">
+                        <span>3 (삼각형)</span>
+                        <span>30</span>
+                        <span>60 (육십각형)</span>
+                    </div>
+                </div>
+
+                <!-- Preset Buttons -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">빠른 프리셋 선택</label>
+                    <div class="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="3">3</button>
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="4">4</button>
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="5">5</button>
+                        <button class="preset-btn active py-1.5 rounded-xl border border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold transition" data-val="6">6</button>
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="8">8</button>
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="10">10</button>
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="12">12</button>
+                        <button class="preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition" data-val="20">20</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Realtime Math Formula Calculation Panel -->
+            <div class="glass-panel bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm space-y-4 border-l-4 border-l-blue-500">
+                    <i class="fa-solid fa-calculator text-blue-500"></i>
+                    <span>실시간 수학 공식 계산</span>
+                </h2>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Vertices count -->
+                    <div class="p-3 bg-slate-100/80 dark:bg-slate-900/80 rounded-xl space-y-1">
+                        <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">꼭짓점 개수 (n)</div>
+                        <div class="text-lg font-extrabold text-slate-800 dark:text-slate-100">
+                            <span id="calcN">6</span>개
+                        </div>
+                    </div>
+
+                    <!-- Single Vertex Diagonals -->
+                    <div class="p-3 bg-slate-100/80 dark:bg-slate-900/80 rounded-xl space-y-1">
+                        <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">한 꼭짓점의 대각선 (n - 3)</div>
+                        <div class="text-lg font-extrabold text-indigo-600 dark:text-indigo-400">
+                            <span id="calcSingleDiag">3</span>개
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Diagonals Main Formula Box -->
+                <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 rounded-xl border border-blue-200 dark:border-blue-800/50 space-y-2">
+                    <div class="flex items-center justify-between text-xs font-bold text-blue-700 dark:text-blue-300">
+                        <span>총 대각선 개수 공식</span>
+                        <span class="font-mono text-sm">N = n(n - 3) / 2</span>
+                    </div>
+                    <div class="text-2xl font-black text-slate-900 dark:text-white flex items-center justify-between">
+                        <span id="calcTotalFormula" class="text-sm font-mono font-medium text-slate-600 dark:text-slate-300">
+                            6 × (6 - 3) ÷ 2 =
+                        </span>
+                        <span id="calcTotalDiagonals" class="text-blue-600 dark:text-blue-400 text-3xl">
+                            9
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Interior Angles Section -->
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <div class="text-slate-500 dark:text-slate-400 font-medium">내각의 크기의 합</div>
+                        <div class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-0.5">
+                            <span id="calcSumAngle">720</span>°
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono">(n - 2) × 180°</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-500 dark:text-slate-400 font-medium">한 내각 (정다각형)</div>
+                        <div class="text-sm font-bold text-amber-600 dark:text-amber-400 mt-0.5">
+                            <span id="calcEachAngle">120</span>°
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono">총합 ÷ n</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Educational Proof Card -->
+            <div class="glass-panel rounded-2xl p-5 shadow-sm space-y-3 text-xs leading-relaxed">
+                <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-graduation-cap text-indigo-500"></i>
+                    <span>공식 증명 및 개념 설명</span>
+                </h3>
+
+                <div class="space-y-2 text-slate-600 dark:text-slate-300">
+                    <p>
+                        <strong class="text-blue-600 dark:text-blue-400">1. 왜 한 꼭짓점에서 (n - 3)개일까요?</strong><br>
+                        임의의 한 꼭짓점에서 선분을 이을 때, <strong>자기 자신(1개)</strong>과 <strong>양 옆의 이웃한 두 꼭짓점(2개)</strong>으로 연결한 선은 대각선이 아니라 다각형의 '변'이 됩니다.<br>
+                        따라서 대각선을 그을 수 있는 대상은 <span class="underline decoration-blue-400 font-semibold">n - 3 개</span>의 꼭짓점뿐입니다.
+                    </p>
+
+                    <p>
+                        <strong class="text-blue-600 dark:text-blue-400">2. 왜 2로 나눌까요?</strong><br>
+                        모든 n개의 꼭짓점에서 각각 (n - 3)개의 대각선을 그으면 총 <span class="font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded">n × (n - 3)</span>개의 선분이 그려집니다.<br>
+                        하지만 꼭짓점 A에서 B로 그은 대각선과 B에서 A로 그은 대각선은 <strong>동일한 선분(중복)</strong>이므로 정확히 2로 나누어 주어야 합니다.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-4 text-center text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800">
+        n각형 대각선 탐구 및 인터랙티브 시각화 시뮬레이터 &bull; HTML5 Canvas & Tailwind CSS
+    </footer>
+
+    <script>
+        // --- State Management ---
+        const state = {
+            n: 6,
+            vertices: [],          // [{x, y, origX, origY}]
+            mode: 'all',           // 'all', 'select', 'anim'
+            selectedVertex: 0,
+            hoveredVertex: -1,
+            draggedVertex: -1,
+            isDragging: false,
+            
+            // Visibility Toggles
+            showEdges: true,
+            showDiagonals: true,
+            showVertices: true,
+            showLabels: true,
+
+            // Filter by Distance (Hop Count k)
+            // { distanceK: true/false }
+            distanceFilter: {},
+
+            // Animation state
+            animIndex: 0,
+            animPlaying: false,
+            animTimer: null,
+            animSpeed: 300,
+            diagonalList: []       // Array of all diagonal objects [{u, v, k}]
+        };
+
+        // UI Color Mapping for distance hops
+        const getHopColor = (k, totalN) => {
+            const maxK = Math.floor(totalN / 2);
+            const hue = Math.round(((k - 2) / Math.max(1, maxK - 2)) * 260 + 190) % 360; 
+            // Palettes ranging from cyan, blue, purple, magenta, orange
+            return `hsl(${hue}, 85%, 55%)`;
+        };
+
+        // --- DOM Elements ---
+        const canvas = document.getElementById('polygonCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const nSlider = document.getElementById('nSlider');
+        const nInput = document.getElementById('nInput');
+        const nValueDisplay = document.getElementById('nValueDisplay');
+
+        const modeAllBtn = document.getElementById('modeAllBtn');
+        const modeSelectBtn = document.getElementById('modeSelectBtn');
+        const modeAnimBtn = document.getElementById('modeAnimBtn');
+
+        const toggleEdges = document.getElementById('toggleEdges');
+        const toggleDiagonals = document.getElementById('toggleDiagonals');
+        const toggleVertices = document.getElementById('toggleVertices');
+        const toggleLabels = document.getElementById('toggleLabels');
+
+        const resetVerticesBtn = document.getElementById('resetVerticesBtn');
+        const exportImageBtn = document.getElementById('exportImageBtn');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+        const legendContainer = document.getElementById('legendContainer');
+        const instructionText = document.getElementById('instructionText');
+        const hoverInfoBadge = document.getElementById('hoverInfoBadge');
+        const hoverInfoText = document.getElementById('hoverInfoText');
+
+        // Animation elements
+        const animControlBar = document.getElementById('animControlBar');
+        const animPlayBtn = document.getElementById('animPlayBtn');
+        const animPlayIcon = document.getElementById('animPlayIcon');
+        const animPlayText = document.getElementById('animPlayText');
+        const animPrevBtn = document.getElementById('animPrevBtn');
+        const animNextBtn = document.getElementById('animNextBtn');
+        const animResetBtn = document.getElementById('animResetBtn');
+        const animSpeedRange = document.getElementById('animSpeedRange');
+        const animProgressText = document.getElementById('animProgressText');
+
+        // Math elements
+        const calcN = document.getElementById('calcN');
+        const calcSingleDiag = document.getElementById('calcSingleDiag');
+        const calcTotalFormula = document.getElementById('calcTotalFormula');
+        const calcTotalDiagonals = document.getElementById('calcTotalDiagonals');
+        const calcSumAngle = document.getElementById('calcSumAngle');
+        const calcEachAngle = document.getElementById('calcEachAngle');
+
+        function setupCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            
+            ctx.scale(dpr, dpr);
+            render();
+        }
+
+        // Generate Regular Polygon Vertices
+        function resetToRegularPolygon() {
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width || 400;
+            const height = rect.height || 400;
+            
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = Math.min(width, height) * 0.38;
+
+            state.vertices = [];
+            for (let i = 0; i < state.n; i++) {
+                // Angle starting from top (-PI / 2)
+                const angle = (2 * Math.PI * i / state.n) - Math.PI / 2;
+                const x = cx + radius * Math.cos(angle);
+                const y = cy + radius * Math.sin(angle);
+                state.vertices.push({ x, y, origX: x, origY: y });
+            }
+
+            generateDiagonalList();
+            render();
+        }
+
+        // Generate full list of unique diagonals and distance hops
+        function generateDiagonalList() {
+            state.diagonalList = [];
+            state.distanceFilter = {};
+            const n = state.n;
+
+            for (let i = 0; i < n; i++) {
+                for (let j = i + 2; j < n; j++) {
+                    // Skip perimeter adjacent edge for last-to-first wrap
+                    if (i === 0 && j === n - 1) continue;
+
+                    // Calculate distance gap (hop distance)
+                    const directDist = j - i;
+                    const wrapDist = n - directDist;
+                    const hopDistance = Math.min(directDist, wrapDist);
+
+                    state.diagonalList.push({
+                        u: i,
+                        v: j,
+                        k: hopDistance
+                    });
+
+                    // Initialize filter as visible
+                    state.distanceFilter[hopDistance] = true;
+                }
+            }
+
+            // Reset animation index
+            state.animIndex = state.mode === 'anim' ? 0 : state.diagonalList.length;
+            updateLegendUI();
+            updateMathPanel();
+        }
+
+        function updateMathPanel() {
+            const n = state.n;
+            const singleDiag = Math.max(0, n - 3);
+            const totalDiags = (n * (n - 3)) / 2;
+            const sumAngles = (n - 2) * 180;
+            const eachAngle = (sumAngles / n).toFixed(1);
+
+            calcN.textContent = n;
+            calcSingleDiag.textContent = singleDiag;
+            calcTotalFormula.textContent = `${n} × (${n} - 3) ÷ 2 =`;
+            calcTotalDiagonals.textContent = totalDiags;
+            calcSumAngle.textContent = sumAngles.toLocaleString();
+            calcEachAngle.textContent = eachAngle.endsWith('.0') ? parseInt(eachAngle) : eachAngle;
+
+            nValueDisplay.textContent = n;
+            nSlider.value = n;
+            nInput.value = n;
+
+            // Sync preset button styles
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                const val = parseInt(btn.dataset.val);
+                if (val === n) {
+                    btn.className = "preset-btn active py-1.5 rounded-xl border border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold transition";
+                } else {
+                    btn.className = "preset-btn py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 text-xs font-semibold transition";
+                }
+            });
+
+            // Update Animation Progress Text
+            animProgressText.textContent = `${state.animIndex} / ${state.diagonalList.length}`;
+        }
+
+        // Update Legend Pills based on unique hop distances
+        function updateLegendUI() {
+            legendContainer.innerHTML = '';
+            const maxK = Math.floor(state.n / 2);
+
+            for (let k = 2; k <= maxK; k++) {
+                const color = getHopColor(k, state.n);
+                const isFiltered = state.distanceFilter[k] !== false;
+
+                const pill = document.createElement('button');
+                pill.className = `px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition border ${
+                    isFiltered 
+                        ? 'bg-slate-200/80 dark:bg-slate-800/80 border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200' 
+                        : 'bg-slate-100 dark:bg-slate-900 opacity-40 border-dashed border-slate-400 text-slate-400 line-through'
+                }`;
+                
+                pill.innerHTML = `
+                    <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: ${color}"></span>
+                    <span>거리 ${k}</span>
+                `;
+
+                pill.onclick = () => {
+                    state.distanceFilter[k] = !state.distanceFilter[k];
+                    updateLegendUI();
+                    render();
+                };
+
+                legendContainer.appendChild(pill);
+            }
+        }
+
+        function render() {
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+
+            // Clear Canvas
+            ctx.clearRect(0, 0, width, height);
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const vertices = state.vertices;
+            const n = state.n;
+
+            if (vertices.length === 0) return;
+
+            // 1. Draw Diagonals
+            if (state.showDiagonals) {
+                const diagonalsToDraw = state.mode === 'anim' 
+                    ? state.diagonalList.slice(0, state.animIndex)
+                    : state.diagonalList;
+
+                diagonalsToDraw.forEach(diag => {
+                    const { u, v, k } = diag;
+
+                    // Skip if distance filtered out
+                    if (state.distanceFilter[k] === false) return;
+
+                    // Focus Mode check
+                    let isFocused = true;
+                    if (state.mode === 'select') {
+                        isFocused = (u === state.selectedVertex || v === state.selectedVertex);
+                    }
+
+                    const uPt = vertices[u];
+                    const vPt = vertices[v];
+
+                    ctx.beginPath();
+                    ctx.moveTo(uPt.x, uPt.y);
+                    ctx.lineTo(vPt.x, vPt.y);
+
+                    if (state.mode === 'select') {
+                        if (isFocused) {
+                            ctx.strokeStyle = getHopColor(k, n);
+                            ctx.lineWidth = 2.5;
+                            ctx.globalAlpha = 1.0;
+                        } else {
+                            ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                            ctx.lineWidth = 1;
+                            ctx.globalAlpha = 0.3;
+                        }
+                    } else {
+                        ctx.strokeStyle = getHopColor(k, n);
+                        ctx.lineWidth = n > 30 ? 1 : 1.6;
+                        ctx.globalAlpha = 0.85;
+                    }
+
+                    ctx.stroke();
+                    ctx.globalAlpha = 1.0;
+                });
+            }
+
+            // 2. Draw Perimeter Edges
+            if (state.showEdges) {
+                ctx.beginPath();
+                for (let i = 0; i < n; i++) {
+                    const next = (i + 1) % n;
+                    ctx.moveTo(vertices[i].x, vertices[i].y);
+                    ctx.lineTo(vertices[next].x, vertices[next].y);
+                }
+                ctx.strokeStyle = isDark ? '#94a3b8' : '#475569';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+            }
+
+            // 3. Draw Vertices & Labels
+            vertices.forEach((pt, idx) => {
+                const isSelected = state.mode === 'select' && idx === state.selectedVertex;
+                const isHovered = idx === state.hoveredVertex;
+
+                // Vertex Point Radius
+                let radius = n > 30 ? 4 : 6;
+                if (isSelected || isHovered) radius += 3;
+
+                // Draw Outer Glow / Highlight for Selected / Hovered
+                if (isSelected || isHovered) {
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, radius + 5, 0, Math.PI * 2);
+                    ctx.fillStyle = isSelected ? 'rgba(59, 130, 246, 0.35)' : 'rgba(168, 85, 247, 0.35)';
+                    ctx.fill();
+                }
+
+                // Draw Primary Vertex Node
+                if (state.showVertices) {
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
+                    
+                    if (isSelected) {
+                        ctx.fillStyle = '#2563eb';
+                    } else if (isHovered) {
+                        ctx.fillStyle = '#9333ea';
+                    } else {
+                        ctx.fillStyle = isDark ? '#38bdf8' : '#0284c7';
+                    }
+                    ctx.fill();
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.stroke();
+                }
+
+                // Draw Vertex Number Labels
+                if (state.showLabels) {
+                    const cx = width / 2;
+                    const cy = height / 2;
+                    // Position label slightly outside vertex center
+                    const dx = pt.x - cx;
+                    const dy = pt.y - cy;
+                    const len = Math.hypot(dx, dy) || 1;
+                    const offset = 18;
+                    const lx = pt.x + (dx / len) * offset;
+                    const ly = pt.y + (dy / len) * offset;
+
+                    ctx.font = `${isSelected || isHovered ? 'bold 13px' : '11px'} Pretendard, sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = isDark ? '#f1f5f9' : '#0f172a';
+                    ctx.fillText(idx, lx, ly);
+                }
+            });
+        }
+
+        function getCanvasPoint(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function findNearestVertex(pt) {
+            let minDist = 18; // Hit target radius
+            let foundIndex = -1;
+
+            state.vertices.forEach((v, idx) => {
+                const dist = Math.hypot(v.x - pt.x, v.y - pt.y);
+                if (dist < minDist) {
+                    minDist = dist;
+                    foundIndex = idx;
+                }
+            });
+
+            return foundIndex;
+        }
+
+        // Pointer Down
+        function handlePointerDown(e) {
+            const pt = getCanvasPoint(e);
+            const idx = findNearestVertex(pt);
+
+            if (idx !== -1) {
+                state.draggedVertex = idx;
+                state.isDragging = true;
+
+                if (state.mode === 'select') {
+                    state.selectedVertex = idx;
+                    instructionText.textContent = `꼭짓점 ${idx}번 선택됨: 연결된 (n - 3 = ${state.n - 3})개 대각선 강조 표시`;
+                }
+                render();
+            }
+        }
+
+        // Pointer Move
+        function handlePointerMove(e) {
+            const pt = getCanvasPoint(e);
+
+            if (state.isDragging && state.draggedVertex !== -1) {
+                // Update dragged vertex coordinates
+                state.vertices[state.draggedVertex].x = pt.x;
+                state.vertices[state.draggedVertex].y = pt.y;
+                render();
+                return;
+            }
+
+            // Hover check
+            const hovered = findNearestVertex(pt);
+            if (hovered !== state.hoveredVertex) {
+                state.hoveredVertex = hovered;
+                canvas.style.cursor = hovered !== -1 ? 'pointer' : 'crosshair';
+
+                if (hovered !== -1) {
+                    hoverInfoBadge.classList.remove('hidden');
+                    hoverInfoText.textContent = `꼭짓점 ${hovered}`;
+                } else {
+                    hoverInfoBadge.classList.add('hidden');
+                }
+                render();
+            }
+        }
+
+        // Pointer Up
+        function handlePointerUp() {
+            state.isDragging = false;
+            state.draggedVertex = -1;
+        }
+
+        // Register Event Listeners for Mouse and Touch
+        canvas.addEventListener('mousedown', handlePointerDown);
+        canvas.addEventListener('mousemove', handlePointerMove);
+        window.addEventListener('mouseup', handlePointerUp);
+
+        canvas.addEventListener('touchstart', (e) => { handlePointerDown(e); }, { passive: true });
+        canvas.addEventListener('touchmove', (e) => { handlePointerMove(e); }, { passive: true });
+        window.addEventListener('touchend', handlePointerUp);
+
+        function togglePlayAnimation() {
+            state.animPlaying = !state.animPlaying;
+
+            if (state.animPlaying) {
+                animPlayIcon.className = 'fa-solid fa-pause';
+                animPlayText.textContent = '일시정지';
+
+                // If at end, wrap around to zero
+                if (state.animIndex >= state.diagonalList.length) {
+                    state.animIndex = 0;
+                }
+
+                state.animTimer = setInterval(() => {
+                    if (state.animIndex < state.diagonalList.length) {
+                        state.animIndex++;
+                        updateMathPanel();
+                        render();
+                    } else {
+                        // Pause at completion
+                        togglePlayAnimation();
+                    }
+                }, state.animSpeed);
+            } else {
+                animPlayIcon.className = 'fa-solid fa-play';
+                animPlayText.textContent = '재생';
+                clearInterval(state.animTimer);
+            }
+        }
+
+        function setMode(mode) {
+            state.mode = mode;
+            [modeAllBtn, modeSelectBtn, modeAnimBtn].forEach(b => {
+                b.className = "mode-btn flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50";
+            });
+
+            if (mode === 'all') {
+                modeAllBtn.className = "mode-btn active flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-blue-600 text-white shadow-sm";
+                animControlBar.classList.add('hidden');
+                instructionText.textContent = "꼭짓점을 드래그하여 다각형 형태를 변경할 수 있습니다.";
+                if (state.animPlaying) togglePlayAnimation();
+            } else if (mode === 'select') {
+                modeSelectBtn.className = "mode-btn active flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-blue-600 text-white shadow-sm";
+                animControlBar.classList.add('hidden');
+                instructionText.textContent = `꼭짓점 ${state.selectedVertex}번 선택됨: 해당 꼭짓점 대각선 (${state.n - 3}개) 강조`;
+                if (state.animPlaying) togglePlayAnimation();
+            } else if (mode === 'anim') {
+                modeAnimBtn.className = "mode-btn active flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center space-x-1.5 bg-blue-600 text-white shadow-sm";
+                animControlBar.classList.remove('hidden');
+                instructionText.textContent = "하단 재생 버튼으로 대각선이 순차적으로 그려지는 과정을 관찰하세요.";
+                state.animIndex = 0;
+            }
+
+            updateMathPanel();
+            render();
+        }
+
+        // Slider & Input change
+        function updateN(val) {
+            let newN = parseInt(val);
+            if (isNaN(newN)) return;
+            newN = Math.max(3, Math.min(60, newN));
+
+            if (newN !== state.n) {
+                state.n = newN;
+                state.selectedVertex = 0;
+                resetToRegularPolygon();
+            }
+        }
+
+        nSlider.addEventListener('input', (e) => updateN(e.target.value));
+        nInput.addEventListener('change', (e) => updateN(e.target.value));
+
+        // Presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => updateN(btn.dataset.val));
+        });
+
+        // Mode buttons
+        modeAllBtn.addEventListener('click', () => setMode('all'));
+        modeSelectBtn.addEventListener('click', () => setMode('select'));
+        modeAnimBtn.addEventListener('click', () => setMode('anim'));
+
+        // Visibility Toggles
+        toggleEdges.addEventListener('change', (e) => { state.showEdges = e.target.checked; render(); });
+        toggleDiagonals.addEventListener('change', (e) => { state.showDiagonals = e.target.checked; render(); });
+        toggleVertices.addEventListener('change', (e) => { state.showVertices = e.target.checked; render(); });
+        toggleLabels.addEventListener('change', (e) => { state.showLabels = e.target.checked; render(); });
+
+        // Reset Vertices
+        resetVerticesBtn.addEventListener('click', () => resetToRegularPolygon());
+
+        // Animation Buttons
+        animPlayBtn.addEventListener('click', togglePlayAnimation);
+
+        animPrevBtn.addEventListener('click', () => {
+            if (state.animPlaying) togglePlayAnimation();
+            state.animIndex = Math.max(0, state.animIndex - 1);
+            updateMathPanel();
+            render();
+        });
+
+        animNextBtn.addEventListener('click', () => {
+            if (state.animPlaying) togglePlayAnimation();
+            state.animIndex = Math.min(state.diagonalList.length, state.animIndex + 1);
+            updateMathPanel();
+            render();
+        });
+
+        animResetBtn.addEventListener('click', () => {
+            if (state.animPlaying) togglePlayAnimation();
+            state.animIndex = 0;
+            updateMathPanel();
+            render();
+        });
+
+        animSpeedRange.addEventListener('input', (e) => {
+            state.animSpeed = parseInt(e.target.value);
+            if (state.animPlaying) {
+                togglePlayAnimation();
+                togglePlayAnimation();
+            }
+        });
+
+        // Theme Toggle Button
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            render();
+        });
+
+        exportImageBtn.addEventListener('click', () => {
+            // Create offscreen canvas for crisp export with background
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = canvas.width;
+            exportCanvas.height = canvas.height;
+            const expCtx = exportCanvas.getContext('2d');
+
+            const isDark = document.documentElement.classList.contains('dark');
+            expCtx.fillStyle = isDark ? '#020617' : '#ffffff';
+            expCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+            // Draw current canvas content onto export canvas
+            expCtx.drawImage(canvas, 0, 0);
+
+            // Add Title Overlay to exported image
+            const dpr = window.devicePixelRatio || 1;
+            expCtx.fillStyle = isDark ? '#f8fafc' : '#0f172a';
+            expCtx.font = `bold ${16 * dpr}px Pretendard, sans-serif`;
+            expCtx.fillText(`${state.n}각형 대각선 시각화 (대각선: ${state.diagonalList.length}개)`, 20 * dpr, 30 * dpr);
+
+            // Download Link Trigger
+            const link = document.createElement('a');
+            link.download = `${state.n}각형_대각선_시각화.png`;
+            link.href = exportCanvas.toDataURL('image/png');
+            link.click();
+        });
+
+        // Resize Listener
+        window.addEventListener('resize', () => {
+            setupCanvas();
+            resetToRegularPolygon();
+        });
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            setupCanvas();
+            resetToRegularPolygon();
+        };
+    </script>
+</body>
+</html>
