@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회전체 시각화 (Solids of Revolution)</title>
+    <title>회전체 시각화 및 성질 (Solids of Revolution)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -45,14 +45,14 @@
 <body class="flex flex-col md:flex-row h-screen bg-white">
 
     <!-- 제어 패널 (사이드바) -->
-    <aside class="w-full md:w-80 h-auto md:h-full bg-slate-50 border-r border-slate-200 p-6 flex flex-col gap-6 shadow-sm z-10 overflow-y-auto shrink-0">
+    <aside class="w-full md:w-80 h-auto md:h-full bg-slate-50 border-r border-slate-200 p-6 flex flex-col gap-5 shadow-sm z-10 overflow-y-auto shrink-0">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800 mb-2">회전체 시각화</h1>
-            <p class="text-sm text-slate-500">평면도형이 회전하여 입체도형이 되는 과정을 관찰해보세요.</p>
+            <h1 class="text-2xl font-bold text-slate-800 mb-1">회전체 시각화</h1>
+            <p class="text-xs text-slate-500">평면도형이 회전하여 입체도형이 되는 과정을 관찰해보세요.</p>
         </div>
 
         <!-- 도형 선택 -->
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1.5">
             <label for="shape-select" class="text-sm font-semibold text-slate-700">평면도형 선택</label>
             <select id="shape-select" class="p-2 border border-slate-300 rounded-md bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm transition-all">
                 <option value="cylinder">직사각형 (원기둥)</option>
@@ -65,35 +65,59 @@
         </div>
 
         <!-- 애니메이션 제어 버튼 -->
-        <div class="flex flex-col gap-3 mt-2">
+        <div class="flex flex-col gap-2 mt-2">
             <label class="text-sm font-semibold text-slate-700">회전 제어</label>
-            <button id="btn-forward" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256"><path d="M232,128a104,104,0,0,1-208,0c0-41,23.81-78.36,60.66-95.27a8,8,0,0,1,6.68,14.54C60.15,61.59,40,93.27,40,128a88,88,0,0,0,176,0c0-34.73-20.15-66.41-51.34-80.73a8,8,0,0,1,6.68-14.54C208.19,49.64,232,87,232,128Z"></path><path d="M128,24A104,104,0,0,0,24,128"></path><polygon points="128 24 160 56 128 88 128 24" fill="currentColor"></polygon></svg>
-                정방향 회전 (0° ➔ 360°)
-            </button>
-            <button id="btn-reverse" class="w-full py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-medium rounded-md shadow-sm transition-colors flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256"><path d="M24,128a104,104,0,0,1,208,0c0,41-23.81,78.36-60.66,95.27a8,8,0,0,1-6.68-14.54C195.85,194.41,216,162.73,216,128a88,88,0,0,0-176,0c0,34.73,20.15,66.41,51.34,80.73a8,8,0,0,1-6.68,14.54C47.81,206.36,24,169,24,128Z"></path><path d="M128,232A104,104,0,0,0,232,128"></path><polygon points="128 232 96 200 128 168 128 232" fill="currentColor"></polygon></svg>
-                역방향 회전 (360° ➔ 0°)
-            </button>
-            <button id="btn-reset" class="w-full py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium rounded-md shadow-sm transition-colors mt-2">
+            <div class="flex gap-2">
+                <button id="btn-forward" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors flex items-center justify-center gap-1">
+                    정방향(360°)
+                </button>
+                <button id="btn-reverse" class="flex-1 py-2 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-md shadow-sm transition-colors flex items-center justify-center gap-1">
+                    역방향(0°)
+                </button>
+            </div>
+            <button id="btn-reset" class="w-full py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-medium rounded-md shadow-sm transition-colors">
                 초기화 (0°)
             </button>
         </div>
 
-        <!-- 속도 조절 -->
-        <div class="flex flex-col gap-2 mt-2">
-            <div class="flex justify-between items-center">
-                <label for="speed-slider" class="text-sm font-semibold text-slate-700">회전 속도</label>
-                <span id="speed-label" class="text-xs text-slate-500 font-mono bg-slate-200 px-2 py-1 rounded">보통</span>
+        <!-- 성질 관찰 섹션 (새로 추가됨) -->
+        <div class="mt-2 border-t border-slate-200 pt-4">
+            <h2 class="text-sm font-bold text-indigo-800 mb-3 flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M240,104a16,16,0,0,1-16,16H183.08a40,40,0,0,1,0-48H224A16,16,0,0,1,240,104Zm-80,0a24,24,0,1,0-24-24A24,24,0,0,0,160,104Zm16,40H72.92a40,40,0,0,0,0,48H176a40,40,0,0,0,0-48Zm0,32H96a24,24,0,0,1,0-48h80a24,24,0,0,1,0,48Z"></path></svg>
+                회전체의 성질 관찰
+            </h2>
+            
+            <!-- 1. 수직 단면 -->
+            <div class="mb-3 bg-white p-3 rounded-md border border-slate-200 shadow-sm">
+                <label class="flex items-center gap-2 cursor-pointer mb-1">
+                    <input type="checkbox" id="check-horizontal" class="w-4 h-4 text-blue-600 rounded">
+                    <span class="text-sm font-semibold text-slate-700">1. 회전축에 수직인 단면</span>
+                </label>
+                <div class="text-xs text-slate-500 mb-3 ml-6 leading-tight">자른 단면의 경계는 <b>원(빨간색 선)</b>입니다.</div>
+                <div class="flex items-center gap-2 pl-2">
+                    <span class="text-xs text-slate-600 w-8">높이</span>
+                    <input type="range" id="horizontal-y-slider" min="-3" max="3" step="0.1" value="0" class="flex-1 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-red-500">
+                </div>
             </div>
-            <input type="range" id="speed-slider" min="0.01" max="0.1" step="0.01" value="0.04" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+
+            <!-- 2. 축 포함 단면 -->
+            <div class="bg-white p-3 rounded-md border border-slate-200 shadow-sm">
+                <label class="flex items-center gap-2 cursor-pointer mb-1">
+                    <input type="checkbox" id="check-vertical" class="w-4 h-4 text-blue-600 rounded">
+                    <span class="text-sm font-semibold text-slate-700">2. 회전축을 포함하는 단면</span>
+                </label>
+                <div class="text-xs text-slate-500 mb-3 ml-6 leading-tight">회전축 대칭인 <b>선대칭도형(파란색 선)</b>이며, 어느 방향으로 자르든 <b>합동</b>입니다.</div>
+                <div class="flex items-center gap-2 pl-2">
+                    <span class="text-xs text-slate-600 w-8">각도</span>
+                    <input type="range" id="vertical-angle-slider" min="0" max="360" step="1" value="0" class="flex-1 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                </div>
+            </div>
         </div>
 
-        <div class="mt-auto pt-6">
-            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
-                <p class="text-xs text-blue-800 leading-relaxed">
-                    <strong>조작 팁:</strong><br>
-                    마우스를 드래그하여 시점을 360도로 돌려볼 수 있습니다. 스크롤하여 확대/축소도 가능합니다.
+        <div class="mt-auto pt-4">
+            <div class="bg-blue-50 border border-blue-100 rounded-lg p-3">
+                <p class="text-[11px] text-blue-800 leading-relaxed">
+                    <strong>조작 팁:</strong> 마우스를 드래그하여 시점을 360도로 돌려보거나, 스크롤하여 확대/축소해보세요.
                 </p>
             </div>
         </div>
@@ -112,7 +136,7 @@
         // --- 1. Three.js 기본 설정 ---
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffffff); // 하얀색 바탕화면
+        scene.background = new THREE.Color(0xffffff);
 
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(6, 4, 8);
@@ -136,15 +160,13 @@
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
         directionalLight.position.set(10, 15, 10);
         directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 1024;
-        directionalLight.shadow.mapSize.height = 1024;
         scene.add(directionalLight);
 
         const backLight = new THREE.DirectionalLight(0xffffff, 0.3);
         backLight.position.set(-10, 10, -10);
         scene.add(backLight);
 
-        // --- 3. 회전축 (y축) 라인 생성 ---
+        // --- 3. 회전축 (y축) 및 그리드 ---
         const axisMaterial = new THREE.LineDashedMaterial({ color: 0x94a3b8, dashSize: 0.2, gapSize: 0.1 });
         const axisGeometry = new THREE.BufferGeometry().setFromPoints([
             new THREE.Vector3(0, 4.5, 0),
@@ -154,7 +176,6 @@
         axisLine.computeLineDistances();
         scene.add(axisLine);
 
-        // 회전축 라벨 (단순화된 스프라이트 대신 원점 바닥을 뚫는 그리드 추가)
         const gridHelper = new THREE.GridHelper(10, 10, 0xe2e8f0, 0xf1f5f9);
         gridHelper.position.y = -4;
         scene.add(gridHelper);
@@ -163,20 +184,16 @@
         const shapes = {
             cylinder: {
                 points: [
-                    new THREE.Vector2(0, 3),
-                    new THREE.Vector2(2.5, 3),
-                    new THREE.Vector2(2.5, -3),
-                    new THREE.Vector2(0, -3)
+                    new THREE.Vector2(0, 3), new THREE.Vector2(2.5, 3), 
+                    new THREE.Vector2(2.5, -3), new THREE.Vector2(0, -3)
                 ],
-                color: 0x93c5fd // 파스텔 블루
+                color: 0x93c5fd
             },
             cone: {
                 points: [
-                    new THREE.Vector2(0, 3),
-                    new THREE.Vector2(2.5, -3),
-                    new THREE.Vector2(0, -3)
+                    new THREE.Vector2(0, 3), new THREE.Vector2(2.5, -3), new THREE.Vector2(0, -3)
                 ],
-                color: 0xfca5a5 // 파스텔 레드/핑크
+                color: 0xfca5a5
             },
             sphere: {
                 points: (() => {
@@ -187,53 +204,46 @@
                     }
                     return pts;
                 })(),
-                color: 0xa7f3d0 // 파스텔 그린
+                color: 0xa7f3d0
             },
             truncated_cone: {
                 points: [
-                    new THREE.Vector2(0, 2.5),
-                    new THREE.Vector2(1.2, 2.5),
-                    new THREE.Vector2(2.8, -2.5),
-                    new THREE.Vector2(0, -2.5)
+                    new THREE.Vector2(0, 2.5), new THREE.Vector2(1.2, 2.5), 
+                    new THREE.Vector2(2.8, -2.5), new THREE.Vector2(0, -2.5)
                 ],
-                color: 0xfde047 // 파스텔 옐로우
+                color: 0xfde047
             },
             top: {
                 points: [
-                    new THREE.Vector2(0, 3),
-                    new THREE.Vector2(1.5, 1.5),
-                    new THREE.Vector2(2.5, 0),
-                    new THREE.Vector2(0.5, -2.5),
+                    new THREE.Vector2(0, 3), new THREE.Vector2(1.5, 1.5), 
+                    new THREE.Vector2(2.5, 0), new THREE.Vector2(0.5, -2.5), 
                     new THREE.Vector2(0, -3)
                 ],
-                color: 0xc4b5fd // 파스텔 퍼플
+                color: 0xc4b5fd
             },
             vase: {
                 points: (() => {
                     const curve = new THREE.SplineCurve([
-                        new THREE.Vector2(0, 3),
-                        new THREE.Vector2(0.8, 3),
-                        new THREE.Vector2(0.4, 1.5),
-                        new THREE.Vector2(1.5, -0.5),
-                        new THREE.Vector2(2.2, -2),
-                        new THREE.Vector2(1.5, -3),
+                        new THREE.Vector2(0, 3), new THREE.Vector2(0.8, 3), 
+                        new THREE.Vector2(0.4, 1.5), new THREE.Vector2(1.5, -0.5), 
+                        new THREE.Vector2(2.2, -2), new THREE.Vector2(1.5, -3), 
                         new THREE.Vector2(0, -3)
                     ]);
                     return curve.getPoints(40);
                 })(),
-                color: 0xf9a8d4 // 파스텔 핑크
+                color: 0xf9a8d4
             }
         };
 
-        // --- 5. 상태 변수 및 객체 관리 ---
+        // --- 5. 상태 변수 ---
         let currentShapeKey = 'cylinder';
-        let currentAngle = 0.001; // 완전히 0이면 렌더링되지 않으므로 아주 작은 값 사용
+        let currentAngle = 0.001;
         let targetAngle = 0.001;
         let animationSpeed = 0.04;
         const maxAngle = Math.PI * 2;
 
         let latheMesh = null;
-        let outlineLine = null; // 2D 윤곽선 (항상 표시)
+        let outlineLine = null;
 
         const materialParams = {
             side: THREE.DoubleSide,
@@ -242,12 +252,130 @@
             flatShading: false,
         };
 
-        // --- 6. 도형 업데이트 함수 ---
+        // --- 6. 성질 시각화용 3D 객체 준비 ---
+        // 1) 수직 평면 (성질 1)
+        const horizontalPlaneGeom = new THREE.PlaneGeometry(8, 8);
+        const horizontalPlaneMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
+        const horizontalPlane = new THREE.Mesh(horizontalPlaneGeom, horizontalPlaneMat);
+        horizontalPlane.rotation.x = -Math.PI / 2;
+        horizontalPlane.visible = false;
+        scene.add(horizontalPlane);
+
+        const horizontalCircleMat = new THREE.LineBasicMaterial({ color: 0xef4444, linewidth: 3, depthTest: false }); // Red, 항상 위에 표시
+        let horizontalCircleLine = new THREE.LineLoop(new THREE.BufferGeometry(), horizontalCircleMat);
+        horizontalCircleLine.visible = false;
+        horizontalCircleLine.renderOrder = 999;
+        scene.add(horizontalCircleLine);
+
+        // 2) 축 포함 단면 (성질 2)
+        const verticalPlaneGeom = new THREE.PlaneGeometry(8, 8);
+        const verticalPlaneMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
+        const verticalPlane = new THREE.Mesh(verticalPlaneGeom, verticalPlaneMat);
+        
+        const verticalOutlineMat = new THREE.LineBasicMaterial({ color: 0x2563eb, linewidth: 3, depthTest: false }); // Blue, 항상 위에 표시
+        let verticalOutlineLine = new THREE.Line(new THREE.BufferGeometry(), verticalOutlineMat);
+        verticalOutlineLine.renderOrder = 999;
+        
+        const verticalGroup = new THREE.Group();
+        verticalGroup.add(verticalPlane);
+        verticalGroup.add(verticalOutlineLine);
+        verticalGroup.visible = false;
+        scene.add(verticalGroup);
+
+        // --- 7. 유틸 및 렌더링 업데이트 함수 ---
+        // 특정 Y 높이에서의 회전체 반지름을 선형 보간으로 구하는 함수
+        function getRadiusAtY(points, y) {
+            let r = 0;
+            for (let i = 0; i < points.length - 1; i++) {
+                let p1 = points[i];
+                let p2 = points[i+1];
+                if ((p1.y >= y && p2.y <= y) || (p1.y <= y && p2.y >= y)) {
+                    if (p1.y === p2.y) {
+                        r = Math.max(r, Math.max(p1.x, p2.x));
+                    } else {
+                        let t = (y - p1.y) / (p2.y - p1.y);
+                        let x = p1.x + t * (p2.x - p1.x);
+                        r = Math.max(r, x);
+                    }
+                }
+            }
+            return r;
+        }
+
+        function updateHorizontalSection() {
+            const isVisible = document.getElementById('check-horizontal').checked;
+            horizontalPlane.visible = isVisible;
+            horizontalCircleLine.visible = isVisible;
+
+            if (isVisible) {
+                const yPos = parseFloat(document.getElementById('horizontal-y-slider').value);
+                horizontalPlane.position.y = yPos;
+                
+                const shapeData = shapes[currentShapeKey];
+                const radius = getRadiusAtY(shapeData.points, yPos);
+                
+                const circlePoints = [];
+                if (radius > 0.01) {
+                    const segments = 64;
+                    for (let i = 0; i <= segments; i++) {
+                        const theta = (i / segments) * Math.PI * 2;
+                        circlePoints.push(new THREE.Vector3(Math.cos(theta) * radius, yPos, Math.sin(theta) * radius));
+                    }
+                }
+                horizontalCircleLine.geometry.dispose();
+                horizontalCircleLine.geometry = new THREE.BufferGeometry().setFromPoints(circlePoints);
+            }
+            updateMeshTransparency();
+        }
+
+        function updateVerticalSection() {
+            const isVisible = document.getElementById('check-vertical').checked;
+            verticalGroup.visible = isVisible;
+
+            if (isVisible) {
+                const angleDeg = parseFloat(document.getElementById('vertical-angle-slider').value);
+                verticalGroup.rotation.y = THREE.MathUtils.degToRad(angleDeg);
+
+                const shapeData = shapes[currentShapeKey];
+                const outlinePts = [];
+                // 오른쪽 (원래 도형)
+                for (let i = 0; i < shapeData.points.length; i++) {
+                    outlinePts.push(new THREE.Vector3(shapeData.points[i].x, shapeData.points[i].y, 0));
+                }
+                // 왼쪽 (선대칭 복사)
+                for (let i = shapeData.points.length - 1; i >= 0; i--) {
+                    outlinePts.push(new THREE.Vector3(-shapeData.points[i].x, shapeData.points[i].y, 0));
+                }
+                if (outlinePts.length > 0 && !outlinePts[0].equals(outlinePts[outlinePts.length-1])) {
+                     outlinePts.push(outlinePts[0].clone()); // 폐곡선 닫기
+                }
+
+                verticalOutlineLine.geometry.dispose();
+                verticalOutlineLine.geometry = new THREE.BufferGeometry().setFromPoints(outlinePts);
+            }
+            updateMeshTransparency();
+        }
+
+        // 단면을 쉽게 관찰하도록 회전체를 반투명하게 만듦
+        function updateMeshTransparency() {
+            if (!latheMesh) return;
+            const hChecked = document.getElementById('check-horizontal').checked;
+            const vChecked = document.getElementById('check-vertical').checked;
+            
+            if (hChecked || vChecked) {
+                latheMesh.material.transparent = true;
+                latheMesh.material.opacity = 0.65;
+            } else {
+                latheMesh.material.transparent = false;
+                latheMesh.material.opacity = 1.0;
+            }
+        }
+
+        // 전체 도형 지오메트리 갱신
         function updateGeometry() {
             const shapeData = shapes[currentShapeKey];
             const points = shapeData.points;
             
-            // 기존 메쉬 정리
             if (latheMesh) {
                 latheMesh.geometry.dispose();
                 scene.remove(latheMesh);
@@ -257,8 +385,6 @@
                 scene.remove(outlineLine);
             }
 
-            // 1. 회전체 (LatheGeometry) 생성
-            // 각도가 매우 작을때는 면이 겹치는 이슈가 있어 최소값 보정
             const renderAngle = Math.max(0.001, currentAngle);
             const latheGeom = new THREE.LatheGeometry(points, 64, 0, renderAngle);
             
@@ -272,19 +398,21 @@
             latheMesh.receiveShadow = true;
             scene.add(latheMesh);
 
-            // 2. 2D 윤곽선 (단면) 생성 - 시각적 이해를 도움
             const outlineGeom = new THREE.BufferGeometry().setFromPoints(points);
             const outlineMat = new THREE.LineBasicMaterial({ 
                 color: 0x334155, 
-                linewidth: 2, // WebGL 한계로 대부분 1로 렌더링되지만 설정
-                depthTest: false // 항상 윤곽선이 뚜렷하게 보이도록
+                depthTest: false 
             });
             outlineLine = new THREE.Line(outlineGeom, outlineMat);
-            outlineLine.renderOrder = 1; // 늦게 렌더링하여 위로 올라오게
+            outlineLine.renderOrder = 1;
             scene.add(outlineLine);
+
+            // 단면 뷰 업데이트 반영
+            updateHorizontalSection();
+            updateVerticalSection();
         }
 
-        // --- 7. 이벤트 리스너 설정 ---
+        // --- 8. 이벤트 리스너 설정 ---
         document.getElementById('shape-select').addEventListener('change', (e) => {
             currentShapeKey = e.target.value;
             currentAngle = 0.001;
@@ -292,54 +420,36 @@
             updateGeometry();
         });
 
-        document.getElementById('btn-forward').addEventListener('click', () => {
-            targetAngle = maxAngle;
-        });
-
-        document.getElementById('btn-reverse').addEventListener('click', () => {
-            targetAngle = 0.001;
-        });
-
+        document.getElementById('btn-forward').addEventListener('click', () => { targetAngle = maxAngle; });
+        document.getElementById('btn-reverse').addEventListener('click', () => { targetAngle = 0.001; });
         document.getElementById('btn-reset').addEventListener('click', () => {
-            currentAngle = 0.001;
-            targetAngle = 0.001;
-            updateGeometry();
+            currentAngle = 0.001; targetAngle = 0.001; updateGeometry();
         });
 
-        const speedSlider = document.getElementById('speed-slider');
-        const speedLabel = document.getElementById('speed-label');
-        speedSlider.addEventListener('input', (e) => {
-            animationSpeed = parseFloat(e.target.value);
-            
-            // UI 레이블 업데이트
-            if (animationSpeed < 0.03) speedLabel.textContent = "느림";
-            else if (animationSpeed > 0.07) speedLabel.textContent = "빠름";
-            else speedLabel.textContent = "보통";
-        });
+        // 성질 관찰 이벤트
+        document.getElementById('check-horizontal').addEventListener('change', updateHorizontalSection);
+        document.getElementById('horizontal-y-slider').addEventListener('input', updateHorizontalSection);
+        
+        document.getElementById('check-vertical').addEventListener('change', updateVerticalSection);
+        document.getElementById('vertical-angle-slider').addEventListener('input', updateVerticalSection);
 
-        // 반응형 리사이즈 처리
         window.addEventListener('resize', () => {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
         });
 
-        // --- 8. 애니메이션 루프 ---
+        // --- 9. 애니메이션 루프 ---
         function animate() {
             requestAnimationFrame(animate);
 
-            // 각도 부드럽게 업데이트
             let needsUpdate = false;
-            
             if (Math.abs(currentAngle - targetAngle) > 0.005) {
-                if (currentAngle < targetAngle) {
-                    currentAngle = Math.min(targetAngle, currentAngle + animationSpeed);
-                } else if (currentAngle > targetAngle) {
-                    currentAngle = Math.max(targetAngle, currentAngle - animationSpeed);
-                }
+                if (currentAngle < targetAngle) currentAngle = Math.min(targetAngle, currentAngle + animationSpeed);
+                else if (currentAngle > targetAngle) currentAngle = Math.max(targetAngle, currentAngle - animationSpeed);
                 needsUpdate = true;
             } else if (currentAngle !== targetAngle) {
-                currentAngle = targetAngle; // 스냅
+                currentAngle = targetAngle;
                 needsUpdate = true;
             }
 
@@ -347,11 +457,10 @@
                 updateGeometry();
             }
 
-            controls.update(); // damping을 위해 필요
+            controls.update();
             renderer.render(scene, camera);
         }
 
-        // 초기화 및 실행
         window.onload = () => {
             updateGeometry();
             animate();
