@@ -99,6 +99,17 @@ button{font:inherit;color:inherit}
 .lg i{width:11px;height:11px;border-radius:3px;display:inline-block}
 .picked{margin:0;color:var(--muted)}
 
+/* 전개도(Net) 패널 스타일 */
+#netView {
+  position: absolute; right: 16px; bottom: 16px; width: 220px; height: 220px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); z-index: 10;
+  display: none; flex-direction: column; pointer-events: none;
+}
+#netView .net-title { font-size: 14px; font-weight: 700; text-align: center; margin-bottom: 6px; color: var(--muted); flex: none; }
+#netSvgContainer { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; }
+#netSvgContainer svg { width: 100%; height: 100%; stroke: var(--edge); stroke-width: 1.5; stroke-linejoin: round; }
+
 @media (max-width:860px){
   .app{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}
   .side{max-height:46vh;max-height:46dvh;border-right:0;border-bottom:1px solid var(--line);padding:14px 14px 20px}
@@ -112,6 +123,9 @@ button{font:inherit;color:inherit}
   .euler{display:none}
   .foot{padding:8px 14px 12px;font-size:13px}
   .view{min-height:220px}
+  
+  #netView { width: 150px; height: 150px; right: 10px; bottom: 10px; padding: 8px; }
+  #netView .net-title { font-size: 12px; margin-bottom: 4px; }
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -205,6 +219,12 @@ button{font:inherit;color:inherit}
     <div class="view" id="view">
       <canvas id="cv" tabindex="0" aria-label="3차원 도형. 끌어서 돌리고, 방향키로 회전하고, 면을 눌러 선택해요."></canvas>
       <div class="nogl" id="noGL" hidden></div>
+      
+      <!-- 전개도 패널 -->
+      <div id="netView">
+        <div class="net-title">전개도</div>
+        <div id="netSvgContainer"></div>
+      </div>
     </div>
     <footer class="foot">
       <div class="legend" id="legend"></div>
@@ -341,6 +361,65 @@ function makePlatonic(key){
     verts:raw.verts.map(p=>p.slice()),
     faces:raw.faces.map(f=>({idx:f.slice(),kind:'face',kindName:'',label:'정'+polyName(P.sides)}))
   });
+}
+
+/* ---------- 정다면체 전개도 (SVG) 생성기 ---------- */
+function getNetSVG(plat) {
+    let s = `<svg viewBox="0 0 100 100">`;
+    if (plat === 'tetra') {
+        const tri = (i, x1,y1, x2,y2, x3,y3) => `<polygon data-fi="${i}" points="${x1},${y1} ${x2},${y2} ${x3},${y3}" />`;
+        s += tri(0, 50,10, 25,53.3, 75,53.3);
+        s += tri(1, 50,10, 25,53.3, 0,10);
+        s += tri(2, 50,10, 75,53.3, 100,10);
+        s += tri(3, 25,53.3, 75,53.3, 50,96.6);
+    } else if (plat === 'cube') {
+        s += `<rect data-fi="0" x="40" y="10" width="20" height="20"/>`;
+        s += `<rect data-fi="1" x="40" y="30" width="20" height="20"/>`;
+        s += `<rect data-fi="2" x="20" y="30" width="20" height="20"/>`;
+        s += `<rect data-fi="3" x="60" y="30" width="20" height="20"/>`;
+        s += `<rect data-fi="4" x="40" y="50" width="20" height="20"/>`;
+        s += `<rect data-fi="5" x="40" y="70" width="20" height="20"/>`;
+    } else if (plat === 'octa') {
+        const t = (i, x1,y1,x2,y2,x3,y3) => `<polygon data-fi="${i}" points="${x1},${y1} ${x2},${y2} ${x3},${y3}" />`;
+        s += t(0, 10,50, 30,50, 20,32.7);
+        s += t(1, 30,50, 50,50, 40,32.7);
+        s += t(2, 50,50, 70,50, 60,32.7);
+        s += t(3, 70,50, 90,50, 80,32.7);
+        s += t(4, 10,50, 30,50, 20,67.3);
+        s += t(5, 30,50, 50,50, 40,67.3);
+        s += t(6, 50,50, 70,50, 60,67.3);
+        s += t(7, 70,50, 90,50, 80,67.3);
+    } else if (plat === 'dodeca') {
+        const pent = (i, trans) => `<polygon data-fi="${i}" points="0,-6.5 6.18,-2.0 3.82,5.26 -3.82,5.26 -6.18,-2.0" transform="${trans}" />`;
+        s += `<g transform="translate(34, 50) scale(1.4)">`;
+        s += pent(0, "");
+        s += pent(1, "rotate(0) translate(0,-10.52) rotate(180)");
+        s += pent(2, "rotate(72) translate(0,-10.52) rotate(180)");
+        s += pent(3, "rotate(144) translate(0,-10.52) rotate(180)");
+        s += pent(4, "rotate(216) translate(0,-10.52) rotate(180)");
+        s += pent(5, "rotate(288) translate(0,-10.52) rotate(180)");
+        s += `<g transform="rotate(144) translate(0,-21.04) rotate(180)">`;
+        s += pent(6, "");
+        s += pent(7, "rotate(0) translate(0,-10.52) rotate(180)");
+        s += pent(8, "rotate(72) translate(0,-10.52) rotate(180)");
+        s += pent(9, "rotate(144) translate(0,-10.52) rotate(180)");
+        s += pent(10, "rotate(216) translate(0,-10.52) rotate(180)");
+        s += pent(11, "rotate(288) translate(0,-10.52) rotate(180)");
+        s += `</g></g>`;
+    } else if (plat === 'icosa') {
+        s += `<g transform="translate(5, 25) scale(0.9)">`;
+        let fi = 0;
+        const tri = (i, p) => `<path data-fi="${i}" d="${p}" />`;
+        for(let i=0; i<5; i++) s += tri(fi++, `M ${10 + i*20} 10 L ${0 + i*20} 27.32 L ${20 + i*20} 27.32 Z`);
+        for(let i=0; i<5; i++) {
+            s += tri(fi++, `M ${0 + i*20} 27.32 L ${10 + i*20} 44.64 L ${20 + i*20} 27.32 Z`);
+            s += tri(fi++, `M ${10 + i*20} 44.64 L ${20 + i*20} 27.32 L ${30 + i*20} 44.64 Z`);
+        }
+        for(let i=0; i<5; i++) s += tri(fi++, `M ${10 + i*20} 44.64 L ${30 + i*20} 44.64 L ${20 + i*20} 61.96 Z`);
+        s += `</g>`;
+    }
+    s += `</svg>`;
+    return s;
 }
 
 /* ---------- 상태 ---------- */
@@ -576,6 +655,15 @@ function applyColors(){
     arr[i*3]=c.r;arr[i*3+1]=c.g;arr[i*3+2]=c.b;
   }
   mesh.geometry.attributes.color.needsUpdate=true;
+
+  // 전개도(SVG) 면 색상 동기화
+  if (state.tab === 'A' && state.group === 'platonic') {
+     document.querySelectorAll('#netSvgContainer [data-fi]').forEach(el => {
+         const fi = parseInt(el.getAttribute('data-fi'));
+         const c = cache[fi] || (cache[fi] = colorFor(fi));
+         el.style.fill = `rgb(${Math.round(c.r*255)}, ${Math.round(c.g*255)}, ${Math.round(c.b*255)})`;
+     });
+  }
 }
 function applyExplode(){
   if(!ready||!mesh)return;
@@ -630,6 +718,16 @@ function refresh(){
   buildMesh(shape.poly);
   setHeader(shape);
   renderLegend();
+  
+  // 전개도 패널 갱신
+  const netView = $('#netView');
+  if (state.tab === 'A' && state.group === 'platonic') {
+      netView.style.display = 'flex';
+      $('#netSvgContainer').innerHTML = getNetSVG(state.plat);
+  } else {
+      netView.style.display = 'none';
+  }
+
   applyAll();
   updatePicked();
 }
