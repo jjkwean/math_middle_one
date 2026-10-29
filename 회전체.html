@@ -12,7 +12,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
             font-family: 'Inter', sans-serif;
         }
         
@@ -29,7 +29,6 @@
             outline: none;
         }
 
-        /* Custom Scrollbar for sidebar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -55,12 +54,19 @@
         <div class="flex flex-col gap-1.5">
             <label for="shape-select" class="text-sm font-semibold text-slate-700">평면도형 선택</label>
             <select id="shape-select" class="p-2 border border-slate-300 rounded-md bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm transition-all">
-                <option value="cylinder">직사각형 (원기둥)</option>
-                <option value="cone">직각삼각형 (원뿔)</option>
-                <option value="sphere">반원 (구)</option>
-                <option value="truncated_cone">사다리꼴 (원뿔대)</option>
-                <option value="top">다각형 (팽이)</option>
-                <option value="vase">곡선 (꽃병)</option>
+                <optgroup label="축에 붙은 도형">
+                    <option value="cylinder">직사각형 (원기둥)</option>
+                    <option value="cone">직각삼각형 (원뿔)</option>
+                    <option value="sphere">반원 (구)</option>
+                    <option value="truncated_cone">사다리꼴 (원뿔대)</option>
+                    <option value="top">다각형 (팽이)</option>
+                    <option value="vase">곡선 (꽃병)</option>
+                </optgroup>
+                <optgroup label="축에서 떨어진 도형">
+                    <option value="pipe">떨어진 직사각형 (파이프)</option>
+                    <option value="torus">떨어진 원 (도넛 모양)</option>
+                    <option value="hollow_cone">떨어진 사다리꼴 (속이 빈 원뿔대)</option>
+                </optgroup>
             </select>
         </div>
 
@@ -80,7 +86,7 @@
             </button>
         </div>
 
-        <!-- 성질 관찰 섹션 (새로 추가됨) -->
+        <!-- 성질 관찰 섹션 -->
         <div class="mt-2 border-t border-slate-200 pt-4">
             <h2 class="text-sm font-bold text-indigo-800 mb-3 flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M240,104a16,16,0,0,1-16,16H183.08a40,40,0,0,1,0-48H224A16,16,0,0,1,240,104Zm-80,0a24,24,0,1,0-24-24A24,24,0,0,0,160,104Zm16,40H72.92a40,40,0,0,0,0,48H176a40,40,0,0,0,0-48Zm0,32H96a24,24,0,0,1,0-48h80a24,24,0,0,1,0,48Z"></path></svg>
@@ -124,19 +130,16 @@
     </aside>
 
     <!-- 메인 캔버스 영역 -->
-    <main class="flex-1 relative" id="canvas-container">
-        <!-- Three.js 캔버스가 삽입될 영역 -->
-    </main>
+    <main class="flex-1 relative" id="canvas-container"></main>
 
-    <!-- Three.js & OrbitControls Libraries -->
+    <!-- Three.js & OrbitControls -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <script>
-        // --- 1. Three.js 기본 설정 ---
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffffff);
+        scene.background = new THREE.Color(0xf8fafc); // 배경색상 약간 부드럽게 조정
 
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(6, 4, 8);
@@ -153,20 +156,20 @@
         controls.dampingFactor = 0.05;
         controls.target.set(0, 0, 0);
 
-        // --- 2. 조명 설정 ---
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        // --- 조명 강화 (색을 분명하게) ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
         scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
         directionalLight.position.set(10, 15, 10);
         directionalLight.castShadow = true;
         scene.add(directionalLight);
 
-        const backLight = new THREE.DirectionalLight(0xffffff, 0.3);
-        backLight.position.set(-10, 10, -10);
+        const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        backLight.position.set(-10, 5, -10);
         scene.add(backLight);
 
-        // --- 3. 회전축 (y축) 및 그리드 ---
+        // --- 회전축 및 그리드 ---
         const axisMaterial = new THREE.LineDashedMaterial({ color: 0x94a3b8, dashSize: 0.2, gapSize: 0.1 });
         const axisGeometry = new THREE.BufferGeometry().setFromPoints([
             new THREE.Vector3(0, 4.5, 0),
@@ -180,20 +183,20 @@
         gridHelper.position.y = -4;
         scene.add(gridHelper);
 
-        // --- 4. 도형 데이터 정의 ---
+        // --- 도형 데이터 (축에 붙은 도형 + 떨어진 도형) ---
         const shapes = {
             cylinder: {
                 points: [
                     new THREE.Vector2(0, 3), new THREE.Vector2(2.5, 3), 
                     new THREE.Vector2(2.5, -3), new THREE.Vector2(0, -3)
                 ],
-                color: 0x93c5fd
+                color: 0x3b82f6 // 선명한 파란색
             },
             cone: {
                 points: [
                     new THREE.Vector2(0, 3), new THREE.Vector2(2.5, -3), new THREE.Vector2(0, -3)
                 ],
-                color: 0xfca5a5
+                color: 0xef4444 // 선명한 빨간색
             },
             sphere: {
                 points: (() => {
@@ -204,14 +207,14 @@
                     }
                     return pts;
                 })(),
-                color: 0xa7f3d0
+                color: 0x10b981 // 선명한 초록색
             },
             truncated_cone: {
                 points: [
                     new THREE.Vector2(0, 2.5), new THREE.Vector2(1.2, 2.5), 
                     new THREE.Vector2(2.8, -2.5), new THREE.Vector2(0, -2.5)
                 ],
-                color: 0xfde047
+                color: 0xeab308 // 선명한 노란색
             },
             top: {
                 points: [
@@ -219,7 +222,7 @@
                     new THREE.Vector2(2.5, 0), new THREE.Vector2(0.5, -2.5), 
                     new THREE.Vector2(0, -3)
                 ],
-                color: 0xc4b5fd
+                color: 0x8b5cf6 // 선명한 보라색
             },
             vase: {
                 points: (() => {
@@ -231,11 +234,38 @@
                     ]);
                     return curve.getPoints(40);
                 })(),
-                color: 0xf9a8d4
+                color: 0xec4899 // 선명한 핑크색
+            },
+            // [추가] 축에서 떨어진 도형들
+            pipe: {
+                points: [
+                    new THREE.Vector2(1.2, 3), new THREE.Vector2(2.5, 3), 
+                    new THREE.Vector2(2.5, -3), new THREE.Vector2(1.2, -3),
+                    new THREE.Vector2(1.2, 3) // 닫힌 도형
+                ],
+                color: 0x06b6d4 // 시안(Cyan)
+            },
+            torus: {
+                points: (() => {
+                    const pts = [];
+                    for (let i = 0; i <= 40; i++) {
+                        const angle = Math.PI / 2 - (i / 40) * (Math.PI * 2);
+                        pts.push(new THREE.Vector2(2.0 + Math.cos(angle) * 1.0, Math.sin(angle) * 1.0));
+                    }
+                    return pts;
+                })(),
+                color: 0xf97316 // 오렌지색
+            },
+            hollow_cone: {
+                points: [
+                    new THREE.Vector2(0.8, 2.5), new THREE.Vector2(1.5, 2.5), 
+                    new THREE.Vector2(3.0, -2.5), new THREE.Vector2(0.8, -2.5),
+                    new THREE.Vector2(0.8, 2.5) // 닫힌 도형
+                ],
+                color: 0x84cc16 // 라임색
             }
         };
 
-        // --- 5. 상태 변수 ---
         let currentShapeKey = 'cylinder';
         let currentAngle = 0.001;
         let targetAngle = 0.001;
@@ -245,15 +275,7 @@
         let latheMesh = null;
         let outlineLine = null;
 
-        const materialParams = {
-            side: THREE.DoubleSide,
-            roughness: 0.3,
-            metalness: 0.1,
-            flatShading: false,
-        };
-
-        // --- 6. 성질 시각화용 3D 객체 준비 ---
-        // 1) 수직 평면 (성질 1)
+        // --- 성질 시각화용 3D 객체 준비 ---
         const horizontalPlaneGeom = new THREE.PlaneGeometry(8, 8);
         const horizontalPlaneMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
         const horizontalPlane = new THREE.Mesh(horizontalPlaneGeom, horizontalPlaneMat);
@@ -261,18 +283,17 @@
         horizontalPlane.visible = false;
         scene.add(horizontalPlane);
 
-        const horizontalCircleMat = new THREE.LineBasicMaterial({ color: 0xef4444, linewidth: 3, depthTest: false }); // Red, 항상 위에 표시
+        const horizontalCircleMat = new THREE.LineBasicMaterial({ color: 0xef4444, linewidth: 3, depthTest: false }); 
         let horizontalCircleLine = new THREE.LineLoop(new THREE.BufferGeometry(), horizontalCircleMat);
         horizontalCircleLine.visible = false;
         horizontalCircleLine.renderOrder = 999;
         scene.add(horizontalCircleLine);
 
-        // 2) 축 포함 단면 (성질 2)
         const verticalPlaneGeom = new THREE.PlaneGeometry(8, 8);
         const verticalPlaneMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
         const verticalPlane = new THREE.Mesh(verticalPlaneGeom, verticalPlaneMat);
         
-        const verticalOutlineMat = new THREE.LineBasicMaterial({ color: 0x2563eb, linewidth: 3, depthTest: false }); // Blue, 항상 위에 표시
+        const verticalOutlineMat = new THREE.LineBasicMaterial({ color: 0x2563eb, linewidth: 3, depthTest: false }); 
         let verticalOutlineLine = new THREE.Line(new THREE.BufferGeometry(), verticalOutlineMat);
         verticalOutlineLine.renderOrder = 999;
         
@@ -282,8 +303,6 @@
         verticalGroup.visible = false;
         scene.add(verticalGroup);
 
-        // --- 7. 유틸 및 렌더링 업데이트 함수 ---
-        // 특정 Y 높이에서의 회전체 반지름을 선형 보간으로 구하는 함수
         function getRadiusAtY(points, y) {
             let r = 0;
             for (let i = 0; i < points.length - 1; i++) {
@@ -338,16 +357,14 @@
 
                 const shapeData = shapes[currentShapeKey];
                 const outlinePts = [];
-                // 오른쪽 (원래 도형)
                 for (let i = 0; i < shapeData.points.length; i++) {
                     outlinePts.push(new THREE.Vector3(shapeData.points[i].x, shapeData.points[i].y, 0));
                 }
-                // 왼쪽 (선대칭 복사)
                 for (let i = shapeData.points.length - 1; i >= 0; i--) {
                     outlinePts.push(new THREE.Vector3(-shapeData.points[i].x, shapeData.points[i].y, 0));
                 }
                 if (outlinePts.length > 0 && !outlinePts[0].equals(outlinePts[outlinePts.length-1])) {
-                     outlinePts.push(outlinePts[0].clone()); // 폐곡선 닫기
+                     outlinePts.push(outlinePts[0].clone());
                 }
 
                 verticalOutlineLine.geometry.dispose();
@@ -356,7 +373,6 @@
             updateMeshTransparency();
         }
 
-        // 단면을 쉽게 관찰하도록 회전체를 반투명하게 만듦
         function updateMeshTransparency() {
             if (!latheMesh) return;
             const hChecked = document.getElementById('check-horizontal').checked;
@@ -371,7 +387,6 @@
             }
         }
 
-        // 전체 도형 지오메트리 갱신
         function updateGeometry() {
             const shapeData = shapes[currentShapeKey];
             const points = shapeData.points;
@@ -388,9 +403,15 @@
             const renderAngle = Math.max(0.001, currentAngle);
             const latheGeom = new THREE.LatheGeometry(points, 64, 0, renderAngle);
             
+            // [수정] 재질의 광택(roughness, metalness)을 조절하여 형태를 명확히 표현
             const latheMat = new THREE.MeshStandardMaterial({ 
                 color: shapeData.color,
-                ...materialParams
+                side: THREE.DoubleSide,
+                roughness: 0.15, 
+                metalness: 0.1,
+                polygonOffset: true,
+                polygonOffsetFactor: 1, 
+                polygonOffsetUnits: 1
             });
             
             latheMesh = new THREE.Mesh(latheGeom, latheMat);
@@ -398,21 +419,25 @@
             latheMesh.receiveShadow = true;
             scene.add(latheMesh);
 
+            // [추가] 입체도형의 외곽선과 굴곡이 명확하게 보이도록 엣지(Edges) 라인 추가
+            const edges = new THREE.EdgesGeometry(latheGeom, 30); 
+            const edgeLines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
+                color: 0x1e293b, 
+                transparent: true,
+                opacity: 0.5
+            }));
+            latheMesh.add(edgeLines);
+
             const outlineGeom = new THREE.BufferGeometry().setFromPoints(points);
-            const outlineMat = new THREE.LineBasicMaterial({ 
-                color: 0x334155, 
-                depthTest: false 
-            });
+            const outlineMat = new THREE.LineBasicMaterial({ color: 0x1e293b, depthTest: false, linewidth: 2 });
             outlineLine = new THREE.Line(outlineGeom, outlineMat);
             outlineLine.renderOrder = 1;
             scene.add(outlineLine);
 
-            // 단면 뷰 업데이트 반영
             updateHorizontalSection();
             updateVerticalSection();
         }
 
-        // --- 8. 이벤트 리스너 설정 ---
         document.getElementById('shape-select').addEventListener('change', (e) => {
             currentShapeKey = e.target.value;
             currentAngle = 0.001;
@@ -426,7 +451,6 @@
             currentAngle = 0.001; targetAngle = 0.001; updateGeometry();
         });
 
-        // 성질 관찰 이벤트
         document.getElementById('check-horizontal').addEventListener('change', updateHorizontalSection);
         document.getElementById('horizontal-y-slider').addEventListener('input', updateHorizontalSection);
         
@@ -439,7 +463,6 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
         });
 
-        // --- 9. 애니메이션 루프 ---
         function animate() {
             requestAnimationFrame(animate);
 
