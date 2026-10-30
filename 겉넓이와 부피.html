@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입체도형 겉넓이와 부피 학습기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Pretendard', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .math-text { font-family: 'Georgia', serif; font-style: italic; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 px-6 z-10 flex-shrink-0">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-indigo-600 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                입체도형 탐구 생활
+            </h1>
+            <p class="text-sm text-slate-500 hidden sm:block">겉넓이와 부피의 원리를 시각적으로 이해해보세요.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col md:flex-row overflow-hidden max-w-7xl w-full mx-auto p-4 gap-6">
+        
+        <!-- Left Sidebar: Controls & Calculations -->
+        <aside class="w-full md:w-80 lg:w-96 flex flex-col gap-4 overflow-y-auto pr-2 pb-20 md:pb-0">
+            
+            <!-- Shape Selection -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="font-semibold text-lg mb-3">1. 도형 선택</h2>
+                <div class="flex gap-2">
+                    <select id="mainTypeSelect" class="w-1/2 p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
+                        <option value="prism">기둥</option>
+                        <option value="pyramid">뿔</option>
+                        <option value="sphere">구</option>
+                    </select>
+                    <select id="subTypeSelect" class="w-1/2 p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
+                        <option value="3">삼각</option>
+                        <option value="4">사각</option>
+                        <option value="5">오각</option>
+                        <option value="6">육각</option>
+                        <option value="circle">원</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dimensions Input -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="font-semibold text-lg mb-3">2. 치수 입력</h2>
+                <div id="inputContainer" class="space-y-3">
+                    <!-- Inputs injected here by JS -->
+                </div>
+            </div>
+
+            <!-- Calculation Results -->
+            <div class="bg-indigo-50 p-5 rounded-xl shadow-sm border border-indigo-100">
+                <h2 class="font-semibold text-lg mb-4 text-indigo-900">3. 계산 결과 및 원리</h2>
+                
+                <div class="space-y-4 text-sm">
+                    <!-- Base Area -->
+                    <div class="bg-white p-3 rounded-lg shadow-sm">
+                        <div class="font-medium text-slate-700 mb-1">밑넓이 (<span class="math-text">A</span>)</div>
+                        <div id="calcBase" class="text-slate-600 text-xs break-words font-mono"></div>
+                    </div>
+                    
+                    <!-- Surface Area -->
+                    <div class="bg-white p-3 rounded-lg shadow-sm border-l-4 border-emerald-400">
+                        <div class="font-medium text-slate-700 mb-1 flex justify-between">
+                            <span>겉넓이 (<span class="math-text">S</span>)</span>
+                            <span id="resultSurface" class="font-bold text-emerald-600 text-base"></span>
+                        </div>
+                        <div id="calcSurface" class="text-slate-600 text-xs break-words mt-1 font-mono"></div>
+                    </div>
+
+                    <!-- Volume -->
+                    <div class="bg-white p-3 rounded-lg shadow-sm border-l-4 border-blue-400">
+                        <div class="font-medium text-slate-700 mb-1 flex justify-between">
+                            <span>부피 (<span class="math-text">V</span>)</span>
+                            <span id="resultVolume" class="font-bold text-blue-600 text-base"></span>
+                        </div>
+                        <div id="calcVolume" class="text-slate-600 text-xs break-words mt-1 font-mono"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Content: Visualizations -->
+        <section class="flex-grow flex flex-col gap-4 overflow-y-auto pb-10">
+            
+            <!-- 3D View -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex-grow min-h-[300px] flex flex-col">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="font-semibold text-lg">3D 뷰어</h2>
+                    <span class="text-xs text-slate-400">마우스로 회전/확대 가능</span>
+                </div>
+                <div id="canvas3d" class="canvas-container flex-grow"></div>
+            </div>
+
+            <!-- 2D Principles -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Base Splitting -->
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                    <h2 class="font-semibold text-md mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span> 밑면 분할 원리
+                    </h2>
+                    <p class="text-xs text-slate-500 mb-3" id="baseDesc">다각형의 밑면을 삼각형으로 나누어 넓이를 구합니다.</p>
+                    <div class="relative w-full aspect-square bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center p-4">
+                        <canvas id="canvasBase" class="w-full h-full object-contain"></canvas>
+                    </div>
+                </div>
+
+                <!-- Net (Unfolding) -->
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                    <h2 class="font-semibold text-md mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 전개도 (겉넓이 원리)
+                    </h2>
+                    <p class="text-xs text-slate-500 mb-3" id="netDesc">입체도형을 펼쳐 모든 면의 넓이를 합산합니다.</p>
+                    <div class="relative w-full aspect-square bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center p-4">
+                        <canvas id="canvasNet" class="w-full h-full object-contain"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 1. State & Data Definitions ---
+        const PI = Math.PI;
+        
+        let currentMainType = 'prism'; // prism, pyramid, sphere
+        let currentSubType = 'circle';  // 3, 4, 5, 6, circle
+        let currentValues = {};
+
+        // --- 2. DOM Elements ---
+        const mainTypeSelect = document.getElementById('mainTypeSelect');
+        const subTypeSelect = document.getElementById('subTypeSelect');
+        const inputContainer = document.getElementById('inputContainer');
+        const calcBase = document.getElementById('calcBase');
+        const calcSurface = document.getElementById('calcSurface');
+        const calcVolume = document.getElementById('calcVolume');
+        const resultSurface = document.getElementById('resultSurface');
+        const resultVolume = document.getElementById('resultVolume');
+        const baseDesc = document.getElementById('baseDesc');
+        const netDesc = document.getElementById('netDesc');
+        
+        const canvasBase = document.getElementById('canvasBase');
+        const ctxBase = canvasBase.getContext('2d');
+        const canvasNet = document.getElementById('canvasNet');
+        const ctxNet = canvasNet.getContext('2d');
+
+        // --- 3. Three.js Setup ---
+            base: 'circle', // 3, 4, 5, 6, circle
+            values: { r: 5, a: 6, h: 10 }
+        };
+
+        // --- Math Helpers ---
+        function getCircumradius(n, a) {
+            return a / (2 * Math.sin(PI / n));
+        }
+        function getApothem(n, a) {
+            return a / (2 * Math.tan(PI / n));
+        }
+        function getPolygonArea(n, a) {
+            return (n * a * a) / (4 * Math.tan(PI / n));
+        }
+        function formatNum(num) {
+            return num % 1 === 0 ? num.toString() : num.toFixed(2);
+        }
+
+        // --- Initialize ---
+        function initApp() {
+            typeSelect.addEventListener('change', handleSelectionChange);
+            baseSelect.addEventListener('change', handleSelectionChange);
+            
+            handleSelectionChange(); // Initial setup
+            resize2DCanvases();
+        }
+
+        function handleSelectionChange() {
+            state.type = typeSelect.value;
+            state.base = baseSelect.value;
+            
+            if (state.type === 'sphere') {
+                baseSelectContainer.style.display = 'none';
+            } else {
+                baseSelectContainer.style.display = 'block';
+            }
+            
+            buildInputs();
+            updateCalculations();
+        }
+
+        function buildInputs() {
+            inputContainer.innerHTML = '';
+            
+            const createInput = (id, label, defaultVal, min, max) => {
+                if(state.values[id] === undefined) state.values[id] = defaultVal;
+                
+                const wrap = document.createElement('div');
+                wrap.className = 'flex flex-col';
+                const lbl = document.createElement('label');
+                lbl.className = 'text-sm font-medium text-slate-600 mb-1';
+                lbl.textContent = label;
+                const inp = document.createElement('input');
+                inp.type = 'number';
+                inp.className = 'p-2 border border-slate-300 rounded focus:outline-none focus:border-indigo-500';
+                inp.value = state.values[id];
+                inp.min = min; inp.max = max; inp.step = '0.1';
+                inp.addEventListener('input', (e) => {
+                    let val = parseFloat(e.target.value);
+                    if(isNaN(val) || val <= 0) val = 1;
+                    state.values[id] = val;
+                    updateCalculations();
+                });
+                wrap.appendChild(lbl);
+                wrap.appendChild(inp);
+                inputContainer.appendChild(wrap);
+            };
+
+            if (state.type === 'sphere') {
+                createInput('r', '반지름 (r)', 6, 1, 30);
+            } else {
+                if (state.base === 'circle') {
+                    createInput('r', '밑면 반지름 (r)', 5, 1, 30);
+                } else {
+                    createInput('a', '밑면 한 변의 길이 (a)', 6, 1, 30);
+                }
+                createInput('h', '높이 (h)', 10, 1, 50);
+            }
+        }
+
+        function updateCalculations() {
+            const v = state.values;
+            let A = 0, S = 0, V = 0;
+            let baseTxt = '', surfTxt = '', volTxt = '';
+
+            if (state.type === 'sphere') {
+                baseDesc.textContent = "구는 평면 형태의 밑면이 없습니다. 단면은 항상 원입니다.";
+                netDesc.textContent = "구는 2차원 평면으로 완벽하게 펼칠 수 없는 입체도형입니다.";
+                
+                S = 4 * PI * v.r * v.r;
+                V = (4/3) * PI * Math.pow(v.r, 3);
+                
+                baseTxt = `해당 없음 (구는 밑면이 없습니다)`;
+                surfTxt = `4 × π × r² = 4 × π × ${v.r}² = ${formatNum(S)}`;
+                volTxt = `4/3 × π × r³ = 4/3 × π × ${v.r}³ = ${formatNum(V)}`;
+
+            } else {
+                let n = parseInt(state.base);
+                let isCircle = isNaN(n);
+
+                if (state.type === 'prism') {
+                    if (isCircle) {
+                        baseDesc.textContent = "원은 무수히 많은 부채꼴(삼각형)로 쪼갤 수 있으며, 넓이는 πr² 입니다.";
+                        netDesc.textContent = "원기둥의 전개도는 직사각형 1개와 원 2개로 이루어집니다.";
+                        
+                        A = PI * v.r * v.r;
+                        let sideArea = 2 * PI * v.r * v.h;
+                        S = 2 * A + sideArea;
+                        V = A * v.h;
+                        
+                        baseTxt = `π × r² = π × ${v.r}² = ${formatNum(A)}`;
+                        surfTxt = `2 × 밑넓이 + 옆넓이(2πrh)\n= 2(${formatNum(A)}) + 2π(${v.r})(${v.h})\n= ${formatNum(S)}`;
+                        volTxt = `밑넓이 × 높이(h)\n= ${formatNum(A)} × ${v.h} = ${formatNum(V)}`;
+                    } else {
+                        baseDesc.textContent = `정${n}각형 밑면은 중심에서 ${n}개의 이등변 삼각형으로 나눌 수 있습니다.`;
+                        netDesc.textContent = `정${n}각기둥의 전개도는 직사각형 ${n}개와 정${n}각형 2개로 이루어집니다.`;
+                        
+                        A = getPolygonArea(n, v.a);
+                        let sideArea = n * v.a * v.h;
+                        S = 2 * A + sideArea;
+                        V = A * v.h;
+                        
+                        baseTxt = `(${n} × a²) / (4 × tan(π/${n}))\n= ${n}개의 삼각형 넓이 합 = ${formatNum(A)}`;
+                        surfTxt = `2 × 밑넓이 + 옆넓이(n × a × h)\n= 2(${formatNum(A)}) + ${n}(${v.a})(${v.h})\n= ${formatNum(S)}`;
+                        volTxt = `밑넓이 × 높이(h)\n= ${formatNum(A)} × ${v.h} = ${formatNum(V)}`;
+                    }
+                } else if (state.type === 'pyramid') {
+                    if (isCircle) {
+                        baseDesc.textContent = "밑면은 원이며 넓이는 πr² 입니다.";
+                        netDesc.textContent = "원뿔의 전개도는 부채꼴 1개와 원 1개로 이루어집니다.";
+                        
+                        A = PI * v.r * v.r;
+                        let l = Math.sqrt(v.r * v.r + v.h * v.h);
+                        let sideArea = PI * v.r * l;
+                        S = A + sideArea;
+                        V = (A * v.h) / 3;
+                        
+                        baseTxt = `π × r² = π × ${v.r}² = ${formatNum(A)}`;
+                        surfTxt = `밑넓이 + 옆넓이(π × r × 모선l)\n모선 l = √(${v.r}² + ${v.h}²) = ${formatNum(l)}\n= ${formatNum(A)} + ${formatNum(sideArea)} = ${formatNum(S)}`;
+                        volTxt = `1/3 × 밑넓이 × 높이(h)\n= 1/3 × ${formatNum(A)} × ${v.h} = ${formatNum(V)}`;
+                    } else {
+                        baseDesc.textContent = `정${n}각형 밑면은 중심에서 ${n}개의 이등변 삼각형으로 나눌 수 있습니다.`;
+                        netDesc.textContent = `정${n}각뿔의 전개도는 정${n}각형 1개와 이등변삼각형 ${n}개로 이루어집니다.`;
+                        
+                        A = getPolygonArea(n, v.a);
+                        let ri = getApothem(n, v.a); // Inradius (apothem)
+                        let l = Math.sqrt(ri * ri + v.h * v.h); // Slant height
+                        let sideArea = n * 0.5 * v.a * l;
+                        S = A + sideArea;
+                        V = (A * v.h) / 3;
+                        
+                        baseTxt = `(${n} × a²) / (4 × tan(π/${n}))\n= ${formatNum(A)}`;
+                        surfTxt = `밑넓이 + 옆넓이(n × 1/2 × a × 측면높이l)\n측면높이 l = √(${formatNum(ri)}² + ${v.h}²) = ${formatNum(l)}\n= ${formatNum(A)} + ${formatNum(sideArea)} = ${formatNum(S)}`;
+                        volTxt = `1/3 × 밑넓이 × 높이(h)\n= 1/3 × ${formatNum(A)} × ${v.h} = ${formatNum(V)}`;
+                    }
+                }
+            }
+
+            // Text replacement for newlines -> <br> for HTML display
+            calcBase.innerHTML = baseTxt.replace(/\n/g, '<br>');
+            calcSurface.innerHTML = surfTxt.replace(/\n/g, '<br>');
+            calcVolume.innerHTML = volTxt.replace(/\n/g, '<br>');
+            
+            resultSurface.textContent = formatNum(S);
+            resultVolume.textContent = formatNum(V);
+
+            update3DScene();
+            draw2DVisuals();
+        }
+
+        // --- Three.js Setup ---
+        const container3D = document.getElementById('canvas3d');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+        const camera = new THREE.PerspectiveCamera(45, container3D.clientWidth / container3D.clientHeight, 0.1, 1000);
+        camera.position.set(20, 20, 30);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container3D.clientWidth, container3D.clientHeight);
+        container3D.appendChild(renderer.domElement);
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); dirLight.position.set(10, 20, 10); scene.add(dirLight);
+        const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.4); dirLight2.position.set(-10, 10, -10); scene.add(dirLight2);
+
+        let currentMesh = null;
+        let edgesMesh = null;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            if(container3D) {
+                camera.aspect = container3D.clientWidth / container3D.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container3D.clientWidth, container3D.clientHeight);
+            }
+            resize2DCanvases();
+            draw2DVisuals();
+        });
+
+        function update3DScene() {
+            if (currentMesh) scene.remove(currentMesh);
+            if (edgesMesh) scene.remove(edgesMesh);
+
+            const v = state.values;
+            let geometry;
+            let n = parseInt(state.base);
+            let isCircle = isNaN(n);
+
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x6366f1, transparent: true, opacity: 0.8, shininess: 50, side: THREE.DoubleSide
+            });
+
+            if (state.type === 'sphere') {
+                geometry = new THREE.SphereGeometry(v.r, 32, 32);
+            } else if (state.type === 'prism') {
+                if (isCircle) {
+                    geometry = new THREE.CylinderGeometry(v.r, v.r, v.h, 32);
+                } else {
+                    let R = getCircumradius(n, v.a);
+                    geometry = new THREE.CylinderGeometry(R, R, v.h, n);
+                }
+            } else if (state.type === 'pyramid') {
+                if (isCircle) {
+                    geometry = new THREE.ConeGeometry(v.r, v.h, 32);
+                } else {
+                    let R = getCircumradius(n, v.a);
+                    geometry = new THREE.ConeGeometry(R, v.h, n);
+                }
+            }
+
+            // Adjust rotation so regular polygons sit nicely (e.g. flat edge at front/bottom)
+            if (!isCircle && state.type !== 'sphere') {
+                // By default CylinderGeometry creates vertices starting from X axis.
+                // We want to rotate it so a flat edge faces the camera if possible.
+                // An offset of PI/n usually aligns an edge to the X axis.
+                geometry.rotateY(Math.PI / n);
+            }
+
+            currentMesh = new THREE.Mesh(geometry, material);
+            
+            // Re-center pyramids slightly for better viewing
+            if (state.type === 'pyramid') {
+                currentMesh.position.y = -v.h / 4;
+            } else {
+                currentMesh.position.y = 0;
+            }
+
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x312e81, linewidth: 2 });
+            edgesMesh = new THREE.LineSegments(edges, lineMaterial);
+            currentMesh.add(edgesMesh);
+            
+            scene.add(currentMesh);
+
+            // Auto-camera
+            let maxDim = state.type === 'sphere' ? v.r : Math.max((v.a || v.r) * 2, v.h);
+            camera.position.set(maxDim * 1.5, maxDim * 1.5, maxDim * 2.0);
+            controls.target.set(0,0,0);
+            controls.update();
+        }
+
+        // --- 2D Canvas Drawing ---
+        function resize2DCanvases() {
+            // Set canvas resolution to match display size for crisp lines
+            const baseRect = canvasBase.parentElement.getBoundingClientRect();
+            canvasBase.width = baseRect.width;
+            canvasBase.height = baseRect.height;
+
+            const netRect = canvasNet.parentElement.getBoundingClientRect();
+            canvasNet.width = netRect.width;
+            canvasNet.height = netRect.height;
+        }
+
+        // --- 4. Logic & Calculations ---
+
+        function initApp() {
+            mainTypeSelect.addEventListener('change', (e) => {
+                currentMainType = e.target.value;
+                if (currentMainType === 'sphere') {
+                    subTypeSelect.disabled = true;
+                    subTypeSelect.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    subTypeSelect.disabled = false;
+                    subTypeSelect.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+                buildInputs();
+                updateCalculations();
+            });
+            subTypeSelect.addEventListener('change', (e) => {
+                currentSubType = e.target.value;
+                buildInputs();
+                updateCalculations();
+            });
+            
+            // Init
+            mainTypeSelect.value = 'prism';
+            subTypeSelect.value = 'circle';
+            mainTypeSelect.dispatchEvent(new Event('change'));
+            resize2DCanvases();
+        }
+
+        function buildInputs() {
+            inputContainer.innerHTML = '';
+            currentValues = {};
+            
+            let inputs = [];
+            
+            if (currentMainType === 'sphere') {
+                inputs.push({ id: 'r', label: '반지름 (r)', value: 6, min: 1, max: 20 });
+                baseDesc.textContent = '구는 평면 밑면이 없습니다. 단면은 항상 원입니다.';
+                netDesc.textContent = '구는 2차원 평면으로 완벽하게 펼칠 수 없는 입체도형입니다.';
+            } else if (currentSubType === 'circle') {
+                inputs.push({ id: 'r', label: '반지름 (r)', value: 5, min: 1, max: 20 });
+                inputs.push({ id: 'h', label: '높이 (h)', value: 10, min: 1, max: 30 });
+                baseDesc.textContent = '원은 무수히 많은 삼각형으로 쪼갤 수 있으며, 그 넓이는 πr² 입니다.';
+                if (currentMainType === 'prism') {
+                    netDesc.textContent = '밑면 2개(원)와 옆면 1개(직사각형)로 이루어집니다.';
+                } else {
+                    netDesc.textContent = '밑면 1개(원)와 옆면 1개(부채꼴)로 이루어집니다.';
+                }
+            } else {
+                inputs.push({ id: 'a', label: '밑면 한 변 (a)', value: 6, min: 1, max: 20 });
+                inputs.push({ id: 'h', label: '높이 (h)', value: 10, min: 1, max: 30 });
+                baseDesc.textContent = `정${currentSubType}각형 밑면은 중심에서 ${currentSubType}개의 이등변 삼각형으로 나눌 수 있습니다.`;
+                if (currentMainType === 'prism') {
+                    netDesc.textContent = `밑면 2개(정${currentSubType}각형)와 옆면 ${currentSubType}개(직사각형)로 이루어집니다.`;
+                } else {
+                    netDesc.textContent = `밑면 1개(정${currentSubType}각형)와 옆면 ${currentSubType}개(이등변삼각형)로 이루어집니다.`;
+                }
+            }
+
+            inputs.forEach(inp => {
+                currentValues[inp.id] = inp.value;
+                
+                const wrap = document.createElement('div');
+                wrap.className = 'flex flex-col';
+                
+                const label = document.createElement('label');
+                label.className = 'text-sm font-medium text-slate-600 mb-1';
+                label.textContent = inp.label;
+                
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.className = 'p-2 border border-slate-300 rounded focus:outline-none focus:border-indigo-500';
+                input.value = inp.value;
+                input.min = inp.min;
+                input.max = inp.max;
+                input.step = '0.1';
+                
+                input.addEventListener('input', (e) => {
+                    let val = parseFloat(e.target.value);
+                    if(isNaN(val) || val <= 0) val = 1;
+                    currentValues[inp.id] = val;
+                    updateCalculations();
+                });
+                
+                wrap.appendChild(label);
+                wrap.appendChild(input);
+                inputContainer.appendChild(wrap);
+            });
+        }
+
+        function formatNum(num) {
+            return num % 1 === 0 ? num : num.toFixed(2);
+        }
+
+        function updateCalculations() {
+            const v = currentValues;
+            let baseArea = 0, surface = 0, volume = 0;
+            let baseText = '', surfText = '', volText = '';
+
+            if (currentMainType === 'sphere') {
+                baseArea = 0;
+                surface = 4 * PI * v.r * v.r;
+                volume = (4/3) * PI * Math.pow(v.r, 3);
+                baseText = `구는 평면 형태의 밑면이 없습니다.`;
+                surfText = `4 × π × ${v.r}² = ${surface.toFixed(2)}`;
+                volText = `(4/3) × π × ${v.r}³ = ${volume.toFixed(2)}`;
+            } else if (currentSubType === 'circle') {
+                baseArea = PI * v.r * v.r;
+                baseText = `π × ${v.r}² = ${(baseArea).toFixed(2)}`;
+                if (currentMainType === 'prism') {
+                    surface = 2 * baseArea + 2 * PI * v.r * v.h;
+                    volume = baseArea * v.h;
+                    surfText = `밑넓이(${formatNum(baseArea)}) × 2 + 옆넓이(2π × ${v.r} × ${v.h}) = ${surface.toFixed(2)}`;
+                    volText = `밑넓이(${formatNum(baseArea)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                } else {
+                    let l = Math.sqrt(v.r*v.r + v.h*v.h);
+                    surface = baseArea + PI * v.r * l;
+                    volume = (1/3) * baseArea * v.h;
+                    surfText = `밑넓이(${baseArea.toFixed(2)}) + 옆넓이(π × ${v.r} × 모선${l.toFixed(2)}) = ${surface.toFixed(2)}`;
+                    volText = `(1/3) × 밑넓이(${baseArea.toFixed(2)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                }
+            } else {
+                let n = parseInt(currentSubType);
+                // Inradius (apothem)
+                let rIn = (v.a / 2) / Math.tan(PI / n);
+                // Area of one triangle
+                let triArea = 0.5 * v.a * rIn;
+                baseArea = n * triArea;
+                baseText = `(삼각형 넓이 ${triArea.toFixed(2)}) × ${n}개 = ${baseArea.toFixed(2)}`;
+                
+                if (currentMainType === 'prism') {
+                    surface = 2 * baseArea + (n * v.a * v.h);
+                    volume = baseArea * v.h;
+                    surfText = `밑넓이(${baseArea.toFixed(2)}) × 2 + 옆넓이(${v.a} × ${v.h} × ${n}) = ${surface.toFixed(2)}`;
+                    volText = `밑넓이(${baseArea.toFixed(2)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                } else {
+                    let l = Math.sqrt(v.h*v.h + rIn*rIn); // Slant height
+                    let sideArea = n * (0.5 * v.a * l);
+                    surface = baseArea + sideArea;
+                    volume = (1/3) * baseArea * v.h;
+                    surfText = `밑넓이(${baseArea.toFixed(2)}) + 옆면${n}개(${sideArea.toFixed(2)}) = ${surface.toFixed(2)}`;
+                    volText = `(1/3) × 밑넓이(${baseArea.toFixed(2)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                }
+            }
+
+            calcBase.textContent = baseText;
+            calcSurface.textContent = surfText;
+            calcVolume.textContent = volText;
+            
+            resultSurface.textContent = formatNum(surface);
+            resultVolume.textContent = formatNum(volume);
+
+            update3DScene();
+            draw2DVisuals();
+        }
+
+        // --- 5. Rendering 3D ---
+        function update3DScene() {
+            if (currentMesh) scene.remove(currentMesh);
+            if (edgesMesh) scene.remove(edgesMesh);
+
+            const v = currentValues;
+            let geometry;
+            let yOffset = 0;
+
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x6366f1, 
+                transparent: true,
+                opacity: 0.8,
+                shininess: 50,
+                side: THREE.DoubleSide
+            });
+
+            if (currentMainType === 'sphere') {
+                geometry = new THREE.SphereGeometry(v.r, 32, 32);
+            } else if (currentSubType === 'circle') {
+                if (currentMainType === 'prism') {
+                    geometry = new THREE.CylinderGeometry(v.r, v.r, v.h, 32);
+                } else {
+                    geometry = new THREE.ConeGeometry(v.r, v.h, 32);
+                    yOffset = v.h / 2;
+                }
+            } else {
+                let n = parseInt(currentSubType);
+                let rOut = (v.a / 2) / Math.sin(PI / n);
+                if (currentMainType === 'prism') {
+                    geometry = new THREE.CylinderGeometry(rOut, rOut, v.h, n);
+                } else {
+                    geometry = new THREE.ConeGeometry(rOut, v.h, n);
+                    yOffset = v.h / 2;
+                }
+                // Rotate to make one face parallel to front for better view
+                geometry.rotateY(Math.PI / n);
+            }
+
+            currentMesh = new THREE.Mesh(geometry, material);
+            currentMesh.position.y = 0;
+            if(currentMainType === 'pyramid') {
+                currentMesh.position.y -= yOffset * 0.5;
+            }
+            
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x312e81, linewidth: 2 });
+            edgesMesh = new THREE.LineSegments(edges, lineMaterial);
+            currentMesh.add(edgesMesh);
+
+            scene.add(currentMesh);
+
+            let maxDim = Math.max(v.r || 0, v.a || 0, v.h || 0);
+            camera.position.set(maxDim * 1.5, maxDim * 1.5, maxDim * 2.5);
+            controls.target.set(0,0,0);
+            controls.update();
+        }
+
+        // --- 6. Rendering 2D Canvas (Base & Net) ---
+        function draw2DVisuals() {
+            resize2DCanvases();
+            
+            const v = currentValues;
+            const wB = canvasBase.width;
+            const hB = canvasBase.height;
+            const wN = canvasNet.width;
+            const hN = canvasNet.height;
+            
+            ctxBase.clearRect(0, 0, wB, hB);
+            ctxNet.clearRect(0, 0, wN, hN);
+
+            const cxB = wB / 2;
+            const cyB = hB / 2;
+            const cxN = wN / 2;
+            const cyN = hN / 2;
+
+            ctxBase.strokeStyle = '#3b82f6';
+            ctxBase.lineWidth = 2;
+            ctxBase.fillStyle = 'rgba(59, 130, 246, 0.1)';
+
+            ctxNet.strokeStyle = '#10b981';
+            ctxNet.lineWidth = 2;
+            ctxNet.fillStyle = 'rgba(16, 185, 129, 0.1)';
+
+            const drawText = (ctx, text, x, y, color='#1e293b') => {
+                ctx.fillStyle = color;
+                ctx.font = '12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, x, y);
+            };
+
+            const drawLine = (ctx, x1, y1, x2, y2, dashed=false) => {
+                ctx.beginPath();
+                if(dashed) ctx.setLineDash([5, 5]);
+                else ctx.setLineDash([]);
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Draw Base
+            if (currentMainType === 'sphere') {
+                drawText(ctxBase, `구는 평면 밑면이 없습니다.`, cxB, cyB);
+                drawText(ctxNet, `전개도로 나타낼 수 없습니다.`, cxN, cyN - 15);
+                drawText(ctxNet, `(구면은 평면에 펼칠 수 없음)`, cxN, cyN + 15, '#64748b');
+                return;
+            }
+
+            if (currentSubType === 'circle') {
+                let rC = Math.min(wB, hB) * 0.35;
+                ctxBase.beginPath(); ctxBase.arc(cxB, cyB, rC, 0, PI*2); ctxBase.fill(); ctxBase.stroke();
+                drawLine(ctxBase, cxB, cyB, cxB + rC, cyB, true);
+                drawText(ctxBase, `r=${v.r}`, cxB + rC/2, cyB - 10);
+                
+                // Circle Net
+                if (currentMainType === 'prism') {
+                    let rectW = wN * 0.6; let rectH = hN * 0.4;
+                    let netR = rectW / (2 * PI) * 0.8; 
+                    ctxNet.fillRect(cxN - rectW/2, cyN - rectH/2, rectW, rectH);
+                    ctxNet.strokeRect(cxN - rectW/2, cyN - rectH/2, rectW, rectH);
+                    ctxNet.beginPath(); ctxNet.arc(cxN, cyN - rectH/2 - netR, netR, 0, PI*2); ctxNet.fill(); ctxNet.stroke();
+                    ctxNet.beginPath(); ctxNet.arc(cxN, cyN + rectH/2 + netR, netR, 0, PI*2); ctxNet.fill(); ctxNet.stroke();
+                    drawText(ctxNet, `2πr`, cxN, cyN - rectH/2 + 10);
+                    drawText(ctxNet, `h=${v.h}`, cxN - rectW/2 + 20, cyN);
+                } else {
+                    let l = Math.sqrt(v.r*v.r + v.h*v.h);
+                    let angle = (v.r / l) * PI * 2;
+                    let sr = hN * 0.4;
+                    ctxNet.beginPath();
+                    ctxNet.moveTo(cxN, cyN - sr*0.3);
+                    ctxNet.arc(cxN, cyN - sr*0.3, sr, PI/2 - angle/2, PI/2 + angle/2);
+                    ctxNet.closePath();
+                    ctxNet.fill(); ctxNet.stroke();
+                    let circR = sr * (v.r / l);
+                    let circY = cyN - sr*0.3 + sr + circR;
+                    ctxNet.beginPath(); ctxNet.arc(cxN, circY, circR, 0, PI*2); ctxNet.fill(); ctxNet.stroke();
+                    drawText(ctxNet, `모선 l`, cxN - sr/2, cyN);
+                    drawText(ctxNet, `r=${v.r}`, cxN, circY);
+                }
+            } else {
+                // n-gon Base
+                let n = parseInt(currentSubType);
+                let rOutBase = Math.min(wB, hB) * 0.4;
+                let pts = [];
+                ctxBase.beginPath();
+                for(let i=0; i<n; i++) {
+                    let angle = -PI/2 + (i * 2 * PI / n);
+                    let x = cxB + Math.cos(angle) * rOutBase;
+                    let y = cyB + Math.sin(angle) * rOutBase;
+                    pts.push({x, y});
+                    if(i===0) ctxBase.moveTo(x, y);
+                    else ctxBase.lineTo(x, y);
+                }
+                ctxBase.closePath();
+                ctxBase.fill(); ctxBase.stroke();
+                
+                // Draw internal triangles
+                pts.forEach(p => {
+                    drawLine(ctxBase, cxB, cyB, p.x, p.y, true);
+                });
+                drawText(ctxBase, `a=${v.a}`, (pts[0].x + pts[1].x)/2 + 15, (pts[0].y + pts[1].y)/2);
+
+                // n-gon Net
+                if (currentMainType === 'prism') {
+                    let rectW = (wN * 0.8) / n;
+                    let rectH = hN * 0.4;
+                    let startX = cxN - (rectW * n) / 2;
+                    
+                    for(let i=0; i<n; i++) {
+                        let rx = startX + i * rectW;
+                        let ry = cyN - rectH/2;
+                        ctxNet.fillRect(rx, ry, rectW, rectH);
+                        ctxNet.strokeRect(rx, ry, rectW, rectH);
+                    }
+                    // Simplified representation of top/bottom bases on middle rectangle
+                    let midIdx = Math.floor(n/2);
+                    let mx = startX + midIdx * rectW + rectW/2;
+                    
+                    let drawPolygon = (cx, cy, radius, rotation, flip) => {
+                        ctxNet.beginPath();
+                        for(let i=0; i<n; i++) {
+                            let angle = rotation + (i * 2 * PI / n);
+                            let x = cx + Math.cos(angle) * radius;
+                            let y = cy + Math.sin(angle) * radius * (flip ? -1 : 1);
+                            if(i===0) ctxNet.moveTo(x, y);
+                            else ctxNet.lineTo(x, y);
+                        }
+                        ctxNet.closePath();
+                        ctxNet.fill(); ctxNet.stroke();
+                    };
+                    
+                    let polyR = rectW * 0.8;
+                    drawPolygon(mx, cyN - rectH/2 - polyR, polyR, PI/2, false);
+                    drawPolygon(mx, cyN + rectH/2 + polyR, polyR, -PI/2, true);
+                    
+                    drawText(ctxNet, `h=${v.h}`, startX + 15, cyN);
+                    drawText(ctxNet, `a=${v.a}`, startX + rectW/2, cyN - rectH/2 + 10);
+                } else {
+                    // Pyramid Net: Star shape
+                    let rOutNet = Math.min(wN, hN) * 0.15;
+                    let nPts = [];
+                    ctxNet.beginPath();
+                    for(let i=0; i<n; i++) {
+                        let angle = -PI/2 + (i * 2 * PI / n);
+                        let x = cxN + Math.cos(angle) * rOutNet;
+                        let y = cyN + Math.sin(angle) * rOutNet;
+                        nPts.push({x, y, angle});
+                        if(i===0) ctxNet.moveTo(x, y);
+                        else ctxNet.lineTo(x, y);
+                    }
+                    ctxNet.closePath();
+                    ctxNet.fill(); ctxNet.stroke();
+                    
+                    let rIn = rOutNet * Math.cos(PI/n);
+                    let triH = rOutNet * 1.5; // Visual slant
+                    
+                    for(let i=0; i<n; i++) {
+                        let p1 = nPts[i];
+                        let p2 = nPts[(i+1)%n];
+                        
+                        let midAngle = p1.angle + PI/n;
+                        let tipX = cxN + Math.cos(midAngle) * (rIn + triH);
+                        let tipY = cyN + Math.sin(midAngle) * (rIn + triH);
+                        
+                        ctxNet.beginPath();
+                        ctxNet.moveTo(p1.x, p1.y);
+                        ctxNet.lineTo(p2.x, p2.y);
+                        ctxNet.lineTo(tipX, tipY);
+                        ctxNet.closePath();
+                        ctxNet.fill(); ctxNet.stroke();
+                    }
+                    drawText(ctxNet, `a=${v.a}`, cxN, cyN);
+                }
+            }
+        }
+
+        // Initialize
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
