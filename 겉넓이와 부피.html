@@ -3,49 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>입체도형 겉넓이와 부피 학습기</title>
+    <title>입체도형 겉넓이와 부피</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
-        body { font-family: 'Inter', 'Pretendard', sans-serif; background-color: #f3f4f6; }
-        .canvas-container { position: relative; width: 100%; height: 300px; background: #ffffff; border-radius: 0.75rem; overflow: hidden; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
+        body { font-family: 'Inter', 'Pretendard', sans-serif; background-color: #f3f4f6; font-size: 10pt; }
+        .canvas-container { position: relative; width: 100%; height: 100%; min-height: 400px; background: #ffffff; border-radius: 0.75rem; overflow: hidden; touch-action: none; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .math-text { font-family: 'Georgia', serif; font-style: italic; }
+        
+        /* 3D Label Styles */
+        .label-3d { position: absolute; background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e1; padding: 4px 8px; border-radius: 6px; font-size: 10pt; font-weight: bold; color: #334155; pointer-events: none; transform: translate(-50%, -50%); z-index: 10; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; line-height: 1.4; }
     </style>
 </head>
 <body class="text-slate-800 h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-white shadow-sm py-4 px-6 z-10 flex-shrink-0">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <h1 class="text-2xl font-bold text-indigo-600 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                입체도형 탐구 생활
+    <header class="bg-white shadow-sm py-3 px-6 z-10 flex-shrink-0">
+        <div class="max-w-[1400px] mx-auto flex items-center justify-between">
+            <h1 class="text-lg font-bold text-indigo-600 flex items-center gap-2">
+                입체도형 겉넓이와 부피
             </h1>
-            <p class="text-sm text-slate-500 hidden sm:block">겉넓이와 부피의 원리를 시각적으로 이해해보세요.</p>
+            <p class="text-slate-500 hidden sm:block text-sm">빨간색 조절점을 마우스로 드래그하거나 좌측에 값을 입력하여 조절해 보세요.</p>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow flex flex-col md:flex-row overflow-hidden max-w-7xl w-full mx-auto p-4 gap-6">
+    <main class="flex-grow flex flex-col md:flex-row overflow-hidden max-w-[1400px] w-full mx-auto p-4 gap-4">
         
-        <!-- Left Sidebar: Controls & Calculations -->
-        <aside class="w-full md:w-80 lg:w-96 flex flex-col gap-4 overflow-y-auto pr-2 pb-20 md:pb-0">
-            
+        <!-- Left Sidebar: Controls & Inputs -->
+        <aside class="w-full md:w-64 flex flex-col gap-4 flex-shrink-0 z-20 overflow-y-auto pb-10 md:pb-0">
             <!-- Shape Selection -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="font-semibold text-lg mb-3">1. 도형 선택</h2>
-                <div class="flex gap-2">
-                    <select id="mainTypeSelect" class="w-1/2 p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="font-semibold mb-3 text-sm text-slate-700">도형 선택</h2>
+                <div class="flex flex-col gap-2">
+                    <select id="mainTypeSelect" class="w-full p-2 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
                         <option value="prism">기둥</option>
                         <option value="pyramid">뿔</option>
                         <option value="sphere">구</option>
                     </select>
-                    <select id="subTypeSelect" class="w-1/2 p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
+                    <select id="subTypeSelect" class="w-full p-2 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
                         <option value="3">삼각</option>
                         <option value="4">사각</option>
                         <option value="5">오각</option>
@@ -56,63 +56,62 @@
             </div>
 
             <!-- Dimensions Input -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="font-semibold text-lg mb-3">2. 치수 입력</h2>
-                <div id="inputContainer" class="space-y-3">
-                    <!-- Inputs injected here by JS -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="font-semibold mb-3 text-sm text-slate-700">치수 입력 (직접 수정 가능)</h2>
+                <div id="inputsContainer" class="flex flex-col gap-3">
+                    <!-- Inputs injected here dynamically -->
                 </div>
             </div>
-
-            <!-- Calculation Results -->
-            <div class="bg-indigo-50 p-5 rounded-xl shadow-sm border border-indigo-100">
-                <h2 class="font-semibold text-lg mb-4 text-indigo-900">3. 계산 결과 및 원리</h2>
-                <div class="space-y-4 text-sm">
-                    <div class="bg-white p-3 rounded-lg shadow-sm">
-                        <div class="font-medium text-slate-700 mb-1">밑넓이 (<span class="math-text">A</span>)</div>
-                        <div id="calcBase" class="text-slate-600 text-xs break-words font-mono"></div>
-                    </div>
-                    <div class="bg-white p-3 rounded-lg shadow-sm border-l-4 border-emerald-400">
-                        <div class="font-medium text-slate-700 mb-1 flex justify-between">
-                            <span>겉넓이 (<span class="math-text">S</span>)</span>
-                            <span id="resultSurface" class="font-bold text-emerald-600 text-base"></span>
-                        </div>
-                        <div id="calcSurface" class="text-slate-600 text-xs break-words mt-1 font-mono"></div>
-                    </div>
-                    <div class="bg-white p-3 rounded-lg shadow-sm border-l-4 border-blue-400">
-                        <div class="font-medium text-slate-700 mb-1 flex justify-between">
-                            <span>부피 (<span class="math-text">V</span>)</span>
-                            <span id="resultVolume" class="font-bold text-blue-600 text-base"></span>
-                        </div>
-                        <div id="calcVolume" class="text-slate-600 text-xs break-words mt-1 font-mono"></div>
-                    </div>
-                </div>
+            
+            <div class="bg-indigo-50 p-4 rounded-xl shadow-sm border border-indigo-100 text-xs text-indigo-800 leading-relaxed">
+                <strong>조작 방법:</strong><br>
+                1. <strong>3D 배경</strong>을 드래그하여 회전<br>
+                2. <strong>빨간 점</strong>을 잡고 끌어서 크기 조절<br>
+                3. 위의 <strong>치수 입력창</strong>에 숫자 직접 입력<br>
+                4. <strong>전개도</strong> 마우스 휠로 <strong>확대/축소</strong>, 드래그로 <strong>상하좌우 이동</strong>
             </div>
         </aside>
 
-        <!-- Right Content: Visualizations -->
-        <section class="flex-grow flex flex-col gap-4 overflow-y-auto pb-10">
+        <!-- Right Content: Side-by-Side Visualizations -->
+        <section class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto lg:overflow-hidden pb-10 lg:pb-0">
+            
             <!-- 3D View -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex-grow min-h-[300px] flex flex-col">
-                <div class="flex justify-between items-center mb-2">
-                    <h2 class="font-semibold text-lg">3D 뷰어</h2>
-                    <span class="text-xs text-slate-400">마우스로 회전/확대 가능</span>
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col relative min-h-[400px]">
+                <div class="flex justify-between items-center mb-2 px-1">
+                    <h2 class="font-semibold text-sm flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span> 3D 뷰어 (크기 조절)
+                    </h2>
                 </div>
-                <div id="canvas3d" class="canvas-container flex-grow"></div>
+                <div id="canvas3d" class="canvas-container flex-grow border border-slate-100 rounded-lg">
+                    <!-- Labels injected here by JS -->
+                </div>
+                <!-- Volume Calculation Overlay -->
+                <div class="absolute bottom-5 left-5 right-5 bg-white/95 p-3 rounded-lg border border-blue-200 shadow-md pointer-events-none backdrop-blur-sm z-20">
+                    <div class="text-[11px] font-bold text-blue-600 mb-1">부피 (V) 계산 원리</div>
+                    <div id="overlayVolume" class="text-xs text-slate-700 leading-normal whitespace-normal"></div>
+                </div>
             </div>
 
-            <!-- 2D Principles -->
-            <div class="grid grid-cols-1 gap-4">
-                <!-- Net (Unfolding) -->
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                    <h2 class="font-semibold text-md mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 전개도 (겉넓이 원리)
+            <!-- Net View -->
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col relative min-h-[400px]">
+                <div class="flex justify-between items-center mb-2 px-1">
+                    <h2 class="font-semibold text-sm flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 전개도 
+                        <span class="text-[10px] text-slate-400 font-normal ml-1">(마우스 휠: 확대/축소, 드래그: 이동)</span>
                     </h2>
-                    <p class="text-xs text-slate-500 mb-3" id="netDesc">입체도형을 펼쳐 모든 면의 넓이를 합산합니다.</p>
-                    <div class="relative w-full aspect-video bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center p-4">
-                        <canvas id="canvasNet" class="w-full h-full object-contain"></canvas>
-                    </div>
+                    <span class="text-xs text-slate-400" id="netDesc"></span>
+                </div>
+                <div class="relative w-full flex-grow bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center p-2 overflow-hidden">
+                    <!-- Added cursor classes for dragging hint -->
+                    <canvas id="canvasNet" class="w-full h-full object-contain cursor-grab active:cursor-grabbing"></canvas>
+                </div>
+                <!-- Surface Area Calculation Overlay -->
+                <div class="absolute bottom-5 left-5 right-5 bg-white/95 p-3 rounded-lg border border-emerald-200 shadow-md pointer-events-none backdrop-blur-sm z-20">
+                    <div class="text-[11px] font-bold text-emerald-600 mb-1">겉넓이 (S) 계산 원리</div>
+                    <div id="overlaySurface" class="text-xs text-slate-700 leading-normal whitespace-normal"></div>
                 </div>
             </div>
+
         </section>
     </main>
 
@@ -120,46 +119,230 @@
         const PI = Math.PI;
         
         let currentMainType = 'prism';
-        let currentSubType = 'circle';
-        let currentValues = {};
+        let currentSubType = '3';
+        
+        // w: 가로/밑변, d: 세로/밑면높이, h: 입체높이, r: 반지름
+        let currentValues = { w: 6, d: 6, h: 10, r: 5 };
+
+        // --- 전개도 인터랙션(패닝 및 줌) 상태 변수 ---
+        let isNetDragging = false;
+        let netDragStartX = 0;
+        let netDragStartY = 0;
+        let netOffsetX = 0;
+        let netOffsetY = 0;
+        let netZoom = 1.3; // 기본 크기를 기존보다 조금 더 크게 시작
 
         const mainTypeSelect = document.getElementById('mainTypeSelect');
         const subTypeSelect = document.getElementById('subTypeSelect');
-        const inputContainer = document.getElementById('inputContainer');
-        const calcBase = document.getElementById('calcBase');
-        const calcSurface = document.getElementById('calcSurface');
-        const calcVolume = document.getElementById('calcVolume');
-        const resultSurface = document.getElementById('resultSurface');
-        const resultVolume = document.getElementById('resultVolume');
+        const inputsContainer = document.getElementById('inputsContainer');
         const netDesc = document.getElementById('netDesc');
         const canvasNet = document.getElementById('canvasNet');
         const ctxNet = canvasNet.getContext('2d');
+        const overlayVolume = document.getElementById('overlayVolume');
+        const overlaySurface = document.getElementById('overlaySurface');
 
         // Three.js Setup
         const container3D = document.getElementById('canvas3d');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffffff);
+        scene.background = new THREE.Color(0xf8fafc);
         const camera = new THREE.PerspectiveCamera(45, container3D.clientWidth / container3D.clientHeight, 0.1, 1000);
         camera.position.set(20, 20, 30);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container3D.clientWidth, container3D.clientHeight);
         container3D.appendChild(renderer.domElement);
+        
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         
-        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); dirLight.position.set(10, 20, 10); scene.add(dirLight);
-        const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.4); dirLight2.position.set(-10, 10, -10); scene.add(dirLight2);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.5); dirLight.position.set(10, 20, 10); scene.add(dirLight);
+        const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.3); dirLight2.position.set(-10, 10, -10); scene.add(dirLight2);
+
+        const gridHelper = new THREE.GridHelper(40, 40, 0xcbd5e1, 0xe2e8f0);
+        gridHelper.position.y = -0.01;
+        scene.add(gridHelper);
 
         let currentMesh = null;
         let edgesMesh = null;
+        
+        const handles = [];
+        let handleMaterial = new THREE.MeshBasicMaterial({ color: 0xef4444, depthTest: false });
+        let dragPlane = new THREE.Plane();
+        let raycaster = new THREE.Raycaster();
+        let mouse = new THREE.Vector2();
+        let draggedHandle = null;
+        let intersection = new THREE.Vector3();
+
+        let labelH = document.createElement('div'); labelH.className = 'label-3d'; container3D.appendChild(labelH);
+        let labelW = document.createElement('div'); labelW.className = 'label-3d'; container3D.appendChild(labelW);
+        let labelD = document.createElement('div'); labelD.className = 'label-3d'; container3D.appendChild(labelD);
+
+        function createHandle(type) {
+            let geom = new THREE.SphereGeometry(0.6, 16, 16);
+            let mesh = new THREE.Mesh(geom, handleMaterial);
+            mesh.userData.type = type; 
+            mesh.renderOrder = 1;
+            scene.add(mesh);
+            handles.push(mesh);
+            return mesh;
+        }
+
+        let handleH = createHandle('h');
+        let handleW = createHandle('w'); 
+        let handleD = createHandle('d'); 
+
+        // ---------------- DOM Inputs Binding ----------------
+        function buildInputs() {
+            inputsContainer.innerHTML = '';
+            const fields = [];
+
+            if (currentMainType === 'sphere') {
+                fields.push({ id: 'r', label: '반지름 (r)' });
+            } else if (currentSubType === 'circle') {
+                fields.push({ id: 'r', label: '밑면 반지름 (r)' });
+                fields.push({ id: 'h', label: '입체도형의 높이 (h)' });
+            } else {
+                let wLabel = currentSubType === '4' ? '밑면 가로길이' : (currentSubType === '3' ? '밑면 가로(밑변)길이' : '밑면 한 변 길이');
+                let dLabel = currentSubType === '4' ? '밑면 세로길이' : '밑면 세로(높이)길이';
+                fields.push({ id: 'w', label: wLabel });
+                if (currentSubType === '3' || currentSubType === '4') {
+                    fields.push({ id: 'd', label: dLabel });
+                }
+                fields.push({ id: 'h', label: '입체도형의 높이 (h)' });
+            }
+
+            fields.forEach(field => {
+                const wrap = document.createElement('div');
+                wrap.className = 'flex items-center justify-between bg-white border border-slate-200 rounded px-2 py-1.5 shadow-sm';
+                
+                const label = document.createElement('label');
+                label.className = 'text-xs font-medium text-slate-600';
+                label.textContent = field.label;
+                
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = `input_${field.id}`;
+                input.className = 'w-16 p-1 text-right border border-slate-300 rounded focus:outline-none focus:border-indigo-500 text-sm';
+                input.value = currentValues[field.id];
+                input.min = '1'; input.step = '0.1';
+                
+                input.addEventListener('input', (e) => {
+                    let val = parseFloat(e.target.value);
+                    if(!isNaN(val) && val >= 0.1) {
+                        currentValues[field.id] = val;
+                        updateCalculations();
+                    }
+                });
+                
+                wrap.appendChild(label);
+                wrap.appendChild(input);
+                inputsContainer.appendChild(wrap);
+            });
+        }
+
+        function updateInputsFromDrag() {
+            ['w', 'd', 'h', 'r'].forEach(key => {
+                const el = document.getElementById(`input_${key}`);
+                if (el) el.value = currentValues[key];
+            });
+        }
+
+        // ---------------- 3D Drag Events ----------------
+        renderer.domElement.addEventListener('pointerdown', (e) => {
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            let intersects = raycaster.intersectObjects(handles);
+
+            if (intersects.length > 0) {
+                controls.enabled = false; 
+                draggedHandle = intersects[0].object;
+                let normal = camera.position.clone().sub(draggedHandle.position).normalize();
+                dragPlane.setFromNormalAndCoplanarPoint(normal, draggedHandle.position);
+            }
+        });
+
+        renderer.domElement.addEventListener('pointermove', (e) => {
+            if (!draggedHandle) return;
+
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            if (raycaster.ray.intersectPlane(dragPlane, intersection)) {
+                if (draggedHandle.userData.type === 'h') {
+                    let newH = Math.max(1, intersection.y * (currentMainType === 'pyramid' ? 1 : 1));
+                    currentValues.h = parseFloat(newH.toFixed(1));
+                } 
+                else if (draggedHandle.userData.type === 'w') {
+                    let dist = Math.abs(intersection.x);
+                    if(currentMainType === 'sphere' || currentSubType === 'circle') {
+                        currentValues.r = Math.max(1, parseFloat(dist.toFixed(1)));
+                    } else {
+                        currentValues.w = Math.max(1, parseFloat((dist * 2).toFixed(1)));
+                    }
+                }
+                else if (draggedHandle.userData.type === 'd') {
+                    let dist = Math.abs(intersection.z);
+                    currentValues.d = Math.max(1, parseFloat((dist * 2).toFixed(1)));
+                }
+                updateInputsFromDrag();
+                updateCalculations();
+            }
+        });
+
+        window.addEventListener('pointerup', () => {
+            controls.enabled = true;
+            draggedHandle = null;
+        });
 
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
+            updateLabelsPosition();
             renderer.render(scene, camera);
         }
         animate();
+
+        function updateLabelsPosition() {
+            const updateLabel = (label, mesh, text, offsetX = 0, offsetY = 0) => {
+                if(!mesh.visible) { label.style.display = 'none'; return; }
+                label.style.display = 'block';
+                label.innerHTML = text;
+                
+                let vector = mesh.position.clone();
+                vector.project(camera);
+                
+                let x = (vector.x * .5 + .5) * container3D.clientWidth;
+                let y = (vector.y * -.5 + .5) * container3D.clientHeight;
+                
+                label.style.left = `${x + offsetX}px`;
+                label.style.top = `${y + offsetY}px`; 
+            };
+
+            const v = currentValues;
+            updateLabel(labelH, handleH, `입체도형 높이<br>= ${formatNum(v.h)}`, 0, -40);
+            
+            if (currentMainType === 'sphere') {
+                updateLabel(labelW, handleW, `반지름<br>= ${formatNum(v.r)}`, 50, -10);
+                labelD.style.display = 'none';
+            } else if (currentSubType === 'circle') {
+                updateLabel(labelW, handleW, `반지름<br>= ${formatNum(v.r)}`, 50, 0);
+                labelD.style.display = 'none';
+            } else if (currentSubType === '3') {
+                updateLabel(labelW, handleW, `가로(밑변)길이<br>= ${formatNum(v.w)}`, 55, 10);
+                updateLabel(labelD, handleD, `세로(높이)길이<br>= ${formatNum(v.d)}`, -55, 30);
+            } else if (currentSubType === '4') {
+                updateLabel(labelW, handleW, `가로길이<br>= ${formatNum(v.w)}`, 50, 10);
+                updateLabel(labelD, handleD, `세로길이<br>= ${formatNum(v.d)}`, -50, 30);
+            } else {
+                updateLabel(labelW, handleW, `한 변 길이<br>= ${formatNum(v.w)}`, 50, 10);
+                labelD.style.display = 'none';
+            }
+        }
 
         window.addEventListener('resize', () => {
             if(container3D) {
@@ -169,6 +352,13 @@
             }
             draw2DVisuals();
         });
+
+        // 도형이 변경될 때마다 화면 리셋
+        function resetNetView() {
+            netOffsetX = 0;
+            netOffsetY = 0;
+            netZoom = 1.3;
+        }
 
         function initApp() {
             mainTypeSelect.addEventListener('change', (e) => {
@@ -180,131 +370,116 @@
                     subTypeSelect.disabled = false;
                     subTypeSelect.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
+                resetNetView();
+                updateDesc();
                 buildInputs();
                 updateCalculations();
             });
             subTypeSelect.addEventListener('change', (e) => {
                 currentSubType = e.target.value;
+                resetNetView();
+                updateDesc();
                 buildInputs();
                 updateCalculations();
             });
             
             mainTypeSelect.value = 'prism';
-            subTypeSelect.value = 'circle';
+            subTypeSelect.value = '3'; 
             mainTypeSelect.dispatchEvent(new Event('change'));
         }
 
-        function buildInputs() {
-            inputContainer.innerHTML = '';
-            currentValues = {};
-            let inputs = [];
-            
+        function updateDesc() {
             if (currentMainType === 'sphere') {
-                inputs.push({ id: 'r', label: '반지름 (r)', value: 6, min: 1, max: 20 });
-                netDesc.textContent = '구는 2차원 평면으로 완벽하게 펼칠 수 없는 입체도형입니다.';
+                netDesc.textContent = '구는 펼칠 수 없음';
             } else if (currentSubType === 'circle') {
-                inputs.push({ id: 'r', label: '반지름 (r)', value: 5, min: 1, max: 20 });
-                inputs.push({ id: 'h', label: '높이 (h)', value: 10, min: 1, max: 30 });
-                if (currentMainType === 'prism') {
-                    netDesc.textContent = '원기둥의 전개도는 직사각형 1개와 원 2개로 이루어집니다.';
-                } else {
-                    netDesc.textContent = '원뿔의 전개도는 부채꼴 1개와 원 1개로 이루어집니다.';
-                }
+                if (currentMainType === 'prism') netDesc.textContent = '직사각형 1개, 원 2개';
+                else netDesc.textContent = '부채꼴 1개, 원 1개';
             } else {
-                inputs.push({ id: 'a', label: '밑면 한 변 (a)', value: 6, min: 1, max: 20 });
-                inputs.push({ id: 'h', label: '높이 (h)', value: 10, min: 1, max: 30 });
-                if (currentMainType === 'prism') {
-                    netDesc.textContent = `정${currentSubType}각기둥의 전개도는 직사각형 ${currentSubType}개와 정${currentSubType}각형 2개로 이루어집니다.`;
-                } else {
-                    netDesc.textContent = `정${currentSubType}각뿔의 전개도는 정${currentSubType}각형 1개와 이등변삼각형 ${currentSubType}개로 이루어집니다.`;
-                }
+                if (currentMainType === 'prism') netDesc.textContent = `직사각형 ${currentSubType}개, 다각형 2개`;
+                else netDesc.textContent = `다각형 1개, 삼각형 ${currentSubType}개`;
             }
-
-            inputs.forEach(inp => {
-                currentValues[inp.id] = inp.value;
-                const wrap = document.createElement('div');
-                wrap.className = 'flex flex-col';
-                
-                const label = document.createElement('label');
-                label.className = 'text-sm font-medium text-slate-600 mb-1';
-                label.textContent = inp.label;
-                
-                const input = document.createElement('input');
-                input.type = 'number';
-                input.className = 'p-2 border border-slate-300 rounded focus:outline-none focus:border-indigo-500';
-                input.value = inp.value;
-                input.min = inp.min; input.max = inp.max; input.step = '0.1';
-                
-                input.addEventListener('input', (e) => {
-                    let val = parseFloat(e.target.value);
-                    if(isNaN(val) || val <= 0) val = 1;
-                    currentValues[inp.id] = val;
-                    updateCalculations();
-                });
-                
-                wrap.appendChild(label);
-                wrap.appendChild(input);
-                inputContainer.appendChild(wrap);
-            });
         }
 
         function formatNum(num) {
-            return num % 1 === 0 ? num : num.toFixed(2);
+            return num % 1 === 0 ? num : num.toFixed(1);
         }
 
         function updateCalculations() {
             const v = currentValues;
             let baseArea = 0, surface = 0, volume = 0;
-            let baseText = '', surfText = '', volText = '';
+            let surfText = '', volText = '';
 
             if (currentMainType === 'sphere') {
                 surface = 4 * PI * v.r * v.r;
                 volume = (4/3) * PI * Math.pow(v.r, 3);
-                baseText = `해당 없음 (구는 밑면이 없습니다)`;
-                surfText = `4 × π × ${v.r}² = ${surface.toFixed(2)}`;
-                volText = `(4/3) × π × ${v.r}³ = ${volume.toFixed(2)}`;
+                surfText = `겉넓이 = 4 × π × 반지름²<br> = 4 × π × ${formatNum(v.r)}²`;
+                volText = `부피 = 4/3 × π × 반지름³<br> = 4/3 × π × ${formatNum(v.r)}³`;
             } else if (currentSubType === 'circle') {
                 baseArea = PI * v.r * v.r;
-                baseText = `π × ${v.r}² = ${(baseArea).toFixed(2)}`;
                 if (currentMainType === 'prism') {
                     surface = 2 * baseArea + 2 * PI * v.r * v.h;
                     volume = baseArea * v.h;
-                    surfText = `밑넓이(${formatNum(baseArea)}) × 2 + 옆넓이(2π × ${v.r} × ${v.h}) = ${surface.toFixed(2)}`;
-                    volText = `밑넓이(${formatNum(baseArea)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                    surfText = `[밑넓이(π × 반지름²) × 2] + [옆넓이(밑면 둘레(2πr) × 입체도형의 높이)]<br> = (π × ${formatNum(v.r)}² × 2) + (2π × ${formatNum(v.r)} × ${formatNum(v.h)})`;
+                    volText = `밑넓이(π × 반지름²) × 입체도형의 높이<br> = (π × ${formatNum(v.r)}²) × ${formatNum(v.h)}`;
                 } else {
                     let l = Math.sqrt(v.r*v.r + v.h*v.h);
                     surface = baseArea + PI * v.r * l;
                     volume = (1/3) * baseArea * v.h;
-                    surfText = `밑넓이(${baseArea.toFixed(2)}) + 옆넓이(π × ${v.r} × 모선${l.toFixed(2)}) = ${surface.toFixed(2)}`;
-                    volText = `(1/3) × 밑넓이(${baseArea.toFixed(2)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                    surfText = `밑넓이(π × 반지름²) + 옆넓이(π × 반지름 × 모선길이)<br> = (π × ${formatNum(v.r)}²) + (π × ${formatNum(v.r)} × ${formatNum(l)})`;
+                    volText = `1/3 × 밑넓이(π × 반지름²) × 입체도형의 높이<br> = 1/3 × (π × ${formatNum(v.r)}²) × ${formatNum(v.h)}`;
                 }
-            } else {
-                let n = parseInt(currentSubType);
-                let rIn = (v.a / 2) / Math.tan(PI / n);
-                let triArea = 0.5 * v.a * rIn;
-                baseArea = n * triArea;
-                baseText = `(${n} × a²) / (4 × tan(π/${n})) = ${baseArea.toFixed(2)}`;
-                
+            } else if (currentSubType === '3') {
+                baseArea = 0.5 * v.w * v.d;
+                let sEdge = Math.sqrt(Math.pow(v.w/2, 2) + Math.pow(v.d, 2));
                 if (currentMainType === 'prism') {
-                    surface = 2 * baseArea + (n * v.a * v.h);
+                    surface = 2 * baseArea + (v.w + 2 * sEdge) * v.h;
                     volume = baseArea * v.h;
-                    surfText = `밑넓이(${baseArea.toFixed(2)}) × 2 + 옆넓이(${v.a} × ${v.h} × ${n}) = ${surface.toFixed(2)}`;
-                    volText = `밑넓이(${baseArea.toFixed(2)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                    surfText = `[밑넓이(½ × 가로(밑변)길이 × 세로(높이)길이) × 2] <br>+ [옆넓이(밑면 둘레 × 입체도형의 높이)]<br> = (½ × ${formatNum(v.w)} × ${formatNum(v.d)} × 2) + (${formatNum(v.w + 2*sEdge)} × ${formatNum(v.h)})`;
+                    volText = `밑넓이(½ × 가로(밑변)길이 × 세로(높이)길이) × 입체도형의 높이<br> = (½ × ${formatNum(v.w)} × ${formatNum(v.d)}) × ${formatNum(v.h)}`;
+                } else {
+                    let lBase = Math.sqrt(v.h*v.h + Math.pow(v.d/3, 2));
+                    let centroidDist = (v.w * v.d) / (3 * sEdge);
+                    let lSide = Math.sqrt(v.h*v.h + Math.pow(centroidDist, 2));
+                    surface = baseArea + 0.5*v.w*lBase + sEdge*lSide;
+                    volume = (1/3) * baseArea * v.h;
+                    surfText = `밑넓이(½ × 가로(밑변)길이 × 세로(높이)길이) <br>+ 옆넓이(3개의 삼각형 면적 합)<br> = (½ × ${formatNum(v.w)} × ${formatNum(v.d)}) + ${formatNum(surface - baseArea)}`;
+                    volText = `1/3 × 밑넓이(½ × 가로(밑변)길이 × 세로(높이)길이) × 입체도형의 높이<br> = 1/3 × (½ × ${formatNum(v.w)} × ${formatNum(v.d)}) × ${formatNum(v.h)}`;
+                }
+            } else if (currentSubType === '4') {
+                baseArea = v.w * v.d;
+                if (currentMainType === 'prism') {
+                    surface = 2 * baseArea + 2 * (v.w + v.d) * v.h;
+                    volume = baseArea * v.h;
+                    surfText = `[밑넓이(가로길이 × 세로길이) × 2] <br>+ [옆넓이(밑면 둘레 × 입체도형의 높이)]<br> = (${formatNum(v.w)} × ${formatNum(v.d)} × 2) + (${formatNum(2*(v.w+v.d))} × ${formatNum(v.h)})`;
+                    volText = `밑넓이(가로길이 × 세로길이) × 입체도형의 높이<br> = (${formatNum(v.w)} × ${formatNum(v.d)}) × ${formatNum(v.h)}`;
+                } else {
+                    let lW = Math.sqrt(v.h*v.h + Math.pow(v.d/2, 2));
+                    let lD = Math.sqrt(v.h*v.h + Math.pow(v.w/2, 2));
+                    surface = baseArea + v.w * lW + v.d * lD;
+                    volume = (1/3) * baseArea * v.h;
+                    surfText = `밑넓이(가로길이 × 세로길이) <br>+ 옆넓이(4개의 삼각형 면적 합)<br> = (${formatNum(v.w)} × ${formatNum(v.d)}) + (${formatNum(v.w*lW + v.d*lD)})`;
+                    volText = `1/3 × 밑넓이(가로길이 × 세로길이) × 입체도형의 높이<br> = 1/3 × (${formatNum(v.w)} × ${formatNum(v.d)}) × ${formatNum(v.h)}`;
+                }
+            } else { // 5, 6
+                let n = parseInt(currentSubType);
+                let rIn = (v.w / 2) / Math.tan(PI / n);
+                baseArea = n * (0.5 * v.w * rIn);
+                if (currentMainType === 'prism') {
+                    surface = 2 * baseArea + (n * v.w * v.h);
+                    volume = baseArea * v.h;
+                    surfText = `[밑넓이(${n} × ½ × 가로(밑변)길이 × 세로(중심거리)) × 2] <br>+ [옆넓이(${n} × 가로(밑변)길이 × 입체도형의 높이)]<br> = (${formatNum(baseArea)} × 2) + (${n} × ${formatNum(v.w)} × ${formatNum(v.h)})`;
+                    volText = `밑넓이(${n} × ½ × 가로(밑변)길이 × 세로(중심거리)) × 입체도형의 높이<br> = ${formatNum(baseArea)} × ${formatNum(v.h)}`;
                 } else {
                     let l = Math.sqrt(v.h*v.h + rIn*rIn); 
-                    let sideArea = n * (0.5 * v.a * l);
-                    surface = baseArea + sideArea;
+                    surface = baseArea + n * (0.5 * v.w * l);
                     volume = (1/3) * baseArea * v.h;
-                    surfText = `밑넓이(${baseArea.toFixed(2)}) + 옆면${n}개(${sideArea.toFixed(2)}) = ${surface.toFixed(2)}`;
-                    volText = `(1/3) × 밑넓이(${baseArea.toFixed(2)}) × 높이(${v.h}) = ${volume.toFixed(2)}`;
+                    surfText = `밑넓이(${n} × ½ × 가로(밑변)길이 × 세로(중심거리)) <br>+ 옆넓이(${n} × ½ × 가로(밑변)길이 × 옆면높이)<br> = ${formatNum(baseArea)} + (${n} × ½ × ${formatNum(v.w)} × ${formatNum(l)})`;
+                    volText = `1/3 × 밑넓이(${n} × ½ × 가로(밑변)길이 × 세로(중심거리)) × 입체도형의 높이<br> = 1/3 × ${formatNum(baseArea)} × ${formatNum(v.h)}`;
                 }
             }
 
-            calcBase.textContent = baseText;
-            calcSurface.textContent = surfText;
-            calcVolume.textContent = volText;
-            resultSurface.textContent = formatNum(surface);
-            resultVolume.textContent = formatNum(volume);
+            overlaySurface.innerHTML = surfText + `<br><span class="text-emerald-600 font-bold text-sm">= ${formatNum(surface)}</span>`;
+            overlayVolume.innerHTML = volText + `<br><span class="text-blue-600 font-bold text-sm">= ${formatNum(volume)}</span>`;
 
             update3DScene();
             draw2DVisuals();
@@ -316,7 +491,6 @@
 
             const v = currentValues;
             let geometry;
-            let yOffset = 0;
 
             const material = new THREE.MeshPhongMaterial({ 
                 color: 0x6366f1, transparent: true, opacity: 0.8, shininess: 50, side: THREE.DoubleSide
@@ -324,39 +498,59 @@
 
             if (currentMainType === 'sphere') {
                 geometry = new THREE.SphereGeometry(v.r, 32, 32);
+                handleH.visible = false; handleD.visible = false;
+                handleW.position.set(v.r, 0, 0);
             } else if (currentSubType === 'circle') {
-                if (currentMainType === 'prism') {
-                    geometry = new THREE.CylinderGeometry(v.r, v.r, v.h, 32);
+                if (currentMainType === 'prism') geometry = new THREE.CylinderGeometry(v.r, v.r, v.h, 32);
+                else geometry = new THREE.ConeGeometry(v.r, v.h, 32);
+                geometry.translate(0, v.h/2, 0); 
+                handleH.visible = true; handleW.visible = true; handleD.visible = false;
+                handleH.position.set(0, v.h, 0);
+                handleW.position.set(v.r, 0, 0);
+            } else if (currentSubType === '3') {
+                if (currentMainType === 'prism') geometry = new THREE.CylinderGeometry(1, 1, 1, 3);
+                else geometry = new THREE.ConeGeometry(1, 1, 3);
+                geometry.scale(v.w / Math.sqrt(3), v.h, v.d / 1.5);
+                geometry.translate(0, v.h/2, 0);
+                handleH.visible = true; handleW.visible = true; handleD.visible = true;
+                handleH.position.set(0, v.h, 0);
+                handleW.position.set(v.w/2, 0, 0);
+                handleD.position.set(0, 0, v.d/2);
+            } else if (currentSubType === '4') {
+                if (currentMainType === 'prism') geometry = new THREE.BoxGeometry(1, 1, 1);
+                else geometry = new THREE.ConeGeometry(1, 1, 4);
+                if(currentMainType === 'prism') {
+                    geometry.scale(v.w, v.h, v.d);
                 } else {
-                    geometry = new THREE.ConeGeometry(v.r, v.h, 32);
-                    yOffset = v.h / 2;
+                    geometry.scale(v.w / Math.sqrt(2), v.h, v.d / Math.sqrt(2));
+                    geometry.rotateY(Math.PI/4);
                 }
+                geometry.translate(0, v.h/2, 0);
+                handleH.visible = true; handleW.visible = true; handleD.visible = true;
+                handleH.position.set(0, v.h, 0);
+                handleW.position.set(v.w/2, 0, 0);
+                handleD.position.set(0, 0, v.d/2);
             } else {
                 let n = parseInt(currentSubType);
-                let rOut = (v.a / 2) / Math.sin(PI / n);
-                if (currentMainType === 'prism') {
-                    geometry = new THREE.CylinderGeometry(rOut, rOut, v.h, n);
-                } else {
-                    geometry = new THREE.ConeGeometry(rOut, v.h, n);
-                    yOffset = v.h / 2;
-                }
+                let rOut = (v.w / 2) / Math.sin(PI / n);
+                if (currentMainType === 'prism') geometry = new THREE.CylinderGeometry(rOut, rOut, v.h, n);
+                else geometry = new THREE.ConeGeometry(rOut, v.h, n);
                 geometry.rotateY(Math.PI / n);
+                geometry.translate(0, v.h/2, 0);
+                handleH.visible = true; handleW.visible = true; handleD.visible = false;
+                handleH.position.set(0, v.h, 0);
+                handleW.position.set(rOut, 0, 0);
             }
 
             currentMesh = new THREE.Mesh(geometry, material);
-            currentMesh.position.y = (currentMainType === 'pyramid') ? -yOffset * 0.5 : 0;
-            
             const edges = new THREE.EdgesGeometry(geometry);
             const lineMaterial = new THREE.LineBasicMaterial({ color: 0x312e81, linewidth: 2 });
             edgesMesh = new THREE.LineSegments(edges, lineMaterial);
             currentMesh.add(edgesMesh);
             scene.add(currentMesh);
-
-            let maxDim = Math.max(v.r || 0, v.a || 0, v.h || 0);
-            camera.position.set(maxDim * 1.5, maxDim * 1.5, maxDim * 2.5);
-            controls.target.set(0,0,0);
-            controls.update();
         }
+
+        let currentScale = 1;
 
         function draw2DVisuals() {
             const netRect = canvasNet.parentElement.getBoundingClientRect();
@@ -368,28 +562,40 @@
             const hN = canvasNet.height;
             ctxNet.clearRect(0, 0, wN, hN);
             
-            const cx = wN / 2;
-            const cy = hN / 2;
+            // netOffsetX, netOffsetY를 반영하여 중심 위치 변경 (패닝)
+            const cx = (wN / 2) + netOffsetX;
+            const cy = (hN / 2 - 20) + netOffsetY;
 
             ctxNet.strokeStyle = '#10b981';
-            // 테두리 선 두께를 1에서 0.5로 더 얇게 변경했습니다.
             ctxNet.lineWidth = 0.5; 
             ctxNet.fillStyle = 'rgba(16, 185, 129, 0.1)';
             ctxNet.lineJoin = 'round';
 
-            const drawText = (text, x, y, color='#1e293b') => {
+            const drawText = (text, x, y, color='#1e293b', align='center') => {
+                ctxNet.save();
+                ctxNet.scale(1/currentScale, 1/currentScale);
                 ctxNet.fillStyle = color;
-                ctxNet.font = '13px Inter, sans-serif';
-                ctxNet.textAlign = 'center';
+                ctxNet.font = 'bold 10pt sans-serif'; 
+                ctxNet.textAlign = align;
                 ctxNet.textBaseline = 'middle';
-                ctxNet.fillText(text, x, y);
+                
+                const lines = text.split('\n');
+                const lineHeight = 18; 
+                const startY = (y * currentScale) - ((lines.length - 1) * lineHeight / 2);
+                
+                lines.forEach((line, index) => {
+                    ctxNet.fillText(line, x * currentScale, startY + (index * lineHeight));
+                });
+                
+                ctxNet.restore();
             };
 
             const strokeFill = () => { ctxNet.fill(); ctxNet.stroke(); };
 
             if (currentMainType === 'sphere') {
-                drawText(`구는 평면으로 정확하게 펼칠 수 없습니다.`, cx, cy - 10);
-                drawText(`(비유클리드 기하학적 성질)`, cx, cy + 15, '#64748b');
+                currentScale = 1;
+                drawText(`구는 평면으로 정확하게\n펼칠 수 없습니다.`, cx, cy - 10);
+                drawText(`반지름\n= ${formatNum(v.r)}`, cx, cy + 30, '#64748b');
                 return;
             }
 
@@ -398,30 +604,29 @@
 
             if (currentSubType === 'circle') {
                 if (currentMainType === 'prism') {
-                    let netW = 2 * Math.PI * v.r;
+                    let netW = (2 * Math.PI * v.r) * 1.5;
                     let netH = v.h + 4 * v.r;
-                    let scale = Math.min(wN / netW, hN / netH) * 0.7;
-                    ctxNet.scale(scale, scale);
-
-                    let rectW = 2 * Math.PI * v.r;
-                    let rectH = v.h;
+                    // netZoom을 곱해 기본 크기를 키우고 확대/축소 지원 (기존 0.5에서 0.65로 상향)
+                    currentScale = Math.min(wN / netW, hN / netH) * 0.65 * netZoom;
+                    ctxNet.scale(currentScale, currentScale);
+                    let rectW = 2 * Math.PI * v.r; let rectH = v.h;
                     
-                    ctxNet.beginPath();
-                    ctxNet.rect(-rectW/2, -rectH/2, rectW, rectH);
-                    strokeFill();
+                    ctxNet.beginPath(); ctxNet.rect(-rectW/2, -rectH/2, rectW, rectH); strokeFill();
+                    
+                    drawText(`입체도형의 높이\n= ${formatNum(v.h)}`, -rectW/2 - 20/currentScale, 0, '#1e293b', 'right'); 
+                    drawText(`원둘레\n= ${formatNum(rectW)}`, 0, -rectH/2 - 25/currentScale, '#1e293b');
 
-                    ctxNet.beginPath();
-                    ctxNet.arc(0, -rectH/2 - v.r, v.r, 0, 2*Math.PI);
-                    strokeFill();
+                    ctxNet.beginPath(); ctxNet.arc(0, -rectH/2 - v.r, v.r, 0, 2*Math.PI); strokeFill();
+                    drawText(`반지름\n= ${formatNum(v.r)}`, 0, -rectH/2 - v.r * 2 - 20/currentScale);
 
-                    ctxNet.beginPath();
-                    ctxNet.arc(0, rectH/2 + v.r, v.r, 0, 2*Math.PI);
-                    strokeFill();
+                    ctxNet.beginPath(); ctxNet.arc(0, rectH/2 + v.r, v.r, 0, 2*Math.PI); strokeFill();
+                    drawText(`반지름\n= ${formatNum(v.r)}`, 0, rectH/2 + v.r * 2 + 20/currentScale);
                 } else {
                     let l = Math.sqrt(v.r*v.r + v.h*v.h);
                     let angle = (v.r / l) * 2 * Math.PI; 
-                    let scale = Math.min(wN / (2*l), hN / (l + 2*v.r)) * 0.8;
-                    ctxNet.scale(scale, scale);
+                    let netW = (2*l) * 1.3; 
+                    currentScale = Math.min(wN / netW, hN / (l + 2*v.r)) * 0.7 * netZoom;
+                    ctxNet.scale(currentScale, currentScale);
 
                     let yOffset = v.r; 
                     ctxNet.beginPath();
@@ -429,36 +634,45 @@
                     ctxNet.arc(0, -l/2 - yOffset, l, Math.PI/2 - angle/2, Math.PI/2 + angle/2);
                     ctxNet.closePath();
                     strokeFill();
+                    drawText(`모선길이\n= ${formatNum(l)}`, l/2 + 20/currentScale, -l/2 - yOffset/2, '#1e293b', 'left'); 
 
                     ctxNet.beginPath();
                     ctxNet.arc(0, l/2 - yOffset + v.r, v.r, 0, 2*Math.PI);
                     strokeFill();
+                    drawText(`반지름\n= ${formatNum(v.r)}`, 0, l/2 - yOffset + v.r * 2 + 20/currentScale);
                 }
             } else {
                 let n = parseInt(currentSubType);
                 if (currentMainType === 'prism') {
-                    let R = (v.a / 2) / Math.sin(Math.PI / n);
-                    let rIn = (v.a / 2) / Math.tan(Math.PI / n);
-                    let rectW = v.a * n;
+                    let R = (v.w / 2) / Math.sin(Math.PI / n);
+                    let rIn = (v.w / 2) / Math.tan(Math.PI / n);
+                    let rectW = v.w * n;
                     let rectH = v.h;
-                    let netW = rectW;
+                    let netW = rectW * 1.5; 
                     let netH = rectH + 4 * R;
-                    let scale = Math.min(wN / netW, hN / netH) * 0.8;
-                    ctxNet.scale(scale, scale);
+                    currentScale = Math.min(wN / netW, hN / netH) * 0.65 * netZoom; 
+                    ctxNet.scale(currentScale, currentScale);
 
                     let startX = -rectW / 2;
                     for(let i=0; i<n; i++) {
                         ctxNet.beginPath();
-                        ctxNet.rect(startX + i * v.a, -rectH/2, v.a, rectH);
+                        ctxNet.rect(startX + i * v.w, -rectH/2, v.w, rectH);
                         strokeFill();
+                        if (i === 0) {
+                            let label = (n === 4) ? `가로길이\n= ${formatNum(v.w)}` : `가로(밑변)길이\n= ${formatNum(v.w)}`;
+                            drawText(label, startX + v.w/2, rectH/2 + 30/currentScale);
+                        }
                     }
+                    
+                    drawText(`입체도형의 높이\n= ${formatNum(v.h)}`, startX - 20/currentScale, 0, '#1e293b', 'right'); 
 
                     let m = Math.floor(n/2);
-                    let cxPoly = startX + m * v.a + v.a/2;
+                    let cxPoly = startX + m * v.w + v.w/2;
 
-                    const drawPoly = (cx, cy, baseAngle) => {
+                    const drawPoly = (cx, cy, isTop) => {
                         ctxNet.beginPath();
                         for(let i=0; i<n; i++) {
+                            let baseAngle = isTop ? Math.PI/2 : -Math.PI/2;
                             let a = baseAngle - Math.PI/n + (i * 2 * Math.PI / n);
                             let px = cx + R * Math.cos(a);
                             let py = cy + R * Math.sin(a);
@@ -467,19 +681,27 @@
                         }
                         ctxNet.closePath();
                         strokeFill();
+                        
+                        let hLabelText = '';
+                        if(n === 3) hLabelText = `세로(높이)길이\n= ${formatNum(v.d)}`;
+                        else if(n === 4) hLabelText = `세로길이\n= ${formatNum(v.d)}`;
+                        else hLabelText = `세로(중심거리)\n= ${formatNum(rIn)}`;
+
+                        drawText(hLabelText, cx + R + 20/currentScale, cy, '#1e293b', 'left');
                     };
 
-                    drawPoly(cxPoly, -rectH/2 - rIn, Math.PI/2);
-                    drawPoly(cxPoly, rectH/2 + rIn, -Math.PI/2);
+                    drawPoly(cxPoly, -rectH/2 - rIn, true);
+                    drawPoly(cxPoly, rectH/2 + rIn, false);
+
                 } else {
-                    let R = (v.a / 2) / Math.sin(Math.PI / n);
-                    let rIn = (v.a / 2) / Math.tan(Math.PI / n);
+                    let R = (v.w / 2) / Math.sin(Math.PI / n);
+                    let rIn = (v.w / 2) / Math.tan(Math.PI / n);
                     let l = Math.sqrt(v.h*v.h + rIn*rIn); 
                     
-                    let netW = 2 * (rIn + l);
+                    let netW = 2 * (rIn + l) * 1.4; 
                     let netH = 2 * (rIn + l);
-                    let scale = Math.min(wN / netW, hN / netH) * 0.9;
-                    ctxNet.scale(scale, scale);
+                    currentScale = Math.min(wN / netW, hN / netH) * 0.7 * netZoom;
+                    ctxNet.scale(currentScale, currentScale);
 
                     let pts = [];
                     ctxNet.beginPath();
@@ -493,6 +715,16 @@
                     }
                     ctxNet.closePath();
                     strokeFill();
+                    
+                    let baseLabel = (n === 4) ? `가로길이\n= ${formatNum(v.w)}` : `가로(밑변)길이\n= ${formatNum(v.w)}`;
+                    drawText(baseLabel, 0, R + 30/currentScale);
+
+                    let hLabelText = '';
+                    if(n === 3) hLabelText = `세로(높이)길이\n= ${formatNum(v.d)}`;
+                    else if(n === 4) hLabelText = `세로길이\n= ${formatNum(v.d)}`;
+                    else hLabelText = `세로(중심거리)\n= ${formatNum(rIn)}`;
+                    
+                    drawText(hLabelText, -R - 20/currentScale, 0, '#1e293b', 'right');
 
                     for(let i=0; i<n; i++) {
                         let p1 = pts[i];
@@ -509,11 +741,68 @@
                         ctxNet.lineTo(tipX, tipY);
                         ctxNet.closePath();
                         strokeFill();
+                        
+                        if (i === 0) {
+                            drawText(`옆면높이\n= ${formatNum(l)}`, tipX + 20/currentScale, tipY/2, '#1e293b', 'left');
+                        }
                     }
                 }
             }
             ctxNet.restore();
         }
+
+        // --- 전개도 마우스/터치 인터랙션 (이동 및 확대/축소) 이벤트 리스너 추가 ---
+        canvasNet.addEventListener('mousedown', (e) => {
+            isNetDragging = true;
+            netDragStartX = e.clientX - netOffsetX;
+            netDragStartY = e.clientY - netOffsetY;
+            canvasNet.classList.remove('cursor-grab');
+            canvasNet.classList.add('cursor-grabbing');
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isNetDragging) return;
+            netOffsetX = e.clientX - netDragStartX;
+            netOffsetY = e.clientY - netDragStartY;
+            draw2DVisuals();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isNetDragging = false;
+            canvasNet.classList.remove('cursor-grabbing');
+            canvasNet.classList.add('cursor-grab');
+        });
+
+        // 휠 스크롤로 확대/축소
+        canvasNet.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomFactor = 0.1;
+            if (e.deltaY < 0) netZoom += zoomFactor;
+            else netZoom -= zoomFactor;
+            // 줌 크기 제한 (최소 0.3배 ~ 최대 5배)
+            netZoom = Math.max(0.3, Math.min(netZoom, 5));
+            draw2DVisuals();
+        }, { passive: false });
+
+        // 터치 이동 지원 (모바일 환경)
+        canvasNet.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isNetDragging = true;
+                netDragStartX = e.touches[0].clientX - netOffsetX;
+                netDragStartY = e.touches[0].clientY - netOffsetY;
+            }
+        }, {passive: true});
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isNetDragging || e.touches.length !== 1) return;
+            netOffsetX = e.touches[0].clientX - netDragStartX;
+            netOffsetY = e.touches[0].clientY - netDragStartY;
+            draw2DVisuals();
+        }, {passive: true});
+
+        window.addEventListener('touchend', () => {
+            isNetDragging = false;
+        });
 
         window.onload = initApp;
 
