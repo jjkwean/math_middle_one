@@ -9,30 +9,13 @@
     <!-- Google Fonts Inter & Noto Sans KR -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
-    <style>
-        *, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }
-        *,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-5{bottom:1.25rem}.right-2{right:0.5rem}.right-5{right:1.25rem}.top-0{top:0px}.top-1\/2{top:50%}.top-20{top:5rem}.z-20{z-index:20}.z-30{z-index:30}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-top:auto;margin-bottom:auto}.mb-1{margin-bottom:0.25rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mr-1{margin-right:0.25rem}.mt-1{margin-top:0.25rem}.mt-6{margin-top:1.5rem}.mb-2{margin-bottom:0.5rem}.mt-2{margin-top:0.5rem}.ml-3{margin-left:0.75rem}.line-clamp-2{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-\[calc\(100vh-7rem\)\]{height:calc(100vh - 7rem)}.h-fit{height:-moz-fit-content;height:fit-content}.min-h-screen{min-height:100vh}.min-h-\[500px\]{min-height:500px}.w-16{width:4rem}.w-80{width:20rem}.w-full{width:100%}.min-w-0{min-width:0px}.max-w-2xl{max-width:42rem}.max-w-7xl{max-width:80rem}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-20{--tw-translate-y:5rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-0{--tw-translate-y:0px;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes bounce{0%, 100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,0.2,1)}}.animate-bounce{animation:bounce 1s infinite}.cursor-grab{cursor:grab}.cursor-not-allowed{cursor:not-allowed}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-0\.5{gap:0.125rem}.gap-1\.5{gap:0.375rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.rounded-md{border-radius:0.375rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-b-2{border-bottom-width:2px}.border-t{border-top-width:1px}.border-l{border-left-width:1px}.border-dashed{border-style:dashed}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-transparent{border-color:transparent}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-indigo-50\/90{background-color:rgb(238 242 255 / 0.9)}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-50\/50{background-color:rgb(248 250 252 / 0.5)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-transparent{background-color:transparent}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-1{padding:0.25rem}.p-1\.5{padding:0.375rem}.p-2{padding:0.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-4{padding-bottom:1rem}.pt-3{padding-top:0.75rem}.pl-2{padding-left:0.5rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[10px\]{font-size:10px}.text-base{font-size:1rem;line-height:1.5rem}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.leading-snug{line-height:1.375}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248 / var(--tw-text-opacity, 1))}.text-indigo-500{--tw-text-opacity:1;color:rgb(99 102 241 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-indigo-700{--tw-text-opacity:1;color:rgb(67 56 202 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.opacity-30{opacity:0.3}.opacity-100{opacity:1}.opacity-40{opacity:0.4}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-150{transition-duration:150ms}.duration-200{transition-duration:200ms}.duration-300{transition-duration:300ms}.hover\:border-rose-200:hover{--tw-border-opacity:1;border-color:rgb(254 205 211 / var(--tw-border-opacity, 1))}.hover\:border-slate-300:hover{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.hover\:border-indigo-300:hover{--tw-border-opacity:1;border-color:rgb(165 180 252 / var(--tw-border-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100:hover{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.hover\:text-rose-500:hover{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.hover\:text-indigo-600:hover{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.hover\:text-rose-600:hover{--tw-text-opacity:1;color:rgb(225 29 72 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-indigo-600:focus{--tw-border-opacity:1;border-color:rgb(79 70 229 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-1:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-indigo-600:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(79 70 229 / var(--tw-ring-opacity, 1))}.active\:cursor-grabbing:active{cursor:grabbing}.group:hover .group-hover\:text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width: 640px){.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}
-    </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-5{bottom:1.25rem}.right-2{right:0.5rem}.right-5{right:1.25rem}.top-0{top:0px}.top-1\/2{top:50%}.top-20{top:5rem}.z-20{z-index:20}.z-30{z-index:30}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-top:auto;margin-bottom:auto}.mb-1{margin-bottom:0.25rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mr-1{margin-right:0.25rem}.mt-1{margin-top:0.25rem}.mt-6{margin-top:1.5rem}.mb-2{margin-bottom:0.5rem}.ml-3{margin-left:0.75rem}.mt-2{margin-top:0.5rem}.line-clamp-2{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-\[calc\(100vh-7rem\)\]{height:calc(100vh - 7rem)}.h-fit{height:-moz-fit-content;height:fit-content}.min-h-\[500px\]{min-height:500px}.min-h-screen{min-height:100vh}.w-16{width:4rem}.w-80{width:20rem}.w-full{width:100%}.min-w-0{min-width:0px}.max-w-2xl{max-width:42rem}.max-w-7xl{max-width:80rem}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-20{--tw-translate-y:5rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-0{--tw-translate-y:0px;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes bounce{0%, 100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,0.2,1)}}.animate-bounce{animation:bounce 1s infinite}.cursor-grab{cursor:grab}.cursor-not-allowed{cursor:not-allowed}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-0\.5{gap:0.125rem}.gap-1\.5{gap:0.375rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.rounded-md{border-radius:0.375rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-b-2{border-bottom-width:2px}.border-t{border-top-width:1px}.border-l{border-left-width:1px}.border-dashed{border-style:dashed}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-transparent{border-color:transparent}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105 / var(--tw-bg-opacity, 1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.bg-indigo-50\/90{background-color:rgb(238 242 255 / 0.9)}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-slate-50\/50{background-color:rgb(248 250 252 / 0.5)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-transparent{background-color:transparent}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-1{padding:0.25rem}.p-1\.5{padding:0.375rem}.p-2{padding:0.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-4{padding-bottom:1rem}.pl-2{padding-left:0.5rem}.pt-3{padding-top:0.75rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.leading-snug{line-height:1.375}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248 / var(--tw-text-opacity, 1))}.text-indigo-500{--tw-text-opacity:1;color:rgb(99 102 241 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-indigo-700{--tw-text-opacity:1;color:rgb(67 56 202 / var(--tw-text-opacity, 1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.opacity-30{opacity:0.3}.opacity-100{opacity:1}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-150{transition-duration:150ms}.duration-200{transition-duration:200ms}.duration-300{transition-duration:300ms}.hover\:border-rose-200:hover{--tw-border-opacity:1;border-color:rgb(254 205 211 / var(--tw-border-opacity, 1))}.hover\:border-slate-300:hover{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.hover\:border-indigo-300:hover{--tw-border-opacity:1;border-color:rgb(165 180 252 / var(--tw-border-opacity, 1))}.hover\:bg-emerald-700:hover{--tw-bg-opacity:1;background-color:rgb(4 120 87 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100:hover{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.hover\:text-rose-500:hover{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.hover\:text-indigo-600:hover{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.hover\:text-rose-600:hover{--tw-text-opacity:1;color:rgb(225 29 72 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-indigo-600:focus{--tw-border-opacity:1;border-color:rgb(79 70 229 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-1:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-indigo-600:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(79 70 229 / var(--tw-ring-opacity, 1))}.active\:cursor-grabbing:active{cursor:grabbing}.group:hover .group-hover\:text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width: 640px){.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-5{bottom:1.25rem}.right-2{right:0.5rem}.right-5{right:1.25rem}.top-0{top:0px}.top-1\/2{top:50%}.top-20{top:5rem}.z-20{z-index:20}.z-30{z-index:30}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-top:auto;margin-bottom:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.ml-3{margin-left:0.75rem}.mr-1{margin-right:0.25rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-6{margin-top:1.5rem}.line-clamp-2{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-\[calc\(100vh-7rem\)\]{height:calc(100vh - 7rem)}.h-fit{height:-moz-fit-content;height:fit-content}.min-h-\[500px\]{min-height:500px}.min-h-screen{min-height:100vh}.w-16{width:4rem}.w-80{width:20rem}.w-full{width:100%}.min-w-0{min-width:0px}.max-w-2xl{max-width:42rem}.max-w-7xl{max-width:80rem}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-20{--tw-translate-y:5rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-0{--tw-translate-y:0px;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes bounce{0%, 100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,0.2,1)}}.animate-bounce{animation:bounce 1s infinite}.cursor-grab{cursor:grab}.cursor-not-allowed{cursor:not-allowed}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\.5{gap:0.125rem}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-b-2{border-bottom-width:2px}.border-l{border-left-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-transparent{border-color:transparent}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105 / var(--tw-bg-opacity, 1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.bg-indigo-50\/90{background-color:rgb(238 242 255 / 0.9)}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-slate-50\/50{background-color:rgb(248 250 252 / 0.5)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-transparent{background-color:transparent}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.p-1{padding:0.25rem}.p-1\.5{padding:0.375rem}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-4{padding-bottom:1rem}.pl-2{padding-left:0.5rem}.pt-3{padding-top:0.75rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-5xl{font-size:3rem;line-height:1}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.leading-snug{line-height:1.375}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248 / var(--tw-text-opacity, 1))}.text-indigo-500{--tw-text-opacity:1;color:rgb(99 102 241 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-indigo-700{--tw-text-opacity:1;color:rgb(67 56 202 / var(--tw-text-opacity, 1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.opacity-30{opacity:0.3}.opacity-100{opacity:1}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-150{transition-duration:150ms}.duration-200{transition-duration:200ms}.duration-300{transition-duration:300ms}.hover\:border-indigo-300:hover{--tw-border-opacity:1;border-color:rgb(165 180 252 / var(--tw-border-opacity, 1))}.hover\:border-rose-200:hover{--tw-border-opacity:1;border-color:rgb(254 205 211 / var(--tw-border-opacity, 1))}.hover\:border-slate-300:hover{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.hover\:bg-emerald-700:hover{--tw-bg-opacity:1;background-color:rgb(4 120 87 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100:hover{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.hover\:text-indigo-600:hover{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.hover\:text-rose-500:hover{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.hover\:text-rose-600:hover{--tw-text-opacity:1;color:rgb(225 29 72 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-indigo-600:focus{--tw-border-opacity:1;border-color:rgb(79 70 229 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-1:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-indigo-600:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(79 70 229 / var(--tw-ring-opacity, 1))}.active\:cursor-grabbing:active{cursor:grabbing}.group:hover .group-hover\:text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width: 640px){.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}</style></head>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-5{bottom:1.25rem}.right-2{right:0.5rem}.right-5{right:1.25rem}.top-0{top:0px}.top-1\/2{top:50%}.top-20{top:5rem}.z-20{z-index:20}.z-30{z-index:30}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-top:auto;margin-bottom:auto}.mb-1{margin-bottom:0.25rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mr-1{margin-right:0.25rem}.mt-1{margin-top:0.25rem}.mt-6{margin-top:1.5rem}.mb-2{margin-bottom:0.5rem}.ml-3{margin-left:0.75rem}.mt-2{margin-top:0.5rem}.line-clamp-2{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-\[calc\(100vh-7rem\)\]{height:calc(100vh - 7rem)}.h-fit{height:-moz-fit-content;height:fit-content}.min-h-\[500px\]{min-height:500px}.min-h-screen{min-height:100vh}.w-16{width:4rem}.w-80{width:20rem}.w-full{width:100%}.min-w-0{min-width:0px}.max-w-2xl{max-width:42rem}.max-w-7xl{max-width:80rem}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-20{--tw-translate-y:5rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-0{--tw-translate-y:0px;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes bounce{0%, 100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,0.2,1)}}.animate-bounce{animation:bounce 1s infinite}.cursor-grab{cursor:grab}.cursor-not-allowed{cursor:not-allowed}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-0\.5{gap:0.125rem}.gap-1\.5{gap:0.375rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.rounded-md{border-radius:0.375rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-b-2{border-bottom-width:2px}.border-t{border-top-width:1px}.border-l{border-left-width:1px}.border-dashed{border-style:dashed}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-transparent{border-color:transparent}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105 / var(--tw-bg-opacity, 1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.bg-indigo-50\/90{background-color:rgb(238 242 255 / 0.9)}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-slate-50\/50{background-color:rgb(248 250 252 / 0.5)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-900\/40{background-color:rgb(15 23 42 / 0.4)}.bg-transparent{background-color:transparent}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-1{padding:0.25rem}.p-1\.5{padding:0.375rem}.p-2{padding:0.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.pb-4{padding-bottom:1rem}.pl-2{padding-left:0.5rem}.pt-3{padding-top:0.75rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.leading-snug{line-height:1.375}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248 / var(--tw-text-opacity, 1))}.text-indigo-500{--tw-text-opacity:1;color:rgb(99 102 241 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-indigo-700{--tw-text-opacity:1;color:rgb(67 56 202 / var(--tw-text-opacity, 1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.opacity-30{opacity:0.3}.opacity-100{opacity:1}.opacity-40{opacity:0.4}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-150{transition-duration:150ms}.duration-200{transition-duration:200ms}.duration-300{transition-duration:300ms}.hover\:border-rose-200:hover{--tw-border-opacity:1;border-color:rgb(254 205 211 / var(--tw-border-opacity, 1))}.hover\:border-slate-300:hover{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.hover\:border-indigo-300:hover{--tw-border-opacity:1;border-color:rgb(165 180 252 / var(--tw-border-opacity, 1))}.hover\:bg-blue-600:hover{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-emerald-700:hover{--tw-bg-opacity:1;background-color:rgb(4 120 87 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100:hover{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.hover\:text-rose-500:hover{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.hover\:text-indigo-600:hover{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.hover\:text-rose-600:hover{--tw-text-opacity:1;color:rgb(225 29 72 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-indigo-600:focus{--tw-border-opacity:1;border-color:rgb(79 70 229 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-1:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-indigo-600:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(79 70 229 / var(--tw-ring-opacity, 1))}.active\:cursor-grabbing:active{cursor:grabbing}.group:hover .group-hover\:text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width: 640px){.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}</style></head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
     <!-- Header Section -->
@@ -419,10 +402,15 @@
                         <i class="fa-regular fa-folder-open text-indigo-600 text-lg"></i>
                         <span id="contentMenuTitle" class="font-bold text-slate-800 text-lg">2.겉넓이와 부피</span>
                     </div>
-                    <!-- Always Available HTML Import Button -->
-                    <button onclick="triggerFileInput()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-file-import"></i> HTML 가져오기
-                    </button>
+                    <!-- Always Available URL Add & HTML Import Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="openAddUrlModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-link"></i> URL 추가
+                        </button>
+                        <button onclick="triggerFileInput()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-import"></i> HTML 가져오기
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Cards Grid Container -->
@@ -443,7 +431,6 @@
                         </p>
                         <p class="text-xs text-slate-600 mb-4 line-clamp-2">가져오기한 파일 (겉넓이와 부피.html)</p>
                     </div>
-
                     <div class="flex items-center justify-between pt-3 border-t border-slate-100 mt-2 text-xs">
                         <div class="flex gap-1">
                             <button onclick="openEditLinkModal('link_1793333175395_hpbq')" class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded transition-colors" title="수정">
@@ -458,6 +445,68 @@
                             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                         </button>
                     </div>
+                </div><div class="bg-white rounded-xl border border-slate-200 p-4 hover:border-indigo-300 hover:shadow-md transition-all flex flex-col justify-between group h-fit cursor-grab active:cursor-grabbing" draggable="true" data-link-id="link_1793604093756_o5lw">
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <h4 class="font-bold text-slate-800 text-base leading-snug group-hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-grip-vertical text-slate-300 group-hover:text-slate-400 text-xs"></i>
+                                찾아가는 실험_뿔의부피
+                            </h4>
+                            <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded font-mono flex-shrink-0 font-semibold">
+                                URL
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-3 break-all font-mono bg-slate-50 p-1.5 rounded border border-slate-100 flex items-center gap-1">
+                            <i class="fa-regular fa-file-code text-slate-400"></i>
+                            https://www.ebsmath.co.kr/resource/rscView?cate=221300&amp;cate2=221320&amp;cate3=221322&amp;rscTpDscd=RTP10&amp;grdCd=MGRD01&amp;sortType=C&amp;mngtPrdnYn=&amp;menuType=t&amp;itemSize=12&amp;level=&amp;type=S&amp;sno=21397&amp;historyYn=study&amp;evtSsnCd=&amp;add1=
+                        </p>
+                        <p class="text-xs text-slate-600 mb-4 line-clamp-2">EBS Math</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 mt-2 text-xs">
+                        <div class="flex gap-1">
+                            <button onclick="openEditLinkModal('link_1793604093756_o5lw')" class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded transition-colors" title="수정">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteLink('link_1793604093756_o5lw')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded transition-colors" title="삭제">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <button onclick="openHtmlFile('link_1793604093756_o5lw')" class="inline-flex items-center gap-1.5 text-xs bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white px-3 py-1.5 rounded-md font-medium transition-colors">
+                            <span>열기</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div><div class="bg-white rounded-xl border border-slate-200 p-4 hover:border-indigo-300 hover:shadow-md transition-all flex flex-col justify-between group h-fit cursor-grab active:cursor-grabbing" draggable="true" data-link-id="link_1793604129124_4e5p">
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <h4 class="font-bold text-slate-800 text-base leading-snug group-hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-grip-vertical text-slate-300 group-hover:text-slate-400 text-xs"></i>
+                                구를 구하다_구의 겉넓이
+                            </h4>
+                            <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded font-mono flex-shrink-0 font-semibold">
+                                URL
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-3 break-all font-mono bg-slate-50 p-1.5 rounded border border-slate-100 flex items-center gap-1">
+                            <i class="fa-regular fa-file-code text-slate-400"></i>
+                            https://www.ebsmath.co.kr/resource/rscView?cate=221300&amp;cate2=221320&amp;cate3=221322&amp;rscTpDscd=RTP10&amp;grdCd=MGRD01&amp;sortType=C&amp;mngtPrdnYn=&amp;menuType=t&amp;itemSize=12&amp;level=&amp;type=S&amp;sno=21394&amp;historyYn=study&amp;evtSsnCd=&amp;add1=
+                        </p>
+                        <p class="text-xs text-slate-600 mb-4 line-clamp-2">EBS Math</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 mt-2 text-xs">
+                        <div class="flex gap-1">
+                            <button onclick="openEditLinkModal('link_1793604129124_4e5p')" class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded transition-colors" title="수정">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteLink('link_1793604129124_4e5p')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded transition-colors" title="삭제">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <button onclick="openHtmlFile('link_1793604129124_4e5p')" class="inline-flex items-center gap-1.5 text-xs bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white px-3 py-1.5 rounded-md font-medium transition-colors">
+                            <span>열기</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
                 </div></div>
 
                 <!-- Empty State -->
@@ -466,10 +515,15 @@
                         <i class="fa-regular fa-folder-open"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-700 mb-1" id="emptyTitle">등록된 HTML 링크가 없습니다</h3>
-                    <p class="text-sm text-slate-500 max-w-sm mb-6" id="emptyDesc">'2.겉넓이와 부피' 메뉴에 HTML 파일을 <strong>드래그 &amp; 드롭</strong>하거나, 버튼을 눌러 추가해 보세요.</p>
-                    <button id="emptyImportBtn" onclick="triggerFileInput()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-all flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-file-import"></i> HTML 가져오기
-                    </button>
+                    <p class="text-sm text-slate-500 max-w-sm mb-6" id="emptyDesc">메뉴에 HTML 파일을 드래그 &amp; 드롭하거나, URL을 직접 등록해보세요.</p>
+                    <div class="flex items-center justify-center gap-2" id="emptyActionBtns">
+                        <button onclick="openAddUrlModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-all flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-link"></i> URL 추가
+                        </button>
+                        <button onclick="triggerFileInput()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-all flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-import"></i> HTML 가져오기
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>
@@ -478,15 +532,15 @@
     <!-- Modal 1: Add/Edit Menu Modal -->
     <div id="menuModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-xl border border-slate-100 max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-150">
-            <h3 class="text-lg font-bold text-slate-800 mb-4" id="menuModalTitle">3단계 서브메뉴 추가</h3>
+            <h3 class="text-lg font-bold text-slate-800 mb-4" id="menuModalTitle">메뉴 추가</h3>
             <form id="menuForm" onsubmit="handleMenuFormSubmit(event)">
-                <input type="hidden" id="menuParentId" value="menu_1792614696849">
+                <input type="hidden" id="menuParentId" value="">
                 <input type="hidden" id="menuEditId" value="">
 
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">메뉴 수준</label>
-                        <div id="menuTypeBadge" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg inline-block font-medium">3단계 서브메뉴 (상위: 2.입체도형의 성질)</div>
+                        <div id="menuTypeBadge" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg inline-block font-medium">1단계 상위 카테고리</div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1" for="menuNameInput">메뉴 이름 <span class="text-rose-500">*</span></label>
@@ -503,11 +557,11 @@
     </div>
 
     <!-- Modal 2: Edit Link Info Modal -->
-    <div id="editLinkModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div id="editLinkModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-xl border border-slate-100 max-w-md w-full p-6">
             <h3 class="text-lg font-bold text-slate-800 mb-4">링크 정보 수정</h3>
             <form id="editLinkForm" onsubmit="handleEditLinkSubmit(event)">
-                <input type="hidden" id="editLinkId" value="">
+                <input type="hidden" id="editLinkId" value="link_1793604129124_4e5p">
                 <div class="space-y-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">제목</label>
@@ -515,7 +569,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">상대 경로 파일명/주소</label>
-                        <input type="text" id="editLinkUrl" required="" class="w-full text-xs border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-600 font-mono" placeholder="예: ./subfolder/page.html">
+                        <input type="text" id="editLinkUrl" required="" class="w-full text-xs border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-600 font-mono" placeholder="예: ./subfolder/page.html 또는 https://...">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">설명</label>
@@ -530,10 +584,37 @@
         </div>
     </div>
 
+    <!-- Modal 3: Add URL Link Modal -->
+    <div id="addUrlModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-100 max-w-md w-full p-6">
+            <h3 class="text-lg font-bold text-slate-800 mb-4">외부 URL 링크 추가</h3>
+            <form id="addUrlForm" onsubmit="handleAddUrlSubmit(event)">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">제목 <span class="text-rose-500">*</span></label>
+                        <input type="text" id="addUrlTitle" required="" class="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-600" placeholder="예: 구글 홈페이지">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">연결할 주소(URL) <span class="text-rose-500">*</span></label>
+                        <input type="url" id="addUrlAddress" required="" class="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-600 font-mono" placeholder="예: https://www.google.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">설명</label>
+                        <input type="text" id="addUrlDesc" class="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-600" placeholder="링크에 대한 간단한 설명">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeAddUrlModal()" class="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">취소</button>
+                    <button type="submit" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">추가</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 text-white text-sm px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 transform transition-all duration-300 pointer-events-none z-50 translate-y-20 opacity-0">
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 text-white text-sm px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 transform transition-all duration-300 pointer-events-none z-50 translate-y-0 opacity-100">
         <i class="fa-solid fa-circle-check text-emerald-400"></i>
-        <span id="toastMsg">1개의 HTML 파일 링크가 상대 주소로 등록되었습니다.</span>
+        <span id="toastMsg">링크 정보가 수정되었습니다.</span>
     </div>
 
     <!-- Script Section -->
@@ -615,8 +696,7 @@
                               "title": "원주율",
                               "fileName": "원주율.html",
                               "url": "원주율.html",
-                              "description": "가져오기한 파일 (원주율.html)",
-                              "createdAt": "2026-10-22T00:00:00.000Z"
+                              "description": "가져오기한 파일 (원주율.html)"
                     },
                     {
                               "id": "link_1792614860198_nku4",
@@ -624,8 +704,7 @@
                               "title": "부채꼴 호의 길이와 넓이",
                               "fileName": "부채꼴 호의 길이와 넓이.html",
                               "url": "부채꼴 호의 길이와 넓이.html",
-                              "description": "가져오기한 파일 (부채꼴 호의 길이와 넓이.html)",
-                              "createdAt": "2026-10-22T00:00:00.000Z"
+                              "description": "가져오기한 파일 (부채꼴 호의 길이와 넓이.html)"
                     },
                     {
                               "id": "link_1792627674518_3ih6",
@@ -633,8 +712,7 @@
                               "title": "삼각형만들기",
                               "fileName": "삼각형만들기.html",
                               "url": "./삼각형만들기.html",
-                              "description": "가져오기한 파일 (삼각형만들기.html)",
-                              "createdAt": "2026-10-22T00:07:54.552Z"
+                              "description": "가져오기한 파일 (삼각형만들기.html)"
                     },
                     {
                               "id": "link_1792627696580_rnw7",
@@ -642,8 +720,7 @@
                               "title": "외각",
                               "fileName": "외각.html",
                               "url": "./외각.html",
-                              "description": "가져오기한 파일 (외각.html)",
-                              "createdAt": "2026-10-22T00:08:16.610Z"
+                              "description": "가져오기한 파일 (외각.html)"
                     },
                     {
                               "id": "link_1792627700862_tzrk",
@@ -651,8 +728,7 @@
                               "title": "대각선",
                               "fileName": "대각선.html",
                               "url": "./대각선.html",
-                              "description": "가져오기한 파일 (대각선.html)",
-                              "createdAt": "2026-10-22T00:08:20.913Z"
+                              "description": "가져오기한 파일 (대각선.html)"
                     },
                     {
                               "id": "link_1792627701995_286y",
@@ -660,8 +736,7 @@
                               "title": "triangle_game",
                               "fileName": "triangle_game.html",
                               "url": "./triangle_game.html",
-                              "description": "가져오기한 파일 (triangle_game.html)",
-                              "createdAt": "2026-10-22T00:08:22.069Z"
+                              "description": "가져오기한 파일 (triangle_game.html)"
                     },
                     {
                               "id": "link_1792627730889_d4kx",
@@ -669,8 +744,7 @@
                               "title": "다면체",
                               "fileName": "다면체.html",
                               "url": "./다면체.html",
-                              "description": "가져오기한 파일 (다면체.html)",
-                              "createdAt": "2026-10-22T00:08:50.939Z"
+                              "description": "가져오기한 파일 (다면체.html)"
                     },
                     {
                               "id": "link_1792992746126_1lge",
@@ -678,8 +752,7 @@
                               "title": "회전체",
                               "fileName": "회전체.html",
                               "url": "./회전체.html",
-                              "description": "가져오기한 파일 (회전체.html)",
-                              "createdAt": "2026-10-26T05:32:26.137Z"
+                              "description": "가져오기한 파일 (회전체.html)"
                     },
                     {
                               "id": "link_1793333175395_hpbq",
@@ -687,8 +760,25 @@
                               "title": "겉넓이와 부피",
                               "fileName": "겉넓이와 부피.html",
                               "url": "./겉넓이와 부피.html",
-                              "description": "가져오기한 파일 (겉넓이와 부피.html)",
-                              "createdAt": "2026-10-30T04:06:15.398Z"
+                              "description": "가져오기한 파일 (겉넓이와 부피.html)"
+                    },
+                    {
+                              "id": "link_1793604093756_o5lw",
+                              "menuId": "menu_1793333169931",
+                              "title": "찾아가는 실험_뿔의부피",
+                              "fileName": "",
+                              "url": "https://www.ebsmath.co.kr/resource/rscView?cate=221300&cate2=221320&cate3=221322&rscTpDscd=RTP10&grdCd=MGRD01&sortType=C&mngtPrdnYn=&menuType=t&itemSize=12&level=&type=S&sno=21397&historyYn=study&evtSsnCd=&add1=",
+                              "description": "EBS Math",
+                              "createdAt": "2026-11-02T07:21:33.756Z"
+                    },
+                    {
+                              "id": "link_1793604129124_4e5p",
+                              "menuId": "menu_1793333169931",
+                              "title": "구를 구하다_구의 겉넓이",
+                              "fileName": "",
+                              "url": "https://www.ebsmath.co.kr/resource/rscView?cate=221300&cate2=221320&cate3=221322&rscTpDscd=RTP10&grdCd=MGRD01&sortType=C&mngtPrdnYn=&menuType=t&itemSize=12&level=&type=S&sno=21394&historyYn=study&evtSsnCd=&add1=",
+                              "description": "EBS Math",
+                              "createdAt": "2026-11-02T07:22:09.124Z"
                     }
           ],
           "selectedMenuId": "menu_1793333169931"
@@ -765,9 +855,7 @@
             setupDragAndDrop();
         };
 
-        // --- Data Persistence: 깃허브에서 가져온 HTML 내장 데이터를 최우선으로 적용 ---
         function loadStore() {
-            // 초기 접속/새로고침 시 항상 HTML에 명시된 initialStore를 먼저 읽도록 세팅
             store = JSON.parse(JSON.stringify(initialStore));
         }
 
@@ -791,21 +879,18 @@
             }
         }
 
-        // --- GitHub 배포용 소스코드 내장 다운로드 ---
         function downloadHtmlForGithub() {
             let currentHtml = document.documentElement.outerHTML;
             const storeString = JSON.stringify(store, null, 12);
-            
             let updatedHtml = "";
             if (currentHtml.match(/const\s+initialStore\s*=/)) {
                 updatedHtml = currentHtml.replace(
-                    /const\s+initialStore\s*=\s*\{[\s\S]*?\};/ ,
-                    `const initialStore = ${JSON.stringify(store, null, 12)};`
+                    /const\s+initialStore\s*=\s*\{[\s\S]*?\};/,
+                    `const initialStore = ${storeString};`
                 );
             } else {
                 updatedHtml = currentHtml;
             }
-
             const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -814,7 +899,6 @@
             showToast('GitHub에 올릴 배포용 index.html이 생성되었습니다.');
         }
 
-        // --- Header Main Topic ---
         function renderMainTopic() {
             const input = document.getElementById('mainTopicInput');
             if (input) input.value = store.mainTopic || '내 웹 프로젝트 링크 관리자';
@@ -834,7 +918,6 @@
             return 3;
         }
 
-        // --- Dynamic Level Changing Functions ---
         function canPromoteMenu(menuId) {
             const menu = store.menus.find(m => m.id === menuId);
             return menu && menu.parentId !== null;
@@ -843,10 +926,8 @@
         function promoteMenu(menuId) {
             const menu = store.menus.find(m => m.id === menuId);
             if (!menu || !menu.parentId) return;
-
             const parent = store.menus.find(m => m.id === menu.parentId);
             if (!parent) return;
-
             menu.parentId = parent.parentId;
             saveStore();
             renderMenuTree();
@@ -856,40 +937,30 @@
         function canDemoteMenu(menuId) {
             const depth = getMenuDepth(menuId);
             if (depth >= 3) return false;
-
             const menu = store.menus.find(m => m.id === menuId);
             if (!menu) return false;
-
             const sameLevel = store.menus.filter(m => m.parentId === menu.parentId);
             const idx = sameLevel.findIndex(m => m.id === menuId);
-
             return idx > 0;
         }
 
         function demoteMenu(menuId) {
             const menu = store.menus.find(m => m.id === menuId);
             if (!menu) return;
-
             const sameLevel = store.menus.filter(m => m.parentId === menu.parentId);
             const idx = sameLevel.findIndex(m => m.id === menuId);
-
             if (idx <= 0) return;
-
             const targetParent = sameLevel[idx - 1];
             menu.parentId = targetParent.id;
-
             saveStore();
             renderMenuTree();
             showToast(`'${menu.name}' 메뉴가 '${targetParent.name}'의 하위 단계로 이동되었습니다.`);
         }
 
-        // --- Left Sidebar: Dynamic Menu Builder ---
         function renderMenuTree() {
             const container = document.getElementById('menuTree');
             container.innerHTML = '';
-
             const topMenus = store.menus.filter(m => !m.parentId);
-
             if (topMenus.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-8 text-slate-400">
@@ -899,25 +970,20 @@
                 `;
                 return;
             }
-
             topMenus.forEach((parent, index) => {
                 const subMenus = store.menus.filter(m => m.parentId === parent.id);
                 const isParentSelected = store.selectedMenuId === parent.id;
-
                 const parentEl = document.createElement('div');
                 parentEl.className = 'mb-1';
                 parentEl.setAttribute('draggable', 'true');
                 parentEl.dataset.menuId = parent.id;
-
                 parentEl.addEventListener('dragstart', (e) => handleMenuDragStart(e, parent.id));
                 parentEl.addEventListener('dragover', handleMenuDragOver);
                 parentEl.addEventListener('drop', (e) => handleMenuDrop(e, parent.id));
                 parentEl.addEventListener('dragend', handleMenuDragEnd);
-
                 const isFirstParent = index === 0;
                 const isLastParent = index === topMenus.length - 1;
                 const canDemote = canDemoteMenu(parent.id);
-
                 parentEl.innerHTML = `
                     <div class="group flex items-center justify-between p-2 rounded-lg text-sm transition-colors cursor-grab active:cursor-grabbing ${isParentSelected ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-700 hover:bg-slate-100'}"
                          onclick="selectMenu('${parent.id}')">
@@ -948,11 +1014,9 @@
                         </div>
                     </div>
                 `;
-
                 if (subMenus.length > 0) {
                     const childContainer = document.createElement('div');
                     childContainer.className = 'ml-3 pl-2 border-l border-slate-200 mt-1 space-y-1';
-
                     subMenus.forEach((child, childIndex) => {
                         const grandSubMenus = store.menus.filter(m => m.parentId === child.id);
                         const isChildSelected = store.selectedMenuId === child.id;
@@ -960,16 +1024,13 @@
                         childEl.className = 'mb-1';
                         childEl.setAttribute('draggable', 'true');
                         childEl.dataset.menuId = child.id;
-
                         childEl.addEventListener('dragstart', (e) => handleMenuDragStart(e, child.id));
                         childEl.addEventListener('dragover', handleMenuDragOver);
                         childEl.addEventListener('drop', (e) => handleMenuDrop(e, child.id));
                         childEl.addEventListener('dragend', handleMenuDragEnd);
-
                         const isFirstChild = childIndex === 0;
                         const isLastChild = childIndex === subMenus.length - 1;
                         const canDemoteChild = canDemoteMenu(child.id);
-
                         childEl.innerHTML = `
                             <div class="group flex items-center justify-between p-1.5 rounded-md text-xs transition-colors cursor-grab active:cursor-grabbing ${isChildSelected ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:bg-slate-100'}"
                                  onclick="event.stopPropagation(); selectMenu('${child.id}')">
@@ -1003,31 +1064,25 @@
                                 </div>
                             </div>
                         `;
-
                         if (grandSubMenus.length > 0) {
                             const grandChildContainer = document.createElement('div');
                             grandChildContainer.className = 'ml-3 pl-2 border-l border-slate-200 mt-1 space-y-1';
-
                             grandSubMenus.forEach((grandChild, grandIndex) => {
                                 const isGrandSelected = store.selectedMenuId === grandChild.id;
                                 const grandEl = document.createElement('div');
                                 grandEl.className = `group flex items-center justify-between p-1 rounded text-[11px] transition-colors cursor-grab active:cursor-grabbing ${isGrandSelected ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-500 hover:bg-slate-100'}`;
                                 grandEl.setAttribute('draggable', 'true');
                                 grandEl.dataset.menuId = grandChild.id;
-
                                 grandEl.addEventListener('dragstart', (e) => handleMenuDragStart(e, grandChild.id));
                                 grandEl.addEventListener('dragover', handleMenuDragOver);
                                 grandEl.addEventListener('drop', (e) => handleMenuDrop(e, grandChild.id));
                                 grandEl.addEventListener('dragend', handleMenuDragEnd);
-
                                 grandEl.onclick = (e) => {
                                     e.stopPropagation();
                                     selectMenu(grandChild.id);
                                 };
-
                                 const isFirstGrand = grandIndex === 0;
                                 const isLastGrand = grandIndex === grandSubMenus.length - 1;
-
                                 grandEl.innerHTML = `
                                     <div class="flex items-center gap-1.5 truncate flex-1 min-w-0">
                                         <i class="fa-solid fa-grip-vertical text-slate-300 text-[9px] group-hover:text-slate-400 flex-shrink-0"></i>
@@ -1054,41 +1109,29 @@
                                 `;
                                 grandChildContainer.appendChild(grandEl);
                             });
-
                             childEl.appendChild(grandChildContainer);
                         }
-
                         childContainer.appendChild(childEl);
                     });
-
                     parentEl.appendChild(childContainer);
                 }
-
                 container.appendChild(parentEl);
             });
         }
 
-        // --- Menu Up / Down Position Movement ---
         function moveMenu(menuId, direction) {
             const targetMenu = store.menus.find(m => m.id === menuId);
             if (!targetMenu) return;
-
             const sameLevelMenus = store.menus.filter(m => m.parentId === targetMenu.parentId);
             const currentIndex = sameLevelMenus.findIndex(m => m.id === menuId);
-
             if (currentIndex === -1) return;
-
             const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-
             if (newIndex < 0 || newIndex >= sameLevelMenus.length) return;
-
             const temp = sameLevelMenus[currentIndex];
             sameLevelMenus[currentIndex] = sameLevelMenus[newIndex];
             sameLevelMenus[newIndex] = temp;
-
             let newMenuList = [];
             let insertedSameLevel = false;
-
             store.menus.forEach(m => {
                 if (m.parentId === targetMenu.parentId) {
                     if (!insertedSameLevel) {
@@ -1099,58 +1142,40 @@
                     newMenuList.push(m);
                 }
             });
-
             store.menus = newMenuList;
             saveStore();
             renderMenuTree();
             showToast('메뉴 위치가 변경되었습니다.');
         }
 
-        // --- Menu Drag and Drop Handlers ---
         function handleMenuDragStart(e, menuId) {
             e.stopPropagation();
             draggedMenuId = menuId;
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', menuId);
-            setTimeout(() => {
-                if (e.target) e.target.classList.add('opacity-40');
-            }, 0);
+            setTimeout(() => { if (e.target) e.target.classList.add('opacity-40'); }, 0);
         }
 
-        function handleMenuDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.dataTransfer.dropEffect = 'move';
-        }
+        function handleMenuDragOver(e) { e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = 'move'; }
 
         function handleMenuDrop(e, targetMenuId) {
-            e.preventDefault();
-            e.stopPropagation();
-
+            e.preventDefault(); e.stopPropagation();
             if (!draggedMenuId || draggedMenuId === targetMenuId) return;
-
             const draggedMenu = store.menus.find(m => m.id === draggedMenuId);
             const targetMenu = store.menus.find(m => m.id === targetMenuId);
-
             if (!draggedMenu || !targetMenu) return;
-
             if (draggedMenu.parentId !== targetMenu.parentId) {
                 showToast('동일한 레벨의 서브메뉴끼리만 드래그 순서를 변경할 수 있습니다.');
                 return;
             }
-
             const sameLevelMenus = store.menus.filter(m => m.parentId === draggedMenu.parentId);
             const draggedIndex = sameLevelMenus.findIndex(m => m.id === draggedMenuId);
             const targetIndex = sameLevelMenus.findIndex(m => m.id === targetMenuId);
-
             if (draggedIndex === -1 || targetIndex === -1) return;
-
             sameLevelMenus.splice(draggedIndex, 1);
             sameLevelMenus.splice(targetIndex, 0, draggedMenu);
-
             let newMenuList = [];
             let insertedSameLevel = false;
-
             store.menus.forEach(m => {
                 if (m.parentId === draggedMenu.parentId) {
                     if (!insertedSameLevel) {
@@ -1161,50 +1186,32 @@
                     newMenuList.push(m);
                 }
             });
-
             store.menus = newMenuList;
             saveStore();
             renderMenuTree();
             showToast('메뉴 순서가 변경되었습니다.');
         }
 
-        function handleMenuDragEnd(e) {
-            e.stopPropagation();
-            if (e.target) e.target.classList.remove('opacity-40');
-            draggedMenuId = null;
-        }
+        function handleMenuDragEnd(e) { e.stopPropagation(); if (e.target) e.target.classList.remove('opacity-40'); draggedMenuId = null; }
 
-        function selectMenu(id) {
-            store.selectedMenuId = id;
-            saveStore();
-            renderMenuTree();
-            renderContentArea();
-        }
+        function selectMenu(id) { store.selectedMenuId = id; saveStore(); renderMenuTree(); renderContentArea(); }
 
-        // --- Menu Modal Operations ---
         function openMenuModal(parentId = null) {
             document.getElementById('menuParentId').value = parentId || '';
             document.getElementById('menuEditId').value = '';
             document.getElementById('menuNameInput').value = '';
-
             const badge = document.getElementById('menuTypeBadge');
             if (parentId) {
                 const parent = store.menus.find(m => m.id === parentId);
                 const parentDepth = getMenuDepth(parentId);
                 const nextDepth = parentDepth + 1;
-
-                if (nextDepth > 3) {
-                    showToast('서브메뉴는 최대 3단계까지 생성할 수 있습니다.');
-                    return;
-                }
-
+                if (nextDepth > 3) { showToast('서브메뉴는 최대 3단계까지 생성할 수 있습니다.'); return; }
                 badge.innerText = `${nextDepth}단계 서브메뉴 (상위: ${parent ? parent.name : ''})`;
                 badge.className = "text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg inline-block font-medium";
             } else {
                 badge.innerText = "1단계 상위 카테고리";
                 badge.className = "text-xs bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg inline-block font-medium";
             }
-
             const targetDepthText = parentId ? `${getMenuDepth(parentId) + 1}단계 서브메뉴` : '1단계 메뉴';
             document.getElementById('menuModalTitle').innerText = `${targetDepthText} 추가`;
             document.getElementById('menuModal').classList.remove('hidden');
@@ -1214,11 +1221,9 @@
         function openEditMenuModal(menuId) {
             const menu = store.menus.find(m => m.id === menuId);
             if (!menu) return;
-
             document.getElementById('menuParentId').value = menu.parentId || '';
             document.getElementById('menuEditId').value = menu.id;
             document.getElementById('menuNameInput').value = menu.name;
-
             const depth = getMenuDepth(menuId);
             const badge = document.getElementById('menuTypeBadge');
             if (menu.parentId) {
@@ -1229,89 +1234,56 @@
                 badge.innerText = "1단계 상위 카테고리 수정";
                 badge.className = "text-xs bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg inline-block font-medium";
             }
-
             document.getElementById('menuModalTitle').innerText = '메뉴 이름 수정';
             document.getElementById('menuModal').classList.remove('hidden');
             setTimeout(() => document.getElementById('menuNameInput').focus(), 100);
         }
 
-        function closeMenuModal() {
-            document.getElementById('menuModal').classList.add('hidden');
-        }
+        function closeMenuModal() { document.getElementById('menuModal').classList.add('hidden'); }
 
         function handleMenuFormSubmit(e) {
             e.preventDefault();
             const parentId = document.getElementById('menuParentId').value || null;
             const editId = document.getElementById('menuEditId').value;
             const name = document.getElementById('menuNameInput').value.trim();
-
             if (!name) return;
-
             if (editId) {
                 const menu = store.menus.find(m => m.id === editId);
-                if (menu) {
-                    menu.name = name;
-                    showToast('메뉴 이름이 수정되었습니다.');
-                }
+                if (menu) { menu.name = name; showToast('메뉴 이름이 수정되었습니다.'); }
             } else {
-                const newMenu = {
-                    id: 'menu_' + Date.now(),
-                    name,
-                    parentId
-                };
+                const newMenu = { id: 'menu_' + Date.now(), name, parentId };
                 store.menus.push(newMenu);
                 store.selectedMenuId = newMenu.id;
                 showToast('새 서브메뉴가 생성되었습니다.');
             }
-
-            saveStore();
-            closeMenuModal();
-            renderMenuTree();
-            renderContentArea();
+            saveStore(); closeMenuModal(); renderMenuTree(); renderContentArea();
         }
 
         function getAllDescendantIds(menuId) {
             let ids = [menuId];
             const children = store.menus.filter(m => m.parentId === menuId);
-            children.forEach(child => {
-                ids = ids.concat(getAllDescendantIds(child.id));
-            });
+            children.forEach(child => { ids = ids.concat(getAllDescendantIds(child.id)); });
             return ids;
         }
 
         function deleteMenu(menuId) {
             const menuToDelete = store.menus.find(m => m.id === menuId);
             if (!menuToDelete) return;
-
             const allTargetIds = getAllDescendantIds(menuId);
-
             if (confirm(`'${menuToDelete.name}' 메뉴 및 하위 항목/링크를 모두 삭제하시겠습니까?`)) {
                 const linksToDelete = store.links.filter(l => allTargetIds.includes(l.menuId));
                 linksToDelete.forEach(l => deleteFileContentFromDB(l.id));
-
                 store.menus = store.menus.filter(m => !allTargetIds.includes(m.id));
                 store.links = store.links.filter(l => !allTargetIds.includes(l.menuId));
-
-                if (allTargetIds.includes(store.selectedMenuId)) {
-                    store.selectedMenuId = null;
-                }
-
-                saveStore();
-                renderMenuTree();
-                renderContentArea();
-                showToast('메뉴가 삭제되었습니다.');
+                if (allTargetIds.includes(store.selectedMenuId)) { store.selectedMenuId = null; }
+                saveStore(); renderMenuTree(); renderContentArea(); showToast('메뉴가 삭제되었습니다.');
             }
         }
 
-        // --- HTML File Import & Relative Path Link Management ---
         function triggerFileInput() {
-            if (!store.selectedMenuId) {
-                showToast('먼저 좌측에서 링크를 등록할 메뉴를 선택해주세요.');
-                return;
-            }
+            if (!store.selectedMenuId) { showToast('먼저 좌측에서 링크를 등록할 메뉴를 선택해주세요.'); return; }
             const fileInput = document.getElementById('htmlFileInput');
-            fileInput.value = '';
-            fileInput.click();
+            fileInput.value = ''; fileInput.click();
         }
 
         async function processFiles(files) {
@@ -1319,11 +1291,9 @@
             for (const file of files) {
                 const fileTitle = file.name.replace(/\.[^/.]+$/, "");
                 const linkId = 'link_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-
                 try {
                     const textContent = await file.text();
                     await saveFileContentToDB(linkId, textContent);
-
                     const newLink = {
                         id: linkId,
                         menuId: store.selectedMenuId,
@@ -1333,47 +1303,35 @@
                         description: `가져오기한 파일 (${file.name})`,
                         createdAt: new Date().toISOString()
                     };
-
                     store.links.push(newLink);
                     addedCount++;
-                } catch (err) {
-                    console.error('파일 저장 실패:', err);
-                }
+                } catch (err) { console.error('파일 저장 실패:', err); }
             }
-
-            saveStore();
-            renderContentArea();
-            showToast(`${addedCount}개의 HTML 파일 링크가 상대 주소로 등록되었습니다.`);
+            saveStore(); renderContentArea();
+            showToast(`${addedCount}개의 HTML 파일 링크가 등록되었습니다.`);
         }
 
         function handleFileSelect(e) {
             const files = Array.from(e.target.files);
             if (files.length === 0) return;
-
-            if (!store.selectedMenuId) {
-                showToast('먼저 좌측에서 메뉴를 선택해주세요.');
-                return;
-            }
-
+            if (!store.selectedMenuId) { showToast('먼저 좌측에서 메뉴를 선택해주세요.'); return; }
             processFiles(files);
         }
 
-        // --- Open Saved HTML File ---
         async function openHtmlFile(linkId) {
             const link = store.links.find(l => l.id === linkId);
             if (!link) return;
-
+            if (link.url && link.url.startsWith('http')) {
+                window.open(link.url, '_blank');
+                return;
+            }
             if (link.url && !link.url.startsWith('blob:')) {
                 window.open(link.url, '_blank');
                 return;
             }
-
             try {
                 const content = await getFileContentFromDB(linkId);
-                if (!content) {
-                    window.open(link.fileName || './index.html', '_blank');
-                    return;
-                }
+                if (!content) { window.open(link.fileName || './index.html', '_blank'); return; }
                 const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
                 const blobUrl = URL.createObjectURL(blob);
                 window.open(blobUrl, '_blank');
@@ -1383,52 +1341,48 @@
             }
         }
 
-        // --- Center Main Content Area & Link Cards Drag & Drop ---
         function renderContentArea() {
             const linksContainer = document.getElementById('linksContainer');
             const emptyState = document.getElementById('emptyState');
             const mainActionHeader = document.getElementById('mainActionHeader');
             const contentMenuTitle = document.getElementById('contentMenuTitle');
-
             const currentMenu = store.menus.find(m => m.id === store.selectedMenuId);
 
             if (!currentMenu) {
                 linksContainer.innerHTML = '';
                 mainActionHeader.classList.add('hidden');
                 emptyState.classList.remove('hidden');
-                document.getElementById('emptyImportBtn').classList.add('hidden');
+                document.getElementById('emptyActionBtns').classList.add('hidden');
                 document.getElementById('emptyTitle').innerText = '선택된 메뉴가 없습니다';
                 document.getElementById('emptyDesc').innerText = '좌측 메뉴에서 항목을 선택하거나 새로운 서브메뉴를 추가해주세요.';
                 return;
             }
-
             mainActionHeader.classList.remove('hidden');
             contentMenuTitle.innerText = currentMenu.name;
-
             const menuLinks = store.links.filter(l => l.menuId === currentMenu.id);
 
             if (menuLinks.length === 0) {
                 linksContainer.innerHTML = '';
                 emptyState.classList.remove('hidden');
-                document.getElementById('emptyImportBtn').classList.remove('hidden');
+                document.getElementById('emptyActionBtns').classList.remove('hidden');
                 document.getElementById('emptyTitle').innerText = '등록된 HTML 링크가 없습니다';
-                document.getElementById('emptyDesc').innerHTML = `'${escapeHtml(currentMenu.name)}' 메뉴에 HTML 파일을 <strong>드래그 & 드롭</strong>하거나, 버튼을 눌러 추가해 보세요.`;
+                document.getElementById('emptyDesc').innerHTML = `'${escapeHtml(currentMenu.name)}' 메뉴에 HTML 파일을 <strong>드래그 & 드롭</strong>하거나, URL을 직접 등록해보세요.`;
                 return;
             }
 
             emptyState.classList.add('hidden');
             linksContainer.innerHTML = '';
-
             menuLinks.forEach((link) => {
                 const card = document.createElement('div');
                 card.className = 'bg-white rounded-xl border border-slate-200 p-4 hover:border-indigo-300 hover:shadow-md transition-all flex flex-col justify-between group h-fit cursor-grab active:cursor-grabbing';
                 card.setAttribute('draggable', 'true');
                 card.dataset.linkId = link.id;
-
                 card.addEventListener('dragstart', (e) => handleLinkCardDragStart(e, link.id));
                 card.addEventListener('dragover', handleLinkCardDragOver);
                 card.addEventListener('drop', (e) => handleLinkCardDrop(e, link.id));
                 card.addEventListener('dragend', handleLinkCardDragEnd);
+                
+                let linkBadge = (link.url && link.url.startsWith('http')) ? 'URL' : 'HTML';
 
                 card.innerHTML = `
                     <div>
@@ -1438,7 +1392,7 @@
                                 ${escapeHtml(link.title)}
                             </h4>
                             <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded font-mono flex-shrink-0 font-semibold">
-                                HTML
+                                ${linkBadge}
                             </span>
                         </div>
                         <p class="text-xs text-slate-500 mb-3 break-all font-mono bg-slate-50 p-1.5 rounded border border-slate-100 flex items-center gap-1">
@@ -1447,7 +1401,6 @@
                         </p>
                         ${link.description ? `<p class="text-xs text-slate-600 mb-4 line-clamp-2">${escapeHtml(link.description)}</p>` : ''}
                     </div>
-
                     <div class="flex items-center justify-between pt-3 border-t border-slate-100 mt-2 text-xs">
                         <div class="flex gap-1">
                             <button onclick="openEditLinkModal('${link.id}')" class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded transition-colors" title="수정">
@@ -1468,133 +1421,68 @@
             });
         }
 
-        // --- Link Card Drag & Drop Logic ---
         function handleLinkCardDragStart(e, linkId) {
-            e.stopPropagation();
-            draggedLinkId = linkId;
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', linkId);
-            setTimeout(() => {
-                if (e.target) e.target.classList.add('opacity-40');
-            }, 0);
+            e.stopPropagation(); draggedLinkId = linkId; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', linkId);
+            setTimeout(() => { if (e.target) e.target.classList.add('opacity-40'); }, 0);
         }
-
-        function handleLinkCardDragOver(e) {
-            if (!draggedLinkId) return;
-            e.preventDefault();
-            e.stopPropagation();
-            e.dataTransfer.dropEffect = 'move';
-        }
-
+        function handleLinkCardDragOver(e) { if (!draggedLinkId) return; e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = 'move'; }
         function handleLinkCardDrop(e, targetLinkId) {
-            if (!draggedLinkId) return;
-            e.preventDefault();
-            e.stopPropagation();
-
+            if (!draggedLinkId) return; e.preventDefault(); e.stopPropagation();
             if (draggedLinkId === targetLinkId) return;
-
             const draggedIndex = store.links.findIndex(l => l.id === draggedLinkId);
             const targetIndex = store.links.findIndex(l => l.id === targetLinkId);
-
             if (draggedIndex === -1 || targetIndex === -1) return;
-
             const [draggedItem] = store.links.splice(draggedIndex, 1);
             store.links.splice(targetIndex, 0, draggedItem);
-
-            saveStore();
-            renderContentArea();
-            showToast('링크 순서가 변경되었습니다.');
+            saveStore(); renderContentArea(); showToast('링크 순서가 변경되었습니다.');
         }
+        function handleLinkCardDragEnd(e) { e.stopPropagation(); if (e.target) e.target.classList.remove('opacity-40'); draggedLinkId = null; }
 
-        function handleLinkCardDragEnd(e) {
-            e.stopPropagation();
-            if (e.target) e.target.classList.remove('opacity-40');
-            draggedLinkId = null;
-        }
-
-        // --- Drag and Drop Logic for Adding External HTML Files ---
         function setupDragAndDrop() {
             const dropZone = document.getElementById('dropZone');
             const dragOverlay = document.getElementById('dragOverlay');
-
             let dragCounter = 0;
-
             window.addEventListener('dragenter', (e) => {
-                e.preventDefault();
-                if (draggedMenuId || draggedLinkId) return;
-                dragCounter++;
-                if (store.selectedMenuId) {
-                    dragOverlay.classList.remove('hidden');
-                }
+                e.preventDefault(); if (draggedMenuId || draggedLinkId) return;
+                dragCounter++; if (store.selectedMenuId) { dragOverlay.classList.remove('hidden'); }
             });
-
             window.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                if (draggedMenuId || draggedLinkId) return;
-                dragCounter--;
-                if (dragCounter <= 0) {
-                    dragCounter = 0;
-                    dragOverlay.classList.add('hidden');
-                }
+                e.preventDefault(); if (draggedMenuId || draggedLinkId) return;
+                dragCounter--; if (dragCounter <= 0) { dragCounter = 0; dragOverlay.classList.add('hidden'); }
             });
-
-            window.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
+            window.addEventListener('dragover', (e) => { e.preventDefault(); });
             window.addEventListener('drop', (e) => {
                 if (draggedMenuId || draggedLinkId) return;
-
-                e.preventDefault();
-                dragCounter = 0;
-                dragOverlay.classList.add('hidden');
-
-                if (!store.selectedMenuId) {
-                    showToast('먼저 좌측에서 링크를 등록할 메뉴를 선택해주세요.');
-                    return;
-                }
-
+                e.preventDefault(); dragCounter = 0; dragOverlay.classList.add('hidden');
+                if (!store.selectedMenuId) { showToast('먼저 좌측에서 링크를 등록할 메뉴를 선택해주세요.'); return; }
                 const files = Array.from(e.dataTransfer.files);
                 const htmlFiles = files.filter(file => file.name.endsWith('.html') || file.name.endsWith('.htm'));
-
-                if (htmlFiles.length === 0) {
-                    showToast('HTML 파일(.html, .htm)만 드롭 가능합니다.');
-                    return;
-                }
-
+                if (htmlFiles.length === 0) { showToast('HTML 파일(.html, .htm)만 드롭 가능합니다.'); return; }
                 processFiles(htmlFiles);
             });
         }
 
-        // --- Edit Link Modal ---
         function openEditLinkModal(linkId) {
             const link = store.links.find(l => l.id === linkId);
             if (!link) return;
-
             document.getElementById('editLinkId').value = link.id;
             document.getElementById('editLinkTitle').value = link.title;
             document.getElementById('editLinkUrl').value = link.url || ('./' + (link.fileName || ''));
             document.getElementById('editLinkDesc').value = link.description || '';
-
             document.getElementById('editLinkModal').classList.remove('hidden');
         }
 
-        function closeEditLinkModal() {
-            document.getElementById('editLinkModal').classList.add('hidden');
-        }
+        function closeEditLinkModal() { document.getElementById('editLinkModal').classList.add('hidden'); }
 
         function handleEditLinkSubmit(e) {
             e.preventDefault();
             const id = document.getElementById('editLinkId').value;
             const link = store.links.find(l => l.id === id);
-
             if (link) {
                 link.title = document.getElementById('editLinkTitle').value.trim();
                 link.url = document.getElementById('editLinkUrl').value.trim();
                 link.description = document.getElementById('editLinkDesc').value.trim();
-                saveStore();
-                renderContentArea();
-                showToast('링크 정보가 수정되었습니다.');
+                saveStore(); renderContentArea(); showToast('링크 정보가 수정되었습니다.');
             }
             closeEditLinkModal();
         }
@@ -1603,20 +1491,51 @@
             if (confirm('이 링크를 삭제하시겠습니까?')) {
                 deleteFileContentFromDB(linkId);
                 store.links = store.links.filter(l => l.id !== linkId);
-                saveStore();
-                renderContentArea();
-                showToast('링크가 삭제되었습니다.');
+                saveStore(); renderContentArea(); showToast('링크가 삭제되었습니다.');
             }
         }
 
-        // --- Helper Utilities ---
+        // --- Add URL Link Logic ---
+        function openAddUrlModal() {
+            if (!store.selectedMenuId) { showToast('먼저 좌측에서 링크를 등록할 메뉴를 선택해주세요.'); return; }
+            document.getElementById('addUrlTitle').value = '';
+            document.getElementById('addUrlAddress').value = '';
+            document.getElementById('addUrlDesc').value = '';
+            document.getElementById('addUrlModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('addUrlTitle').focus(), 100);
+        }
+
+        function closeAddUrlModal() { document.getElementById('addUrlModal').classList.add('hidden'); }
+
+        function handleAddUrlSubmit(e) {
+            e.preventDefault();
+            if (!store.selectedMenuId) return;
+            const title = document.getElementById('addUrlTitle').value.trim();
+            let url = document.getElementById('addUrlAddress').value.trim();
+            const desc = document.getElementById('addUrlDesc').value.trim();
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) { url = 'https://' + url; }
+
+            const linkId = 'link_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+            const newLink = {
+                id: linkId,
+                menuId: store.selectedMenuId,
+                title: title,
+                fileName: '',
+                url: url,
+                description: desc || '직접 등록한 외부 링크',
+                createdAt: new Date().toISOString()
+            };
+            store.links.push(newLink);
+            saveStore(); closeAddUrlModal(); renderContentArea(); showToast('새 URL 링크가 등록되었습니다.');
+        }
+
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMsg');
             toastMsg.innerText = message;
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-20', 'opacity-0');
@@ -1625,12 +1544,7 @@
 
         function escapeHtml(str) {
             if (!str) return '';
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 
