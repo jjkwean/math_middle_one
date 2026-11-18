@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통계 대푯값 학습 시뮬레이터 (평균, 중앙값, 최빈값)</title>
+    <!-- Tailwind CSS 및 Chart.js, Datalabels CDN 불러오기 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <style>
+        /* 화면 스크롤 방지를 위해 전체 높이를 100%로 고정 */
+        html, body { height: 100%; margin: 0; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-gray-200 font-sans text-gray-800 p-4 flex items-center justify-center">
+    <!-- 전체를 감싸는 컨테이너 (세로 플렉스, 최대 높이 지정) -->
+    <div class="w-full max-w-5xl h-full max-h-[96vh] bg-white rounded-2xl shadow-xl p-5 flex flex-col gap-3">
+        
+        <h1 class="text-xl font-bold text-indigo-600 text-center shrink-0">📊 변량 분석 및 대푯값 인터랙티브 학습기</h1>
+
+        <!-- 입력 영역 (한 줄로 압축) -->
+        <div class="bg-indigo-50 px-4 py-3 rounded-lg border border-indigo-100 flex items-center gap-3 shrink-0 shadow-sm">
+            <label class="text-sm font-semibold text-indigo-900 whitespace-nowrap">변량 입력</label>
+            <input type="text" id="dataInput" value="5, 2, 3, 1, 4" class="flex-1 px-3 py-1.5 text-sm border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button onclick="processData()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-1.5 rounded-md transition shadow">적용하기</button>
+        </div>
+
+        <!-- 상세 데이터 분석 (여백 및 폰트 축소) -->
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-300 shadow-sm shrink-0 flex flex-col gap-2 text-sm">
+            <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+                <p class="text-gray-700"><strong>오름차순 정렬:</strong> <span id="sortedDataText" class="font-mono text-indigo-700 font-bold">-</span></p>
+                <p class="text-gray-700"><strong>변량별 도수:</strong> <span id="frequencyText" class="font-mono text-indigo-700 font-bold">-</span></p>
+            </div>
+            <p class="text-gray-700"><strong>평균 계산 수식:</strong> <span id="meanFormulaText" class="font-mono text-indigo-700 font-bold">-</span></p>
+        </div>
+
+        <!-- 결과 요약 카드 (크기 및 간격 최소화) -->
+        <div class="grid grid-cols-3 gap-2 shrink-0">
+            <div class="bg-blue-50 border border-blue-200 py-2 rounded-lg text-center shadow-sm">
+                <div class="text-xs text-blue-600 font-medium">평균 (Mean)</div>
+                <div id="meanResult" class="text-lg font-bold text-blue-800">-</div>
+            </div>
+            <div class="bg-emerald-50 border border-emerald-200 py-2 rounded-lg text-center shadow-sm">
+                <div class="text-xs text-emerald-600 font-medium">중앙값 (Median)</div>
+                <div id="medianResult" class="text-lg font-bold text-emerald-800">-</div>
+            </div>
+            <div class="bg-purple-50 border border-purple-200 py-2 rounded-lg text-center shadow-sm">
+                <div class="text-xs text-purple-600 font-medium">최빈값 (Mode)</div>
+                <div id="modeResult" class="text-lg font-bold text-purple-800">-</div>
+            </div>
+        </div>
+
+        <!-- 차트 영역 (남은 공간을 모두 채우도록 flex-1 적용) -->
+        <div class="relative w-full flex-1 min-h-[150px]">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- 편차의 합 시각화 영역 (한 줄로 가로 배치) -->
+        <div class="bg-amber-50 border border-amber-200 px-4 py-3 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0 shadow-sm">
+            <div class="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
+                <h3 class="text-sm font-bold text-amber-900 whitespace-nowrap">⚖️ 편차 확인</h3>
+                <p class="text-xs text-amber-800 font-mono truncate" id="deviationFormulaText">-</p>
+            </div>
+            <div class="text-sm font-bold text-amber-900 whitespace-nowrap">
+                편차의 총합 = <span id="deviationSumResult" class="text-xl text-red-600">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels);
+
+        let chartInstance = null;
+        let currentValues = [];
+
+        function processData() {
+            const inputVal = document.getElementById('dataInput').value;
+            currentValues = inputVal.split(',')
+                .map(v => parseFloat(v.trim()))
+                .filter(v => !isNaN(v));
+
+            if (currentValues.length === 0) {
+                alert('올바른 숫자를 쉼표로 구분하여 입력해주세요!');
+                return;
+            }
+
+            updateCalculations();
+            renderChart();
+        }
+
+        function updateCalculations() {
+            const n = currentValues.length;
+            const sum = currentValues.reduce((a, b) => a + b, 0);
+            const mean = sum / n;
+
+            // 1. 평균 수식 문자열 생성
+            const valStrings = currentValues.join(' + ');
+            document.getElementById('meanFormulaText').innerText = `(${valStrings}) ÷ ${n} = ${sum} ÷ ${n} = ${mean.toFixed(2)}`;
+
+            // 2. 중앙값 계산
+            const sorted = [...currentValues].sort((a, b) => a - b);
+            let median;
+            if (n % 2 === 0) {
+                median = (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
+            } else {
+                median = sorted[Math.floor(n / 2)];
+            }
+
+            // 3. 최빈값 계산
+            const freqMap = {};
+            currentValues.forEach(val => {
+                freqMap[val] = (freqMap[val] || 0) + 1;
+            });
+            let maxFreq = 0;
+            for (let val in freqMap) {
+                if (freqMap[val] > maxFreq) {
+                    maxFreq = freqMap[val];
+                }
+            }
+            let modes = [];
+            for (let val in freqMap) {
+                if (freqMap[val] === maxFreq) {
+                    modes.push(val);
+                }
+            }
+            let modeStr = (maxFreq === 1 && currentValues.length > 1) ? "없음" : modes.join(', ');
+
+            // 화면 반영
+            document.getElementById('meanResult').innerText = mean.toFixed(2);
+            document.getElementById('medianResult').innerText = median;
+            document.getElementById('modeResult').innerText = modeStr;
+            document.getElementById('sortedDataText').innerText = sorted.join(', ');
+
+            let freqArr = [];
+            for (let val in freqMap) {
+                freqArr.push(`${val}(${freqMap[val]}개)`);
+            }
+            document.getElementById('frequencyText').innerText = freqArr.join(', ');
+
+            // 4. 편차의 합 수식 생성
+            const devFormulaArr = currentValues.map(v => {
+                let diff = v - mean;
+                let formatted = Number.isInteger(diff) ? diff.toString() : diff.toFixed(2);
+                return diff >= 0 ? `(+${formatted})` : `(${formatted})`;
+            });
+            
+            document.getElementById('deviationFormulaText').innerText = devFormulaArr.join(' + ') + ` = 0`;
+            document.getElementById('deviationSumResult').innerText = "0";
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            const mean = currentValues.reduce((a, b) => a + b, 0) / currentValues.length;
+            const labels = currentValues.map((_, i) => `변량 ${i + 1}`);
+            const deviationData = currentValues.map(v => [mean, v]);
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: '평균선',
+                            data: currentValues.map(() => mean),
+                            borderColor: 'rgba(239, 68, 68, 0.8)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false,
+                            order: 1
+                        },
+                        {
+                            type: 'bar',
+                            label: '변량',
+                            data: currentValues,
+                            backgroundColor: 'rgba(79, 70, 229, 0.85)',
+                            borderColor: 'rgb(79, 70, 229)',
+                            borderWidth: 1.5,
+                            borderRadius: 4,
+                            order: 3
+                        },
+                        {
+                            type: 'bar',
+                            label: '편차',
+                            data: deviationData,
+                            backgroundColor: 'rgba(245, 158, 11, 0.8)', 
+                            borderColor: 'rgb(245, 158, 11)',
+                            borderWidth: 1.5,
+                            borderRadius: 4,
+                            order: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: { bottom: 10 } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: false } // 공간 절약을 위해 y축 타이틀 숨김
+                        }
+                    },
+                    plugins: {
+                        legend: { 
+                            display: true, 
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10, font: { size: 11 } }
+                        },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            font: { weight: 'bold', size: 12 },
+                            color: function(context) {
+                                return context.datasetIndex === 0 ? 'transparent' : 
+                                      (context.datasetIndex === 2 ? '#000000' : '#ffffff');
+                            },
+                            formatter: function(value, context) {
+                                if (context.datasetIndex === 0) return ''; 
+                                else if (context.datasetIndex === 1) {
+                                    return Number.isInteger(value) ? value : value.toFixed(2);
+                                } 
+                                else if (context.datasetIndex === 2) {
+                                    const val = currentValues[context.dataIndex];
+                                    const diff = val - mean;
+                                    if (diff === 0) return '0';
+                                    const formatted = Number.isInteger(diff) ? diff.toString() : diff.toFixed(2);
+                                    return diff > 0 ? `+${formatted}` : formatted;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 창 크기 변경 시 차트 리사이징 대응
+        window.addEventListener('resize', () => {
+            if(chartInstance) {
+                chartInstance.resize();
+            }
+        });
+
+        window.onload = function() {
+            processData();
+        };
+    </script>
+</body>
+</html>
